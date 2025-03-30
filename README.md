@@ -164,6 +164,20 @@ You can also add these as repository variables (not secrets, as they're not sens
 3. You can also trigger it manually from the Actions tab by clicking "Run workflow"
 4. For manual runs, you can enable debug mode or dry-run mode using the provided options
 
+#### How Duplicate Posts Are Prevented
+
+Social-Sync uses a robust state tracking system to prevent duplicate posts:
+
+1. **State File**: Each run maintains a JSON file with IDs of previously synced posts
+2. **GitHub Actions Cache**: The state file is persisted between runs using GitHub's cache
+3. **Lookback Window**: The tool only examines posts from the last 6 hours (configurable)
+4. **Deduplication Logic**: Posts with IDs already in the state file are automatically skipped
+
+This system ensures:
+- Each post is only synced once, even across multiple workflow runs
+- If a workflow run is missed, posts are still captured in the next run
+- Even if the cache is lost, only posts within the lookback window might be duplicated
+
 ## Development
 
 ### Setup Development Environment
@@ -245,6 +259,12 @@ make publish
    - Always use GitHub Secrets for sensitive information
    - Regularly rotate your API tokens for better security
    - If you suspect your tokens were compromised, regenerate them immediately
+
+6. **Cache Issues**:
+   - If you experience duplicate posts, the GitHub Actions cache may have been lost
+   - Cache can expire after 7 days of non-use or during GitHub maintenance
+   - To debug cache issues, check workflow logs for "Cache restored from key: sync-state"
+   - If needed, you can manually clear the cache through GitHub's API or interface
 
 ## License
 

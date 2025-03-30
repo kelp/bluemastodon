@@ -67,9 +67,8 @@ jobs:
         
         poetry run python -m social_sync --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
       
-    - name: Upload state as artifact
-      uses: actions/upload-artifact@v4
+    - name: Cache sync state
+      uses: actions/cache@v4
       with:
-        name: sync-state
         path: sync_state.json
-        retention-days: 7
+        key: sync-state
