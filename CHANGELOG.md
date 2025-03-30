@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1] - 2025-03-30
+
 ### Fixed
 - Improved state file management to prevent double posts
 - Added immediate state saving after successful Mastodon posts
