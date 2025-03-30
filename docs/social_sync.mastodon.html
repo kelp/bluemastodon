@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module social_sync.mastodon</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="social_sync.html" class="white">social_sync</a>.mastodon</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/social_sync/mastodon.py">/Users/tcole/code/claude/social-sync/src/social_sync/mastodon.py</a></td></tr></table>
+    <p><span class="code">Mastodon&nbsp;API&nbsp;client&nbsp;for&nbsp;social-sync.<br>
+&nbsp;<br>
+This&nbsp;module&nbsp;handles&nbsp;interactions&nbsp;with&nbsp;the&nbsp;Mastodon&nbsp;API,&nbsp;including&nbsp;authentication,<br>
+creating&nbsp;posts,&nbsp;and&nbsp;handling&nbsp;media&nbsp;uploads.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="tempfile.html">tempfile</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="social_sync.mastodon.html#MastodonClient">MastodonClient</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MastodonClient">class <strong>MastodonClient</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#MastodonClient">MastodonClient</a>(config:&nbsp;social_sync.config.MastodonConfig)<br>
+&nbsp;<br>
+Client&nbsp;for&nbsp;interacting&nbsp;with&nbsp;the&nbsp;Mastodon&nbsp;API.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="MastodonClient-__init__"><strong>__init__</strong></a>(self, config: social_sync.config.MastodonConfig)</dt><dd><span class="code">Initialize&nbsp;the&nbsp;Mastodon&nbsp;client.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;Mastodon&nbsp;configuration&nbsp;with&nbsp;credentials</span></dd></dl>
+
+<dl><dt><a name="MastodonClient-cross_post"><strong>cross_post</strong></a>(self, bluesky_post: social_sync.models.BlueskyPost) -&gt; Optional[social_sync.models.MastodonPost]</dt><dd><span class="code">Create&nbsp;a&nbsp;Mastodon&nbsp;post&nbsp;from&nbsp;a&nbsp;Bluesky&nbsp;post.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bluesky_post:&nbsp;The&nbsp;Bluesky&nbsp;post&nbsp;to&nbsp;cross-post<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;created&nbsp;Mastodon&nbsp;post&nbsp;or&nbsp;None&nbsp;if&nbsp;posting&nbsp;failed<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValueError:&nbsp;If&nbsp;not&nbsp;authenticated</span></dd></dl>
+
+<dl><dt><a name="MastodonClient-ensure_authenticated"><strong>ensure_authenticated</strong></a>(self) -&gt; bool</dt><dd><span class="code">Check&nbsp;authentication&nbsp;and&nbsp;re-verify&nbsp;if&nbsp;needed.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;authenticated,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<dl><dt><a name="MastodonClient-verify_credentials"><strong>verify_credentials</strong></a>(self) -&gt; bool</dt><dd><span class="code">Verify&nbsp;the&nbsp;provided&nbsp;credentials.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;credentials&nbsp;are&nbsp;valid,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>logger</strong> = &lt;loguru.logger handlers=[(id=0, level=10, sink=&lt;stderr&gt;)]&gt;</td></tr></table>
+</body></html>

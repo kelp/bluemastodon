@@ -1,0 +1,75 @@
+name: Sync Social Media Posts
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Run in debug mode'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Perform a dry run (no actual posts)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.8.2
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Install dependencies
+      run: poetry install
+    
+    - name: Set up environment file
+      run: |
+        echo "BLUESKY_USERNAME=${{ secrets.BLUESKY_USERNAME }}" >> .env
+        echo "BLUESKY_PASSWORD=${{ secrets.BLUESKY_PASSWORD }}" >> .env
+        echo "MASTODON_INSTANCE_URL=${{ secrets.MASTODON_INSTANCE_URL }}" >> .env
+        echo "MASTODON_ACCESS_TOKEN=${{ secrets.MASTODON_ACCESS_TOKEN }}" >> .env
+        echo "LOOKBACK_HOURS=${{ vars.LOOKBACK_HOURS || 6 }}" >> .env
+        echo "SYNC_INTERVAL_MINUTES=${{ vars.SYNC_INTERVAL_MINUTES || 60 }}" >> .env
+        echo "MAX_POSTS_PER_RUN=${{ vars.MAX_POSTS_PER_RUN || 5 }}" >> .env
+        echo "INCLUDE_MEDIA=${{ vars.INCLUDE_MEDIA || 'true' }}" >> .env
+        echo "INCLUDE_LINKS=${{ vars.INCLUDE_LINKS || 'true' }}" >> .env
+    
+    - name: Run sync
+      run: |
+        STATE_FILE=sync_state.json
+        DEBUG_FLAG=""
+        DRY_RUN_FLAG=""
+        
+        if [[ "${{ github.event.inputs.debug }}" == "true" ]]; then
+          DEBUG_FLAG="--debug"
+        fi
+        
+        if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        
+        poetry run python -m social_sync --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
+      
+    - name: Upload state as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sync-state
+        path: sync_state.json
+        retention-days: 7

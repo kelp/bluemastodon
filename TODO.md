@@ -9,8 +9,8 @@ This tool specifically handles synchronizing manual posts from Bluesky to Mastod
 - [x] Set up virtual environment
 - [x] Configure pyproject.toml with dependencies
 - [x] Add .gitignore
-- [ ] Configure pre-commit hooks
-- [ ] Set up basic GitHub Actions workflow
+- [x] Configure pre-commit hooks
+- [x] Set up basic GitHub Actions workflow
 
 ## 2. API Research (Day 1-2)
 - [x] Research Bluesky API authentication and endpoints
@@ -42,18 +42,18 @@ This tool specifically handles synchronizing manual posts from Bluesky to Mastod
 - [x] Add test for edge cases (rate limits, API errors, etc.)
 
 ## 5. GitHub Actions Setup (Day 6)
-- [ ] Create workflow for running tests and linters
-- [ ] Set up scheduled job for cross-posting
-- [ ] Configure secrets management
-- [ ] Add manual trigger option
+- [x] Create workflow for running tests and linters
+- [x] Set up scheduled job for cross-posting
+- [x] Configure secrets management
+- [x] Add manual trigger option
 - [ ] Test the complete workflow
 
 ## 6. Documentation and Finalization (Day 7)
-- [ ] Complete docstrings for all modules and functions
-- [ ] Generate and review pydoc documentation
-- [ ] Write comprehensive README with setup and usage instructions
-- [ ] Add examples and troubleshooting guide
-- [ ] Final code review and quality check
+- [x] Complete docstrings for all modules and functions
+- [x] Generate and review pydoc documentation
+- [x] Write comprehensive README with setup and usage instructions
+- [x] Add examples and troubleshooting guide
+- [x] Final code review and quality check
 
 ## 7. Future Enhancements
 - [ ] Add support for images and other media types
