@@ -49,6 +49,35 @@ repos:
         additional_dependencies: ["bandit[toml]"]
         exclude: ^(tests/|setup.py)
 
+  # Run pytest (with minimum coverage requirement)
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=95
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+
+      - id: check-coverage-min
+        name: Check minimum coverage
+        entry: |
+          bash -c '
+            poetry run pytest --cov=src --cov-report=xml --quiet
+            COV=$(python -c "import xml.etree.ElementTree as ET; tree = ET.parse(\"coverage.xml\"); root = tree.getroot(); print(float(root.attrib[\"line-rate\"]) * 100)")
+            if (( $(echo "$COV < 95" | bc -l) )); then
+              echo "Coverage is $COV%, which is below the minimum required 95%"
+              exit 1
+            else
+              echo "Coverage is $COV%, which meets the minimum required 95%"
+            fi
+          '
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+
 ci:
   autofix_commit_msg: "style: auto fixes from pre-commit hooks"
   autoupdate_commit_msg: "chore: update pre-commit hooks"

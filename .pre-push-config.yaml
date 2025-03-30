@@ -1,0 +1,36 @@
+# Pre-push hooks - these run before pushing to remote
+repos:
+  - repo: local
+    hooks:
+      # Run comprehensive tests
+      - id: pytest-full
+        name: Run comprehensive tests
+        entry: poetry run pytest --cov=src --cov-report=term-missing
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      
+      # Run type checking
+      - id: mypy-full
+        name: Run full type checking
+        entry: poetry run mypy src
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true
+      
+      # Run comprehensive linting
+      - id: lint-full
+        name: Run comprehensive linting
+        entry: |
+          bash -c '
+            poetry run black --check src tests
+            poetry run isort --check-only src tests
+            poetry run flake8 src tests
+            poetry run bandit -r src
+          '
+        language: system
+        pass_filenames: false
+        always_run: true
+        verbose: true

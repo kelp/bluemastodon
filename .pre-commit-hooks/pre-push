@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+# This is a pre-push hook that will run comprehensive tests and checks
+
+echo "Running pre-push hooks..."
+
+# Run pre-push checks defined in .pre-push-config.yaml
+pre-commit run --config .pre-push-config.yaml --hook-stage push --all-files
+
+exit $?

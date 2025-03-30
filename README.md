@@ -214,12 +214,30 @@ and release process, see [Versioning Guidelines](docs/versioning.md).
 git clone https://github.com/kelp/social-sync.git
 cd social-sync
 
+# Run the setup script (installs dependencies and pre-commit hooks)
+./scripts/setup-dev.sh
+
+# Or manually:
 # Install dependencies
 poetry install
 
 # Install pre-commit hooks
 pre-commit install
+pre-commit install --hook-type pre-push
 ```
+
+#### Pre-commit Hooks
+
+This project uses pre-commit hooks to ensure code quality. The hooks run:
+
+- Code formatting (Black, isort)
+- Linting (Flake8, pylint)
+- Type checking (Mypy)
+- Security analysis (Bandit)
+- Tests with minimum coverage requirements (pytest)
+
+Pre-commit hooks run automatically on commit. Pre-push hooks run more 
+comprehensive checks before pushing to the remote repository.
 
 ### Testing
 
