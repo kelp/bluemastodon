@@ -2,9 +2,15 @@
 
 from datetime import datetime
 
-from social_sync.models import (BlueskyPost, Link, MastodonPost,
-                                MediaAttachment, MediaType, SocialPost,
-                                SyncRecord)
+from social_sync.models import (
+    BlueskyPost,
+    Link,
+    MastodonPost,
+    MediaAttachment,
+    MediaType,
+    SocialPost,
+    SyncRecord,
+)
 
 # No unused imports
 

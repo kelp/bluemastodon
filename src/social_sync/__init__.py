@@ -13,9 +13,15 @@ from loguru import logger
 from social_sync.bluesky import BlueskyClient
 from social_sync.config import Config, load_config
 from social_sync.mastodon import MastodonClient
-from social_sync.models import (BlueskyPost, Link, MastodonPost,
-                                MediaAttachment, MediaType, SocialPost,
-                                SyncRecord)
+from social_sync.models import (
+    BlueskyPost,
+    Link,
+    MastodonPost,
+    MediaAttachment,
+    MediaType,
+    SocialPost,
+    SyncRecord,
+)
 from social_sync.sync import SyncManager
 
 __version__ = "0.1.0"

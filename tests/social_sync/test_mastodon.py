@@ -8,8 +8,13 @@ import pytest
 
 from social_sync.config import MastodonConfig
 from social_sync.mastodon import MastodonClient
-from social_sync.models import (BlueskyPost, Link, MastodonPost,
-                                MediaAttachment, MediaType)
+from social_sync.models import (
+    BlueskyPost,
+    Link,
+    MastodonPost,
+    MediaAttachment,
+    MediaType,
+)
 
 
 class TestMastodonClient:

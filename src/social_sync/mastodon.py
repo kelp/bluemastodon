@@ -12,8 +12,7 @@ from loguru import logger
 from mastodon import Mastodon
 
 from social_sync.config import MastodonConfig
-from social_sync.models import (MastodonPost, MediaAttachment, MediaType,
-                                SocialPost)
+from social_sync.models import MastodonPost, MediaAttachment, MediaType, SocialPost
 
 
 class MastodonClient:

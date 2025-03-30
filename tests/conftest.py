@@ -8,8 +8,13 @@ from datetime import datetime
 import pytest
 
 from social_sync.config import BlueskyConfig, Config, MastodonConfig
-from social_sync.models import (BlueskyPost, Link, MastodonPost,
-                                MediaAttachment, MediaType)
+from social_sync.models import (
+    BlueskyPost,
+    Link,
+    MastodonPost,
+    MediaAttachment,
+    MediaType,
+)
 
 
 @pytest.fixture
