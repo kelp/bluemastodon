@@ -1,4 +1,4 @@
-"""Mastodon API client for social-sync.
+"""Mastodon API client for bluemastodon.
 
 This module handles interactions with the Mastodon API, including authentication,
 posting content, and checking for duplicates.
@@ -11,8 +11,8 @@ from typing import Any, List, Optional, Tuple
 from loguru import logger
 from mastodon import Mastodon
 
-from social_sync.config import MastodonConfig
-from social_sync.models import (
+from bluemastodon.config import MastodonConfig
+from bluemastodon.models import (
     Link,
     MastodonPost,
     MediaAttachment,
@@ -511,22 +511,29 @@ class MastodonClient:
         # Temporary solution for the specific case we're dealing with
         # Look for specific github.com URLs with truncation
         for link in links:
-            # Test for known pattern - github.com/kelp/social-...
+            # Test for known pattern - github.com/kelp/bluemastodon
             # This could be expanded to be more generic when needed
-            if "github.com/kelp/social-sync" in link.url:
+            if "github.com/kelp/social-sync" in link.url or "github.com/kelp/bluemastodon" in link.url:
                 updated_content = updated_content.replace(
-                    "github.com/kelp/social-...", "github.com/kelp/social-sync"
+                    "github.com/kelp/social-...", "github.com/kelp/bluemastodon"
                 )
                 updated_content = updated_content.replace(
-                    "github.com/kelp/social-…", "github.com/kelp/social-sync"
+                    "github.com/kelp/social-…", "github.com/kelp/bluemastodon"
+                )
+                updated_content = updated_content.replace(
+                    "github.com/kelp/social-sync", "github.com/kelp/bluemastodon"
                 )
                 updated_content = updated_content.replace(
                     "https://github.com/kelp/social-...",
-                    "https://github.com/kelp/social-sync",
+                    "https://github.com/kelp/bluemastodon",
                 )
                 updated_content = updated_content.replace(
                     "https://github.com/kelp/social-…",
+                    "https://github.com/kelp/bluemastodon",
+                )
+                updated_content = updated_content.replace(
                     "https://github.com/kelp/social-sync",
+                    "https://github.com/kelp/bluemastodon",
                 )
 
             # Test for webdown URLs

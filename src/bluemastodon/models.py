@@ -1,4 +1,4 @@
-"""Data models for social-sync.
+"""Data models for bluemastodon.
 
 This module defines the data structures used throughout the application,
 particularly for representing posts from different platforms.

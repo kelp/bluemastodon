@@ -1,4 +1,4 @@
-"""Synchronization orchestration for social-sync.
+"""Synchronization orchestration for bluemastodon.
 
 This module handles the core logic for syncing posts from Bluesky to Mastodon,
 including post mapping, cross-posting workflow, and state tracking.
@@ -11,10 +11,10 @@ from typing import List, Optional, Set
 
 from loguru import logger
 
-from social_sync.bluesky import BlueskyClient
-from social_sync.config import Config
-from social_sync.mastodon import MastodonClient
-from social_sync.models import BlueskyPost, SyncRecord
+from bluemastodon.bluesky import BlueskyClient
+from bluemastodon.config import Config
+from bluemastodon.mastodon import MastodonClient
+from bluemastodon.models import BlueskyPost, SyncRecord
 
 
 class SyncManager:

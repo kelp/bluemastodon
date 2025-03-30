@@ -1,4 +1,4 @@
-"""Configuration management for social-sync.
+"""Configuration management for bluemastodon.
 
 This module handles loading configuration from environment variables and
 providing access to API credentials and settings.
