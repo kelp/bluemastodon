@@ -90,7 +90,7 @@ jobs:
           DRY_RUN_FLAG="--dry-run"
         fi
 
-        poetry run python -m social_sync --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
+        poetry run python -m bluemastodon --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
 
     - name: Save sync state cache
       uses: actions/cache/save@v4

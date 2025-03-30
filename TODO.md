@@ -1,4 +1,5 @@
-# Social-Sync Implementation Plan
+# BlueMastodon Implementation Plan
+(Formerly social-sync)
 
 ## Scope Clarification
 This tool specifically handles synchronizing manual posts from Bluesky to
@@ -86,6 +87,7 @@ posts to social platforms.
   - Update instructions in README when complete
   - Added python-release.yml workflow for automated PyPI publishing
   - Renamed package to "bluemastodon" to avoid naming conflicts on PyPI
+  - Fully refactored package and repository to use the new name
 - [x] Add documentation on managing GitHub Actions cache
 - [ ] Setup GitHub Pages documentation site
 - [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match social-sync's approach

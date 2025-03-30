@@ -6,9 +6,9 @@ A Python application to automatically cross-post manual Bluesky posts to Mastodo
 
 ![Version](https://img.shields.io/badge/version-0.9.2-blue)
 ![Status](https://img.shields.io/badge/status-beta-orange)
-![Test Status](https://github.com/kelp/social-sync/actions/workflows/test.yml/badge.svg)
+![Test Status](https://github.com/kelp/bluemastodon/actions/workflows/test.yml/badge.svg)
 ![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
-![License](https://img.shields.io/github/license/kelp/social-sync)
+![License](https://img.shields.io/github/license/kelp/bluemastodon)
 
 ## Overview
 
@@ -216,8 +216,8 @@ and release process, see [Versioning Guidelines](docs/versioning.md).
 
 ```bash
 # Clone the repository
-git clone https://github.com/kelp/social-sync.git
-cd social-sync  # Repository name remains the same for now
+git clone https://github.com/kelp/bluemastodon.git
+cd bluemastodon
 
 # Run the setup script (installs dependencies and pre-commit hooks)
 ./scripts/setup-dev.sh

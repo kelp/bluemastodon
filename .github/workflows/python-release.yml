@@ -63,7 +63,7 @@ jobs:
           # Check version in pyproject.toml
           PYPROJECT_VERSION=$(grep -oP '^version = "\K[^"]+' pyproject.toml)
           # Check version in __init__.py
-          INIT_VERSION=$(grep -oP '__version__ = "\K[^"]+' src/social_sync/__init__.py)
+          INIT_VERSION=$(grep -oP '__version__ = "\K[^"]+' src/bluemastodon/__init__.py)
 
           if [ "$PYPROJECT_VERSION" != "$VERSION" ] || [ "$INIT_VERSION" != "$VERSION" ]; then
             echo "Version mismatch detected:"

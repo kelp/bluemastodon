@@ -9,7 +9,7 @@ if __name__ == "__main__":
         description="Automatically cross-post from Bluesky to Mastodon",
         author="Travis Cole",
         author_email="kelp@plek.org",
-        url="https://github.com/kelp/social-sync",
+        url="https://github.com/kelp/bluemastodon",
         packages=find_packages(where="src"),
         package_dir={"": "src"},
         python_requires=">=3.10,<3.14",
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         ],
         entry_points={
             "console_scripts": [
-                "bluemastodon=social_sync:main",
+                "bluemastodon=bluemastodon:main",
             ],
         },
         classifiers=[
