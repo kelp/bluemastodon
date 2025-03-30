@@ -501,15 +501,13 @@ class TestSyncManager:
             assert "Unexpected error during cross-posting" in result.error_message
 
             # Verify the error was logged
-            # Ensure post was not marked as synced since error does not include "posted to mastodon"
+            # Not marked as synced (error doesn't contain "posted to mastodon")
             assert sample_bluesky_post.id not in manager.synced_posts
             # Verify save_state is called for the error
             mock_save_state.assert_called_once()
             mock_logger.error.assert_called_once()
-            assert (
-                f"Error syncing post {sample_bluesky_post.id}"
-                in mock_logger.error.call_args[0][0]
-            )
+            error_msg = f"Error syncing post {sample_bluesky_post.id}"
+            assert error_msg in mock_logger.error.call_args[0][0]
 
     @patch("social_sync.sync.SyncManager._save_state")
     def test_sync_post_partial_success_exception(
@@ -557,7 +555,8 @@ class TestSyncManager:
 
             # Verify warning was logged
             mock_logger.warning.assert_called_with(
-                "Post may have succeeded despite error. Marking as synced to prevent duplication."
+                "Post may have succeeded despite error. "
+                "Marking as synced to prevent duplication."
             )
 
             # Verify the record was added to sync_records
