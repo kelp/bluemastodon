@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.4] - 2025-03-30
+
+This version is identical to 0.9.3 in functionality but increments the version number to address a PyPI publishing conflict.
+
 ## [0.9.3] - 2025-03-30
 
 This release includes the project rename from social-sync to bluemastodon and adds comprehensive PyPI packaging with CLI support, making it easy to install and use directly from PyPI.

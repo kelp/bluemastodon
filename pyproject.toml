@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bluemastodon"
-version = "0.9.3"
+version = "0.9.4"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = ["Travis Cole <kelp@plek.org>"]
 license = "MIT"
