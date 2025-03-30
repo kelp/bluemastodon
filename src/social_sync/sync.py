@@ -31,8 +31,7 @@ class SyncManager:
         self.bluesky = BlueskyClient(config.bluesky)
         self.mastodon = MastodonClient(config.mastodon)
 
-        self.state_file = state_file or os.path.expanduser(
-            "~/.social-sync/state.json")
+        self.state_file = state_file or os.path.expanduser("~/.social-sync/state.json")
         self.synced_posts: Set[str] = set()
         self.sync_records: List[SyncRecord] = []
 
@@ -114,8 +113,7 @@ class SyncManager:
 
         # Get recent posts from Bluesky
         recent_posts = self.bluesky.get_recent_posts(
-            hours_back=self.config.lookback_hours,
-            limit=self.config.max_posts_per_run
+            hours_back=self.config.lookback_hours, limit=self.config.max_posts_per_run
         )
 
         logger.info(f"Found {len(recent_posts)} recent posts on Bluesky")

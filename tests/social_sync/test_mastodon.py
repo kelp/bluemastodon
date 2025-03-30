@@ -155,7 +155,7 @@ class TestMastodonClient:
         # Should add only the missing link (no attribution footer)
         expected = "Check out this link https://already-in.com\n\nhttps://example.com"
         assert result == expected
-        
+
     def test_format_post_content_character_limit(self):
         """Test _format_post_content with content exceeding character limit."""
         config = MastodonConfig(
@@ -371,8 +371,10 @@ class TestMastodonClient:
 
             # Check media attachment
             assert len(result.media_attachments) == 1
-            assert (result.media_attachments[0].url ==
-                   "https://mastodon.test/media/image.jpg")
+            assert (
+                result.media_attachments[0].url
+                == "https://mastodon.test/media/image.jpg"
+            )
             assert result.media_attachments[0].alt_text == "Test image"
             assert result.media_attachments[0].media_type == MediaType.IMAGE
             assert result.media_attachments[0].mime_type == "image/jpeg"
@@ -383,51 +385,55 @@ class TestMastodonClient:
             instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Mock Mastodon client
         client.client = MagicMock()
         client._account = MagicMock()
         client._account.id = "user123"
-        
+
         # Mock recent posts
         post1 = MagicMock()
         post1.content = "<p>This is a unique post about cats</p>"
-        
+
         post2 = MagicMock()
         post2.content = "<p>This is an exact match for testing</p>"
-        
+
         post3 = MagicMock()
         post3.content = "<p>This post has lots of similar words to our test content with some matching terms</p>"
-        
+
         client.client.account_statuses.return_value = [post1, post2, post3]
-        
+
         # Test exact match
-        is_duplicate, matched_post = client._is_duplicate_post("This is an exact match for testing")
+        is_duplicate, matched_post = client._is_duplicate_post(
+            "This is an exact match for testing"
+        )
         assert is_duplicate is True
         assert matched_post == post2
-        
+
         # Test similar content (above threshold)
         test_content = "This post has lots of similar words to our test content with matching terms"
         is_duplicate, matched_post = client._is_duplicate_post(test_content)
         assert is_duplicate is True
         assert matched_post == post3
-        
+
         # Test non-duplicate content
-        is_duplicate, matched_post = client._is_duplicate_post("This is completely different content")
+        is_duplicate, matched_post = client._is_duplicate_post(
+            "This is completely different content"
+        )
         assert is_duplicate is False
         assert matched_post is None
-        
+
     def test_is_duplicate_post_error_handling(self):
         """Test error handling in the _is_duplicate_post method."""
         config = MastodonConfig(
             instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Mock client to raise exception
         client.client = MagicMock()
         client.client.account_statuses.side_effect = Exception("API error")
-        
+
         # Function should return False (fail open) on error
         is_duplicate, matched_post = client._is_duplicate_post("Test content")
         assert is_duplicate is False
@@ -439,7 +445,12 @@ class TestMastodonClient:
     @patch("social_sync.mastodon.MastodonClient._upload_media")
     @patch("social_sync.mastodon.MastodonClient._convert_to_mastodon_post")
     def test_cross_post_success(
-        self, mock_convert, mock_upload_media, mock_is_duplicate, mock_format_content, mock_auth
+        self,
+        mock_convert,
+        mock_upload_media,
+        mock_is_duplicate,
+        mock_format_content,
+        mock_auth,
     ):
         """Test cross_post success case."""
         # Setup configuration and client
@@ -507,7 +518,9 @@ class TestMastodonClient:
     @patch("social_sync.mastodon.MastodonClient._format_post_content")
     @patch("social_sync.mastodon.MastodonClient._is_duplicate_post")
     @patch("social_sync.mastodon.MastodonClient._convert_to_mastodon_post")
-    def test_cross_post_duplicate_with_existing_post(self, mock_convert, mock_is_duplicate, mock_format_content, mock_auth):
+    def test_cross_post_duplicate_with_existing_post(
+        self, mock_convert, mock_is_duplicate, mock_format_content, mock_auth
+    ):
         """Test cross_post when a duplicate post is detected with the existing post available."""
         # Setup configuration and client
         config = MastodonConfig(
@@ -519,11 +532,11 @@ class TestMastodonClient:
         # Setup mocks
         mock_auth.return_value = True
         mock_format_content.return_value = "Formatted content"
-        
+
         # Create a mock existing post and return it with is_duplicate=True
         mock_existing_post = MagicMock()
         mock_is_duplicate.return_value = (True, mock_existing_post)
-        
+
         mock_mastodon_post = MagicMock()
         mock_convert.return_value = mock_mastodon_post
 
@@ -542,14 +555,16 @@ class TestMastodonClient:
         mock_format_content.assert_called_once_with(bluesky_post)
         mock_is_duplicate.assert_called_once_with("Formatted content")
         mock_convert.assert_called_once_with(mock_existing_post)
-        
+
         # Ensure posting was not attempted
         assert not client.client.status_post.called
-        
+
     @patch("social_sync.mastodon.MastodonClient.ensure_authenticated")
     @patch("social_sync.mastodon.MastodonClient._format_post_content")
     @patch("social_sync.mastodon.MastodonClient._is_duplicate_post")
-    def test_cross_post_duplicate_without_existing_post(self, mock_is_duplicate, mock_format_content, mock_auth):
+    def test_cross_post_duplicate_without_existing_post(
+        self, mock_is_duplicate, mock_format_content, mock_auth
+    ):
         """Test cross_post when a duplicate post is detected but the existing post is not available."""
         # Setup configuration and client
         config = MastodonConfig(
@@ -561,7 +576,7 @@ class TestMastodonClient:
         # Setup mocks
         mock_auth.return_value = True
         mock_format_content.return_value = "Formatted content"
-        
+
         # Return is_duplicate=True but no existing post
         mock_is_duplicate.return_value = (True, None)
 
@@ -579,15 +594,17 @@ class TestMastodonClient:
         mock_auth.assert_called_once()
         mock_format_content.assert_called_once_with(bluesky_post)
         mock_is_duplicate.assert_called_once_with("Formatted content")
-        
+
         # Ensure posting was not attempted
         assert not client.client.status_post.called
-        
+
     @patch("social_sync.mastodon.MastodonClient.ensure_authenticated")
     @patch("social_sync.mastodon.MastodonClient._format_post_content")
     @patch("social_sync.mastodon.MastodonClient._is_duplicate_post")
     @patch("social_sync.mastodon.MastodonClient._upload_media")
-    def test_cross_post_error(self, mock_upload_media, mock_is_duplicate, mock_format_content, mock_auth):
+    def test_cross_post_error(
+        self, mock_upload_media, mock_is_duplicate, mock_format_content, mock_auth
+    ):
         """Test cross_post when posting fails."""
         # Setup configuration and client
         config = MastodonConfig(

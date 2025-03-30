@@ -6,9 +6,10 @@ import sys
 import tempfile
 from unittest.mock import MagicMock, patch
 
+from social_sync import main
+
 # Tests need pytest fixtures
 
-from social_sync import main
 
 
 class TestMain:

@@ -47,8 +47,7 @@ def main(args: Optional[List[str]] = None) -> int:
     Returns:
         Exit code (0 for success, non-zero for errors)
     """
-    parser = argparse.ArgumentParser(
-        description="Sync posts from Bluesky to Mastodon")
+    parser = argparse.ArgumentParser(description="Sync posts from Bluesky to Mastodon")
     parser.add_argument(
         "--config",
         "-c",

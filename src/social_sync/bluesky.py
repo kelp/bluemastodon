@@ -123,8 +123,7 @@ class BlueskyClient:
         post = feed_view.post
 
         # Skip reposts and replies
-        if (feed_view.reason
-                or (hasattr(post.record, "reply") and post.record.reply)):
+        if feed_view.reason or (hasattr(post.record, "reply") and post.record.reply):
             return False
 
         # Skip older posts
@@ -186,8 +185,7 @@ class BlueskyClient:
                         media_type=MediaType.IMAGE,
                         mime_type=blob.mimeType if hasattr(blob, "mimeType") else None,
                         width=blob.size.width if hasattr(blob, "size") else None,
-                        height=blob.size.height if hasattr(blob, "size")
-                        else None,
+                        height=blob.size.height if hasattr(blob, "size") else None,
                     )
                 )
 
@@ -231,5 +229,7 @@ class BlueskyClient:
         """
         # For simplicity, we're using a basic approach
         # In a production app, you might want to download and re-upload the media
-        return (f"https://bsky.social/xrpc/com.atproto.sync.getBlob"
-                f"?did={post.author.did}&cid={ref}")
+        return (
+            f"https://bsky.social/xrpc/com.atproto.sync.getBlob"
+            f"?did={post.author.did}&cid={ref}"
+        )

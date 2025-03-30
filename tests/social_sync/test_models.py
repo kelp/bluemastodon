@@ -2,11 +2,12 @@
 
 from datetime import datetime
 
-# No unused imports
-
 from social_sync.models import (BlueskyPost, Link, MastodonPost,
                                 MediaAttachment, MediaType, SocialPost,
                                 SyncRecord)
+
+# No unused imports
+
 
 
 class TestModels:

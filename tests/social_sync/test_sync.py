@@ -6,10 +6,11 @@ import tempfile
 from datetime import datetime
 from unittest.mock import MagicMock, mock_open, patch
 
-# Tests need pytest fixtures
-
 from social_sync.models import SyncRecord
 from social_sync.sync import SyncManager
+
+# Tests need pytest fixtures
+
 
 
 class TestSyncManager:

@@ -285,7 +285,9 @@ class TestBlueskyClient:
 
         # Mock get_blob_url method
         with patch.object(client, "_get_blob_url") as mock_get_url:
-            mock_get_url.side_effect = lambda p, link_ref: f"https://example.com/{link_ref}"
+            mock_get_url.side_effect = (
+                lambda p, link_ref: f"https://example.com/{link_ref}"
+            )
 
             # Call the method
             result = client._extract_media_attachments(post)
