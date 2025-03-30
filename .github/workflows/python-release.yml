@@ -37,22 +37,27 @@ jobs:
           # Remove 'v' prefix from tag name
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
           # Extract content from CHANGELOG.md for this version
           echo "Searching for version: ## [$VERSION]"
-          # Include the version header in extracted content
-          CHANGELOG_CONTENT=$(awk -v ver="## \\[$VERSION\\]" '
-            $0 ~ ver {print; flag=1; next}
-            /^## \[[0-9]+\.[0-9]+\.[0-9]+\]/ {flag=0}
-            flag {print}
-          ' CHANGELOG.md)
-
+          
+          # Use a more reliable approach with sed to extract changelog content
+          HEADER_PATTERN="## \\[$VERSION\\]"
+          echo "Using pattern: $HEADER_PATTERN"
+          
+          # Extract content using sed
+          CHANGELOG_CONTENT=$(sed -n "/## \\[$VERSION\\]/,/## \\[[0-9]\\.[0-9]\\.[0-9]\\]/{ /## \\[[0-9]\\.[0-9]\\.[0-9]\\]/d; p }" CHANGELOG.md)
+          
           # Log extracted content for debugging
           echo "Extracted changelog content:"
           echo "$CHANGELOG_CONTENT"
+          
           # Handle empty changelog case
           if [ -z "$CHANGELOG_CONTENT" ]; then
+            echo "No changelog content found, using default message"
             CHANGELOG_CONTENT="Release version $VERSION"
           fi
+          
           # Set the changelog content for GitHub release
           echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG_CONTENT" >> $GITHUB_ENV
