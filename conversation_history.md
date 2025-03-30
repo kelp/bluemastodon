@@ -611,3 +611,123 @@ All tests are now passing with 100% code coverage, and I've committed these chan
    - Linked to the guide from the Workflow Setup section
 
 All these changes help complete the final setup step to ensure the GitHub Actions workflow runs successfully. Users now have clear instructions for configuring the required repository secrets.
+
+**Human**: Why is coverage.xml still showing up as a modified file in the git repo? Shouldn't it be ignored?
+
+Also add a license file to the repo. MIT
+
+**Claude**: I see that coverage.xml is already being tracked by Git. Adding a file to .gitignore only prevents untracked files from being added to the repository, but doesn't remove already tracked files. Let me fix this and add the MIT license:
+
+1. First, I'll remove coverage.xml from Git tracking:
+```
+git rm --cached coverage.xml
+```
+
+2. Now I'll create an MIT license file:
+```
+[Creates LICENSE file with standard MIT license text for Travis Cole]
+```
+
+**Human**: Commit the changes and new files
+
+**Claude**: [Commits the changes with detailed message about removing coverage.xml from tracking and adding the LICENSE file]
+
+**Human**: It looks like our application is much more complete now. We can probably move it out of alpha state and into beta state. Lets also consider what version we want to bump it to. We probably need a Makefile target for version bumps, and we want to use semver.
+
+**Claude**: I understand now. Rather than using pre-release identifiers, let's consider what semantic version number would be appropriate for the project's current state.
+
+Given the project's current state:
+- All core functionality is implemented and working
+- We have 100% test coverage
+- The GitHub Actions workflows are configured
+- All tasks in the TODO list are complete
+- The API design is stable 
+- The project is ready for real-world use
+
+Since this is the first public release but the project has reached a stable, feature-complete state for its initial scope, I would recommend:
+
+**Version 0.1.0** (if we want to be conservative)
+or
+**Version 1.0.0** (if we consider the API stable enough for production use)
+
+Let me explain the reasoning behind each:
+
+1. **0.1.0**: This indicates an initial minor release. Use this if:
+   - We expect significant API changes before a 1.0 release
+   - We want to gather user feedback before committing to API stability
+   - We consider this a minimum viable product rather than a complete solution
+
+2. **1.0.0**: This indicates the first stable release. Use this if:
+   - The API is considered stable and ready for production use
+   - Breaking changes would only be introduced in a 2.0.0 release
+   - The feature set meets all the core requirements for the project
+
+My recommendation would be to use **1.0.0** since:
+- The project has completed all planned tasks
+- It has comprehensive testing
+- The API is well-designed and stable
+- It's functionally complete for its intended purpose
+
+Would you like me to update the version to 1.0.0 and add proper version management to the Makefile?
+
+**Human**: yes
+
+**Claude**: [Updates version to 1.0.0 in pyproject.toml and enhances Makefile with version management targets]
+
+[Adds version documentation and updates README with version information]
+
+**Human**: Set the version to 0.9.0. I think we're going to have some patch fixes.
+
+**Claude**: [Updates version from 1.0.0 to 0.9.0 in all relevant files]
+
+**Human**: While we wait lets run all our local tests and linters
+
+**Claude**: [Runs tests and linters, discovers and fixes issues]
+
+**Human**: So it did make a post to Mastodon, it looks like this, which isn't quite right:
+
+Claude and I just wrote Social Sync: github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
+
+**Claude**: I see the issue. The links in the post aren't being properly formatted and rendered as clickable links in Mastodon. Let me fix that and also address the duplicate post handling:
+
+1. Added URL pattern detection to properly format shortened links like "github.com/..." into full "https://github.com/..." links
+2. Improved duplicate post detection with better error handling
+3. Fixed workflow state file handling to properly restore and save the cache
+4. Added comprehensive tests to maintain 100% test coverage
+
+**Human**: I just ran make format and it changed some files, lets commit them
+
+**Claude**: [Commits formatting changes made by Black and isort]
+
+**Human**: lets make some git pre-commit hooks that run all linters, tests, type-check, etc and won't commit unless they all pass.
+
+**Claude**: I've set up a comprehensive pre-commit and pre-push hook system for the project:
+
+1. **Enhanced Pre-commit Configuration**:
+   - Added hooks to run pytest with a minimum test coverage requirement of 95%
+   - Added a separate script to verify coverage reports
+   - Maintained existing formatting, linting, and type checking hooks
+
+2. **Added Pre-push Hooks**:
+   - Created a separate `.pre-push-config.yaml` configuration file
+   - Set up a custom pre-push script that runs more intensive tests
+   - Added comprehensive test and linting commands to run before code is pushed
+
+3. **Development Setup Script**:
+   - Created a `scripts/setup-dev.sh` script to automate development environment setup
+   - The script installs dependencies, pre-commit hooks, and pre-push hooks
+   - It also runs initial hook setup and updates
+
+4. **Updated Documentation**:
+   - Added information about the hook system to the README
+   - Explained the purpose of each hook type
+   - Provided instructions for both automated and manual setup
+
+The pre-commit hooks will now validate your commits by:
+- Enforcing code style with Black and isort
+- Checking for code quality issues with flake8
+- Verifying type annotations with mypy
+- Detecting security issues with bandit
+- Running tests and ensuring minimum coverage standards are met
+
+The pre-push hooks add an extra layer of validation before code is pushed to the remote repository, running more comprehensive checks. This helps catch issues early and maintain high code quality standards.
