@@ -128,7 +128,7 @@ class BlueskyClient:
 
         # Skip older posts
         created_at = datetime.fromisoformat(
-            post.record.createdAt.replace("Z", "+00:00")
+            post.record.created_at.replace("Z", "+00:00")
         )
         # Make sure we're comparing offset-aware datetimes
         if since_time.tzinfo is None:
@@ -142,7 +142,7 @@ class BlueskyClient:
         """Convert Bluesky API post to BlueskyPost model."""
         post = feed_view.post
         created_at = datetime.fromisoformat(
-            post.record.createdAt.replace("Z", "+00:00")
+            post.record.created_at.replace("Z", "+00:00")
         )
 
         media_attachments = self._extract_media_attachments(post)
@@ -157,15 +157,15 @@ class BlueskyClient:
             author_id=profile.did,
             author_handle=self.config.username,
             author_display_name=(
-                profile.displayName if hasattr(profile, "displayName") else None
+                profile.display_name if hasattr(profile, "display_name") else None
             ),
             media_attachments=media_attachments,
             links=links,
             is_reply=False,
             is_repost=False,
             visibility="public",
-            like_count=post.likeCount if hasattr(post, "likeCount") else None,
-            repost_count=post.repostCount if hasattr(post, "repostCount") else None,
+            like_count=post.like_count if hasattr(post, "like_count") else None,
+            repost_count=post.repost_count if hasattr(post, "repost_count") else None,
         )
 
     def _extract_media_attachments(self, post: Any) -> List[MediaAttachment]:
@@ -183,7 +183,7 @@ class BlueskyClient:
                         url=self._get_blob_url(post, blob.ref.link),
                         alt_text=img.alt if hasattr(img, "alt") else None,
                         media_type=MediaType.IMAGE,
-                        mime_type=blob.mimeType if hasattr(blob, "mimeType") else None,
+                        mime_type=blob.mime_type if hasattr(blob, "mime_type") else None,
                         width=blob.size.width if hasattr(blob, "size") else None,
                         height=blob.size.height if hasattr(blob, "size") else None,
                     )
@@ -230,6 +230,6 @@ class BlueskyClient:
         # For simplicity, we're using a basic approach
         # In a production app, you might want to download and re-upload the media
         return (
-            f"https://bsky.social/xrpc/com.atproto.sync.getBlob"
+            f"https://bsky.social/xrpc/com.atproto.sync.get_blob"
             f"?did={post.author.did}&cid={ref}"
         )

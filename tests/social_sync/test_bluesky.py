@@ -176,7 +176,7 @@ class TestBlueskyClient:
 
         # Create a feed view with no reason and no reply
         post = MagicMock()
-        post.record.createdAt = now.isoformat() + "Z"
+        post.record.created_at = now.isoformat() + "Z"
         post.record.reply = None
         feed_view = MagicMock()
         feed_view.reason = None
@@ -197,7 +197,7 @@ class TestBlueskyClient:
 
         # Should exclude posts older than since_time
         old_time = (now - timedelta(hours=48)).isoformat() + "Z"
-        post.record.createdAt = old_time
+        post.record.created_at = old_time
         assert client._should_include_post(feed_view, since_time) is False
 
     @patch("social_sync.bluesky.BlueskyClient._extract_media_attachments")
@@ -211,15 +211,15 @@ class TestBlueskyClient:
         now = datetime.now()
         mock_profile = MagicMock()
         mock_profile.did = "did:plc:test"
-        mock_profile.displayName = "Test User"
+        mock_profile.display_name = "Test User"
 
         post = MagicMock()
         post.uri = "at://did:plc:test/app.bsky.feed.post/test123"
         post.cid = "cid123"
         post.record.text = "Test post"
-        post.record.createdAt = now.isoformat() + "Z"
-        post.likeCount = 5
-        post.repostCount = 2
+        post.record.created_at = now.isoformat() + "Z"
+        post.like_count = 5
+        post.repost_count = 2
 
         feed_view = MagicMock()
         feed_view.post = post
@@ -269,14 +269,14 @@ class TestBlueskyClient:
         image1 = MagicMock()
         image1.alt = "Image 1"
         image1.image.ref.link = "link1"
-        image1.image.mimeType = "image/jpeg"
+        image1.image.mime_type = "image/jpeg"
         image1.image.size.width = 800
         image1.image.size.height = 600
 
         image2 = MagicMock()
         image2.alt = "Image 2"
         image2.image.ref.link = "link2"
-        image2.image.mimeType = "image/png"
+        image2.image.mime_type = "image/png"
         image2.image.size.width = 400
         image2.image.size.height = 300
 
@@ -393,7 +393,7 @@ class TestBlueskyClient:
         result = client._get_blob_url(post, "blob123")
 
         # Check the result
-        base_url = "https://bsky.social/xrpc/com.atproto.sync.getBlob"
+        base_url = "https://bsky.social/xrpc/com.atproto.sync.get_blob"
         expected = f"{base_url}?did=did:plc:test&cid=blob123"
         assert result == expected
 
