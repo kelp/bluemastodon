@@ -27,7 +27,7 @@ This tool specifically handles synchronizing manual posts from Bluesky to Mastod
 
 ### Prerequisites
 
-- Python 3.9 or higher (tested on 3.9, 3.10, 3.11, 3.12)
+- Python 3.10 or higher (tested on 3.10, 3.11, 3.12, 3.13)
 - A Bluesky account
 - A Mastodon account with API access
 
@@ -131,21 +131,38 @@ social-sync --state /path/to/state.json
 
 ### Scheduled Sync with GitHub Actions
 
+#### Setting Up Securely with GitHub Secrets
+
+Social-Sync is designed to work with GitHub Actions in a secure way, using GitHub's encrypted secrets feature to store sensitive credentials:
+
 1. Fork this repository or copy the workflow files to your own repository
-2. Add your configuration as GitHub repository secrets:
-   - `BLUESKY_USERNAME`
-   - `BLUESKY_PASSWORD`
-   - `MASTODON_INSTANCE_URL`
-   - `MASTODON_ACCESS_TOKEN`
-3. (Optional) Configure the following variables in your repository:
-   - `LOOKBACK_HOURS`
-   - `SYNC_INTERVAL_MINUTES`
-   - `MAX_POSTS_PER_RUN`
-   - `INCLUDE_MEDIA`
-   - `INCLUDE_LINKS`
-4. Enable the workflow in your GitHub repository
-5. The sync will run automatically according to the schedule (hourly by default)
-6. You can also trigger it manually from the Actions tab
+2. In your GitHub repository, go to "Settings" > "Secrets and variables" > "Actions"
+3. Add the following repository secrets (these are encrypted and secure):
+   - `BLUESKY_USERNAME`: Your Bluesky username
+   - `BLUESKY_PASSWORD`: Your Bluesky application password
+   - `MASTODON_INSTANCE_URL`: Your Mastodon instance URL
+   - `MASTODON_ACCESS_TOKEN`: Your Mastodon API access token
+
+> **SECURITY WARNING**: Never commit your actual credentials to the repository! Always use GitHub Secrets for sensitive information.
+
+#### Optional Configuration Variables
+
+You can also add these as repository variables (not secrets, as they're not sensitive):
+
+1. Go to "Settings" > "Secrets and variables" > "Actions" > "Variables" tab
+2. Configure any of the following:
+   - `LOOKBACK_HOURS`: How far back to look for posts (default: 24)
+   - `SYNC_INTERVAL_MINUTES`: How often to sync (default: 60)
+   - `MAX_POSTS_PER_RUN`: Maximum posts to sync (default: 5)
+   - `INCLUDE_MEDIA`: Whether to include media (default: true)
+   - `INCLUDE_LINKS`: Whether to include links (default: true)
+
+#### Running the Workflow
+
+1. Enable the workflow in your GitHub repository (go to "Actions" tab)
+2. The sync will run automatically according to the schedule (hourly by default)
+3. You can also trigger it manually from the Actions tab by clicking "Run workflow"
+4. For manual runs, you can enable debug mode or dry-run mode using the provided options
 
 ## Development
 
@@ -222,6 +239,12 @@ make publish
    - Check if the workflow is enabled
    - Verify all required secrets are set
    - Check the workflow logs for errors
+
+5. **Security Concerns**:
+   - Never commit `.env` files with real credentials to your repository
+   - Always use GitHub Secrets for sensitive information
+   - Regularly rotate your API tokens for better security
+   - If you suspect your tokens were compromised, regenerate them immediately
 
 ## License
 

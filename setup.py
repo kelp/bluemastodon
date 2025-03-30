@@ -12,7 +12,7 @@ if __name__ == "__main__":
         url="https://github.com/kelp/social-sync",
         packages=find_packages(where="src"),
         package_dir={"": "src"},
-        python_requires=">=3.9,<3.14",
+        python_requires=">=3.10,<3.14",
         install_requires=[
             "atproto>=0.0.59,<0.1.0",
             "Mastodon.py>=1.8.1,<2.0.0",

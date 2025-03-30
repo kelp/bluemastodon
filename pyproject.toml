@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = [{ name = "Travis Cole", email = "kelp@plek.org" }]
 readme = "README.md"
-requires-python = ">=3.9,<3.14"
+requires-python = ">=3.10,<3.14"
 dependencies = [
     "atproto >= 0.0.59",
     "Mastodon.py>=1.8.1",
