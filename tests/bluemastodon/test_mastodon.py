@@ -3,9 +3,9 @@
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
-from social_sync.config import MastodonConfig
-from social_sync.mastodon import MastodonClient
-from social_sync.models import (
+from bluemastodon.config import MastodonConfig
+from bluemastodon.mastodon import MastodonClient
+from bluemastodon.models import (
     BlueskyPost,
     Link,
     MastodonPost,
@@ -29,7 +29,7 @@ class TestMastodonClient:
         assert client._account is None
         assert client.client is not None
 
-    @patch("social_sync.mastodon.Mastodon")
+    @patch("bluemastodon.mastodon.Mastodon")
     def test_verify_credentials_success(self, mock_mastodon_api):
         """Test successful credential verification."""
         # Setup mock
@@ -52,7 +52,7 @@ class TestMastodonClient:
         assert client._account == mock_account
         mock_client.account_verify_credentials.assert_called_once()
 
-    @patch("social_sync.mastodon.Mastodon")
+    @patch("bluemastodon.mastodon.Mastodon")
     def test_verify_credentials_failure(self, mock_mastodon_api):
         """Test failed credential verification."""
         # Setup mock
@@ -162,11 +162,11 @@ class TestMastodonClient:
         client = MastodonClient(config)
 
         # Test case 1: GitHub URL conversion (without https://)
-        content = "Check out github.com/kelp/social-sync for a cool project!"
+        content = "Check out github.com/kelp/bluemastodon for a cool project!"
         result = client._apply_character_limits(content)
 
         # Should replace github.com with https://github.com
-        assert "https://github.com/kelp/social-sync" in result
+        assert "https://github.com/kelp/bluemastodon" in result
 
         # Test case 2: Regular domain conversion
         content = "Visit example.com for more information."
@@ -176,11 +176,11 @@ class TestMastodonClient:
         assert "https://example.com" in result
 
         # Test case 3: Multiple URL conversions
-        content = "Check github.com/kelp/social-sync and mastodon.com/web"
+        content = "Check github.com/kelp/bluemastodon and mastodon.com/web"
         result = client._apply_character_limits(content)
 
         # Should replace both URLs
-        assert "https://github.com/kelp/social-sync" in result
+        assert "https://github.com/kelp/bluemastodon" in result
         assert "https://mastodon.com/web" in result
 
         # Test case 4: Twitter URL conversion
@@ -192,21 +192,21 @@ class TestMastodonClient:
         assert "https://bsky.com/profile" in result
 
         # Test case 5: Already prefixed URLs - prevent double https://
-        content = "Check https://github.com/kelp/social-sync for a cool project!"
+        content = "Check https://github.com/kelp/bluemastodon for a cool project!"
         result = client._apply_character_limits(content)
 
         # Should NOT create a double https://
-        assert "https://github.com/kelp/social-sync" in result
+        assert "https://github.com/kelp/bluemastodon" in result
         assert "https://https://github.com" not in result
 
         # Test case 6: Mixed prefixed and non-prefixed URLs
         content = (
-            "Compare https://github.com/kelp/social-sync and github.com/kelp/webdown"
+            "Compare https://github.com/kelp/bluemastodon and github.com/kelp/webdown"
         )
         result = client._apply_character_limits(content)
 
         # Should handle both cases correctly
-        assert "https://github.com/kelp/social-sync" in result
+        assert "https://github.com/kelp/bluemastodon" in result
         assert "https://github.com/kelp/webdown" in result
         assert "https://https://" not in result
 
@@ -220,8 +220,8 @@ class TestMastodonClient:
         # Create test links for fixing URLs
         links = [
             Link(
-                url="https://github.com/kelp/social-sync",
-                title="Social Sync",
+                url="https://github.com/kelp/bluemastodon",
+                title="BlueMastodon",
                 description="A tool for cross-posting from Bluesky to Mastodon",
             ),
             Link(
@@ -236,7 +236,7 @@ class TestMastodonClient:
         result = client._expand_truncated_urls(content, links)
 
         # Check the result
-        assert "github.com/kelp/social-sync" in result
+        assert "github.com/kelp/bluemastodon" in result
         assert "github.com/kelp/social-..." not in result
 
         # Test case 2: Content with truncated URLs using https:// prefix
@@ -244,7 +244,7 @@ class TestMastodonClient:
         result = client._expand_truncated_urls(content, links)
 
         # Should replace the truncated URL with the full one
-        assert "https://github.com/kelp/social-sync" in result
+        assert "https://github.com/kelp/bluemastodon" in result
         assert "https://github.com/kelp/social-..." not in result
 
         # Test case 3: Multiple truncated URLs
@@ -252,7 +252,7 @@ class TestMastodonClient:
         result = client._expand_truncated_urls(content, links)
 
         # Should replace both truncated URLs
-        assert "github.com/kelp/social-sync" in result
+        assert "github.com/kelp/bluemastodon" in result
         assert "github.com/kelp/webdown" in result
         assert "..." not in result
 
@@ -275,9 +275,9 @@ class TestMastodonClient:
         result = client._expand_truncated_urls(content, links)
 
         # Should handle Unicode ellipsis
-        assert "github.com/kelp/social-sync" in result
+        assert "github.com/kelp/bluemastodon" in result
 
-    @patch("social_sync.mastodon.re")
+    @patch("bluemastodon.mastodon.re")
     def test_is_duplicate_post_no_account(self, mock_re):
         """Test _is_duplicate_post when no account is available."""
         config = MastodonConfig(
@@ -604,7 +604,7 @@ class TestMastodonClient:
         mock_toot.account.acct = "test_user@mastodon.test"
         mock_toot.account.display_name = "Test User"
         mock_toot.url = "https://mastodon.test/@test_user/12345"
-        mock_toot.application.name = "social-sync"
+        mock_toot.application.name = "bluemastodon"
         mock_toot.sensitive = False
         mock_toot.spoiler_text = ""
         mock_toot.visibility = "public"
@@ -630,7 +630,7 @@ class TestMastodonClient:
         assert result.author_handle == "test_user@mastodon.test"
         assert result.author_display_name == "Test User"
         assert result.url == "https://mastodon.test/@test_user/12345"
-        assert result.application == "social-sync"
+        assert result.application == "bluemastodon"
         assert result.sensitive is False
         assert result.spoiler_text == ""
         assert result.visibility == "public"
@@ -1202,8 +1202,8 @@ class TestMastodonClient:
                 raise Exception("Mock media upload error")
             # Let other log messages go through
 
-        with patch("social_sync.mastodon.logger.info") as mock_logger_info:
-            with patch("social_sync.mastodon.logger.error") as mock_logger_error:
+        with patch("bluemastodon.mastodon.logger.info") as mock_logger_info:
+            with patch("bluemastodon.mastodon.logger.error") as mock_logger_error:
                 # Set up the selective exception
                 mock_logger_info.side_effect = selective_info_exception
                 result = client.post(bluesky_post)

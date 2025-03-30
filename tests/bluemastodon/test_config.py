@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from social_sync.config import BlueskyConfig, Config, MastodonConfig, load_config
+from bluemastodon.config import BlueskyConfig, Config, MastodonConfig, load_config
 
 
 class TestConfig:

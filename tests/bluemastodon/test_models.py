@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from social_sync.models import (
+from bluemastodon.models import (
     BlueskyPost,
     Link,
     MastodonPost,

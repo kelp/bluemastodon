@@ -7,8 +7,8 @@ from datetime import datetime
 
 import pytest
 
-from social_sync.config import BlueskyConfig, Config, MastodonConfig
-from social_sync.models import (
+from bluemastodon.config import BlueskyConfig, Config, MastodonConfig
+from bluemastodon.models import (
     BlueskyPost,
     Link,
     MastodonPost,
@@ -204,7 +204,7 @@ def sample_mastodon_api_response():
         display_name = "Test User"
 
     class Application:
-        name = "social-sync"
+        name = "bluemastodon"
 
     class Response:
         id = 12345

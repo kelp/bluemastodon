@@ -6,8 +6,8 @@ import tempfile
 from datetime import datetime
 from unittest.mock import MagicMock, mock_open, patch
 
-from social_sync.models import SyncRecord
-from social_sync.sync import SyncManager
+from bluemastodon.models import SyncRecord
+from bluemastodon.sync import SyncManager
 
 # Tests need pytest fixtures
 
@@ -18,9 +18,9 @@ class TestSyncManager:
     def test_init(self, sample_config):
         """Test initialization of SyncManager."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky,
-            patch("social_sync.sync.MastodonClient") as mock_masto,
-            patch("social_sync.sync.os.path.exists", return_value=False),
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto,
+            patch("bluemastodon.sync.os.path.exists", return_value=False),
         ):
 
             # Create manager with default state file
@@ -41,9 +41,9 @@ class TestSyncManager:
     def test_load_state_no_file(self, sample_config):
         """Test _load_state when file doesn't exist."""
         with (
-            patch("social_sync.sync.os.path.exists", return_value=False),
-            patch("social_sync.sync.BlueskyClient"),
-            patch("social_sync.sync.MastodonClient"),
+            patch("bluemastodon.sync.os.path.exists", return_value=False),
+            patch("bluemastodon.sync.BlueskyClient"),
+            patch("bluemastodon.sync.MastodonClient"),
         ):
 
             manager = SyncManager(sample_config)
@@ -55,8 +55,8 @@ class TestSyncManager:
     def test_load_state_with_file(self, sample_config, sample_sync_state_file):
         """Test _load_state with existing state file."""
         with (
-            patch("social_sync.sync.BlueskyClient"),
-            patch("social_sync.sync.MastodonClient"),
+            patch("bluemastodon.sync.BlueskyClient"),
+            patch("bluemastodon.sync.MastodonClient"),
         ):
 
             # Create manager with sample state file
@@ -84,8 +84,8 @@ class TestSyncManager:
 
         try:
             with (
-                patch("social_sync.sync.BlueskyClient"),
-                patch("social_sync.sync.MastodonClient"),
+                patch("bluemastodon.sync.BlueskyClient"),
+                patch("bluemastodon.sync.MastodonClient"),
             ):
 
                 # Create manager with invalid state file
@@ -122,9 +122,9 @@ class TestSyncManager:
                 invalid_record_file = temp_file.name
 
             with (
-                patch("social_sync.sync.BlueskyClient"),
-                patch("social_sync.sync.MastodonClient"),
-                patch("social_sync.sync.logger") as mock_logger,
+                patch("bluemastodon.sync.BlueskyClient"),
+                patch("bluemastodon.sync.MastodonClient"),
+                patch("bluemastodon.sync.logger") as mock_logger,
             ):
 
                 # Create manager with invalid record file
@@ -152,11 +152,11 @@ class TestSyncManager:
         m_open = mock_open(mock=mock_file)
 
         with (
-            patch("social_sync.sync.BlueskyClient"),
-            patch("social_sync.sync.MastodonClient"),
-            patch("social_sync.sync.open", m_open),
-            patch("social_sync.sync.json.dump") as mock_dump,
-            patch("social_sync.sync.os.makedirs") as mock_makedirs,
+            patch("bluemastodon.sync.BlueskyClient"),
+            patch("bluemastodon.sync.MastodonClient"),
+            patch("bluemastodon.sync.open", m_open),
+            patch("bluemastodon.sync.json.dump") as mock_dump,
+            patch("bluemastodon.sync.os.makedirs") as mock_makedirs,
         ):
 
             # Create manager
@@ -202,11 +202,11 @@ class TestSyncManager:
     def test_save_state_error(self, sample_config):
         """Test _save_state error handling."""
         with (
-            patch("social_sync.sync.BlueskyClient"),
-            patch("social_sync.sync.MastodonClient"),
-            patch("social_sync.sync.open", side_effect=OSError("Failed to open file")),
-            patch("social_sync.sync.logger") as mock_logger,
-            patch("social_sync.sync.os.makedirs"),
+            patch("bluemastodon.sync.BlueskyClient"),
+            patch("bluemastodon.sync.MastodonClient"),
+            patch("bluemastodon.sync.open", side_effect=OSError("Failed to open file")),
+            patch("bluemastodon.sync.logger") as mock_logger,
+            patch("bluemastodon.sync.os.makedirs"),
         ):
 
             # Create manager
@@ -219,14 +219,14 @@ class TestSyncManager:
             mock_logger.error.assert_called_once()
             assert "Failed to save sync state" in mock_logger.error.call_args[0][0]
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_success(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
         """Test _sync_post success case."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -264,14 +264,14 @@ class TestSyncManager:
             # _save_state is now called immediately after successful posting
             mock_save_state.assert_called_once()
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_failure(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
         """Test _sync_post when posting fails."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -306,13 +306,13 @@ class TestSyncManager:
             mock_masto.post.assert_called_once_with(sample_bluesky_post)
             mock_save_state.assert_not_called()
 
-    @patch("social_sync.sync.SyncManager._sync_post")
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._sync_post")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_run_sync_success(self, mock_save_state, mock_sync_post, sample_config):
         """Test run_sync success case."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -368,8 +368,8 @@ class TestSyncManager:
     def test_run_sync_bluesky_auth_failure(self, sample_config):
         """Test run_sync when Bluesky authentication fails."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -398,8 +398,8 @@ class TestSyncManager:
     def test_run_sync_mastodon_auth_failure(self, sample_config):
         """Test run_sync when Mastodon authentication fails."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -426,12 +426,12 @@ class TestSyncManager:
             mock_masto.ensure_authenticated.assert_called_once()
             mock_bsky.get_recent_posts.assert_not_called()
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_run_sync_no_new_posts(self, mock_save_state, sample_config):
         """Test run_sync when there are no new posts to sync."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
 
             # Setup mocks
@@ -463,15 +463,15 @@ class TestSyncManager:
             # State is only saved if there are new records
             mock_save_state.assert_not_called()
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_exception(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
         """Test _sync_post with an exception during posting."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
-            patch("social_sync.sync.logger") as mock_logger,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.logger") as mock_logger,
         ):
 
             # Setup mocks
@@ -509,15 +509,15 @@ class TestSyncManager:
             error_msg = f"Error syncing post {sample_bluesky_post.id}"
             assert error_msg in mock_logger.error.call_args[0][0]
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_partial_success_exception(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
         """Test _sync_post with an exception that suggests post was successful."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
-            patch("social_sync.sync.logger") as mock_logger,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.logger") as mock_logger,
         ):
 
             # Setup mocks
@@ -562,14 +562,14 @@ class TestSyncManager:
             # Verify the record was added to sync_records
             assert result in manager.sync_records
 
-    @patch("social_sync.sync.SyncManager._save_state")
+    @patch("bluemastodon.sync.SyncManager._save_state")
     def test_run_sync_with_new_posts(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
         """Test run_sync with new posts to sync."""
         with (
-            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
-            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
         ):
             # Setup mocks
             mock_bsky = MagicMock()

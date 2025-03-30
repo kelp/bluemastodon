@@ -1,1 +1,1 @@
-"""Tests for social-sync package."""
+"""Tests for bluemastodon package."""

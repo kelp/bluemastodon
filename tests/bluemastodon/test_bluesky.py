@@ -6,9 +6,9 @@ from unittest.mock import MagicMock, PropertyMock, patch
 import pytest
 from atproto.exceptions import AtProtocolError
 
-from social_sync.bluesky import BlueskyClient
-from social_sync.config import BlueskyConfig
-from social_sync.models import BlueskyPost, Link, MediaAttachment, MediaType
+from bluemastodon.bluesky import BlueskyClient
+from bluemastodon.config import BlueskyConfig
+from bluemastodon.models import BlueskyPost, Link, MediaAttachment, MediaType
 
 
 class TestBlueskyClient:
@@ -23,7 +23,7 @@ class TestBlueskyClient:
         assert client._authenticated is False
         assert client.client is not None
 
-    @patch("social_sync.bluesky.AtProtoClient")
+    @patch("bluemastodon.bluesky.AtProtoClient")
     def test_authenticate_success(self, mock_client_class):
         """Test successful authentication."""
         # Setup mock
@@ -40,7 +40,7 @@ class TestBlueskyClient:
         assert client._authenticated is True
         mock_client.login.assert_called_once_with("test_user", "test_password")
 
-    @patch("social_sync.bluesky.AtProtoClient")
+    @patch("bluemastodon.bluesky.AtProtoClient")
     def test_authenticate_failure(self, mock_client_class):
         """Test authentication failure."""
         # Setup mock
@@ -200,8 +200,8 @@ class TestBlueskyClient:
         post.record.created_at = old_time
         assert client._should_include_post(feed_view, since_time) is False
 
-    @patch("social_sync.bluesky.BlueskyClient._extract_media_attachments")
-    @patch("social_sync.bluesky.BlueskyClient._extract_links")
+    @patch("bluemastodon.bluesky.BlueskyClient._extract_media_attachments")
+    @patch("bluemastodon.bluesky.BlueskyClient._extract_links")
     def test_convert_to_bluesky_post(self, mock_extract_links, mock_extract_media):
         """Test _convert_to_bluesky_post method."""
         config = BlueskyConfig(username="test_user", password="test_password")
@@ -397,11 +397,11 @@ class TestBlueskyClient:
         expected = f"{base_url}?did=did:plc:test&cid=blob123"
         assert result == expected
 
-    @patch("social_sync.bluesky.BlueskyClient.ensure_authenticated")
-    @patch("social_sync.bluesky.BlueskyClient._get_user_profile")
-    @patch("social_sync.bluesky.BlueskyClient._fetch_author_feed")
-    @patch("social_sync.bluesky.BlueskyClient._should_include_post")
-    @patch("social_sync.bluesky.BlueskyClient._convert_to_bluesky_post")
+    @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
+    @patch("bluemastodon.bluesky.BlueskyClient._get_user_profile")
+    @patch("bluemastodon.bluesky.BlueskyClient._fetch_author_feed")
+    @patch("bluemastodon.bluesky.BlueskyClient._should_include_post")
+    @patch("bluemastodon.bluesky.BlueskyClient._convert_to_bluesky_post")
     def test_get_recent_posts_success(
         self,
         mock_convert,
@@ -449,7 +449,7 @@ class TestBlueskyClient:
         assert mock_should_include.call_count == 2
         mock_convert.assert_called_once_with(mock_feed_view1, mock_profile)
 
-    @patch("social_sync.bluesky.BlueskyClient.ensure_authenticated")
+    @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
     def test_get_recent_posts_not_authenticated(self, mock_auth):
         """Test get_recent_posts when not authenticated."""
         config = BlueskyConfig(username="test_user", password="test_password")
@@ -465,8 +465,8 @@ class TestBlueskyClient:
         # Verify mock call
         mock_auth.assert_called_once()
 
-    @patch("social_sync.bluesky.BlueskyClient.ensure_authenticated")
-    @patch("social_sync.bluesky.BlueskyClient._get_user_profile")
+    @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
+    @patch("bluemastodon.bluesky.BlueskyClient._get_user_profile")
     def test_get_recent_posts_profile_error(self, mock_get_profile, mock_auth):
         """Test get_recent_posts when profile fetch fails."""
         config = BlueskyConfig(username="test_user", password="test_password")
@@ -486,9 +486,9 @@ class TestBlueskyClient:
         mock_auth.assert_called_once()
         mock_get_profile.assert_called_once()
 
-    @patch("social_sync.bluesky.BlueskyClient.ensure_authenticated")
-    @patch("social_sync.bluesky.BlueskyClient._get_user_profile")
-    @patch("social_sync.bluesky.BlueskyClient._fetch_author_feed")
+    @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
+    @patch("bluemastodon.bluesky.BlueskyClient._get_user_profile")
+    @patch("bluemastodon.bluesky.BlueskyClient._fetch_author_feed")
     def test_get_recent_posts_feed_error(
         self, mock_fetch_feed, mock_get_profile, mock_auth
     ):

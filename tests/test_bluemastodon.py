@@ -1,4 +1,4 @@
-"""Tests for the social_sync package."""
+"""Tests for the bluemastodon package."""
 
 import os
 import subprocess
@@ -6,7 +6,7 @@ import sys
 import tempfile
 from unittest.mock import MagicMock, patch
 
-from social_sync import main
+from bluemastodon import main
 
 # Tests need pytest fixtures
 
@@ -14,10 +14,10 @@ from social_sync import main
 class TestMain:
     """Test the main function."""
 
-    @patch("social_sync.argparse.ArgumentParser.parse_args")
-    @patch("social_sync.load_config")
-    @patch("social_sync.SyncManager")
-    @patch("social_sync.logger")
+    @patch("bluemastodon.argparse.ArgumentParser.parse_args")
+    @patch("bluemastodon.load_config")
+    @patch("bluemastodon.SyncManager")
+    @patch("bluemastodon.logger")
     def test_main_success(
         self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
     ):
@@ -48,10 +48,10 @@ class TestMain:
         mock_manager_class.assert_called_once_with(mock_config, None)
         mock_manager.run_sync.assert_called_once()
 
-    @patch("social_sync.argparse.ArgumentParser.parse_args")
-    @patch("social_sync.load_config")
-    @patch("social_sync.SyncManager")
-    @patch("social_sync.logger")
+    @patch("bluemastodon.argparse.ArgumentParser.parse_args")
+    @patch("bluemastodon.load_config")
+    @patch("bluemastodon.SyncManager")
+    @patch("bluemastodon.logger")
     def test_main_with_failures(
         self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
     ):
@@ -86,10 +86,10 @@ class TestMain:
         mock_manager_class.assert_called_once_with(mock_config, "state.json")
         mock_manager.run_sync.assert_called_once()
 
-    @patch("social_sync.argparse.ArgumentParser.parse_args")
-    @patch("social_sync.load_config")
-    @patch("social_sync.SyncManager")
-    @patch("social_sync.logger")
+    @patch("bluemastodon.argparse.ArgumentParser.parse_args")
+    @patch("bluemastodon.load_config")
+    @patch("bluemastodon.SyncManager")
+    @patch("bluemastodon.logger")
     def test_main_dry_run(
         self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
     ):
@@ -128,10 +128,10 @@ class TestMain:
         # Should not call run_sync in dry-run mode
         mock_manager.run_sync.assert_not_called()
 
-    @patch("social_sync.argparse.ArgumentParser.parse_args")
-    @patch("social_sync.load_config")
-    @patch("social_sync.SyncManager")
-    @patch("social_sync.logger")
+    @patch("bluemastodon.argparse.ArgumentParser.parse_args")
+    @patch("bluemastodon.load_config")
+    @patch("bluemastodon.SyncManager")
+    @patch("bluemastodon.logger")
     def test_main_dry_run_auth_failure(
         self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
     ):
@@ -196,9 +196,9 @@ if __name__ == "__main__":
             if os.path.exists(module_path):
                 os.unlink(module_path)
 
-    @patch("social_sync.argparse.ArgumentParser.parse_args")
-    @patch("social_sync.load_config")
-    @patch("social_sync.logger")
+    @patch("bluemastodon.argparse.ArgumentParser.parse_args")
+    @patch("bluemastodon.load_config")
+    @patch("bluemastodon.logger")
     def test_main_exception(self, mock_logger, mock_load_config, mock_parse_args):
         """Test main function with exception."""
         # Setup mocks

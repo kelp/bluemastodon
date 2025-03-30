@@ -1,4 +1,4 @@
-# Social-Sync Project Development Conversation
+# BlueMastodon Project Development Conversation
 
 ## URL Handling Fix (March 30, 2025)
 
@@ -29,15 +29,15 @@ The fix ensures that cross-posted content maintains complete, functional URLs ev
 
 **Human**: How are you doing?
 
-**Claude**: I'm doing well, thanks for asking. How can I help you with the social-sync project today?
+**Claude**: I'm doing well, thanks for asking. How can I help you with the bluemastodon project today?
 
 **Human**: Look at https://docs.joinmastodon.org/client/intro/
 
-**Claude**: This page covers the Mastodon REST API basics - it uses HTTP requests with JSON responses, supports various parameter formats, and provides standard HTTP status codes. For our social-sync project, we'll need to implement OAuth authentication and properly handle the API's JSON response format when developing the mastodon.py module.
+**Claude**: This page covers the Mastodon REST API basics - it uses HTTP requests with JSON responses, supports various parameter formats, and provides standard HTTP status codes. For our bluemastodon project, we'll need to implement OAuth authentication and properly handle the API's JSON response format when developing the mastodon.py module.
 
 **Human**: Now look at https://atproto.blue/en/latest/
 
-**Claude**: This page documents the atproto Python library - a comprehensive SDK for interacting with the AT Protocol and Bluesky. It supports both sync and async interactions, handles authentication, posting, and other social features. For our social-sync project, we can use this library in our bluesky.py module to authenticate and fetch posts from Bluesky before cross-posting them to Mastodon.
+**Claude**: This page documents the atproto Python library - a comprehensive SDK for interacting with the AT Protocol and Bluesky. It supports both sync and async interactions, handles authentication, posting, and other social features. For our bluemastodon project, we can use this library in our bluesky.py module to authenticate and fetch posts from Bluesky before cross-posting them to Mastodon.
 
 **Human**: Add those docs to CLAUDE.md for this project
 
@@ -128,7 +128,7 @@ Would you like me to start by implementing any specific part of this plan?
 
 **Claude**: I'll commit the changes to the repository. First, let's check the current status of the files and see what needs to be committed...
 
-[Claude checks git status and diff, then creates a commit with the message "Implement social-sync with Bluesky to Mastodon cross-posting"]
+[Claude checks git status and diff, then creates a commit with the message "Implement bluemastodon with Bluesky to Mastodon cross-posting"]
 
 **Human**: Create a Makefile for running tests, linters and for creating a new release of this tool. I may end up publishing it to pypi.
 
@@ -257,7 +257,7 @@ Would you like me to start by implementing any specific part of this plan?
 Let me analyze the conversation chronologically:
 
 1. Initial Project State Assessment:
-   - Project started with a basic structure for a social-sync tool to cross-post from Bluesky to Mastodon
+   - Project started with a basic structure for a bluemastodon tool to cross-post from Bluesky to Mastodon
    - Initial review of Mastodon and Bluesky APIs conducted
 
 2. Implementation Phase 1 - Core Modules:
@@ -319,7 +319,7 @@ Most recent work focused on:
 
 <summary>
 1. Primary Request and Intent:
-   The user wanted to develop a Python application called "social-sync" to automatically cross-post posts from Bluesky to Mastodon. The project progressed through several stages based on the user's explicit requests:
+   The user wanted to develop a Python application called "bluemastodon" to automatically cross-post posts from Bluesky to Mastodon. The project progressed through several stages based on the user's explicit requests:
    - Create core modules for the application (config, models, API clients, sync logic)
    - Implement testing with 100% coverage
    - Add build tools (Makefile, linting config) for development and release
@@ -469,7 +469,7 @@ Most recent work focused on:
 
 **Human**: Remind me how to setup the github repository secrets
 
-**Claude**: To set up GitHub repository secrets for social-sync:
+**Claude**: To set up GitHub repository secrets for bluemastodon:
 
 1. Go to your GitHub repository > "Settings" > "Secrets and variables" > "Actions"
 2. Click "New repository secret" to add each of these:
@@ -514,7 +514,7 @@ The Dependabot alert should now be resolved, and your project is using a secure 
 }</command-contents>
 
 
-**Claude**: I've reviewed the documentation files in the social-sync project and made several improvements:
+**Claude**: I've reviewed the documentation files in the bluemastodon project and made several improvements:
 
 1. **README.md**:
    - Wrapped long lines at 72 characters for better readability
@@ -540,7 +540,7 @@ All changes were committed to maintain the professional appearance of the docume
 }</command-contents>
 
 
-**Claude**: I've run the tests for the social-sync project and found some issues that needed to be fixed:
+**Claude**: I've run the tests for the bluemastodon project and found some issues that needed to be fixed:
 
 1. **Missing Test Coverage**:
    - Found that `__main__.py` was not being properly tested
@@ -711,7 +711,7 @@ Would you like me to update the version to 1.0.0 and add proper version manageme
 
 **Human**: So it did make a post to Mastodon, it looks like this, which isn't quite right:
 
-Claude and I just wrote Social Sync: github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
+Claude and I just wrote BlueMastodon: github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
 
 **Claude**: I see the issue. The links in the post aren't being properly formatted and rendered as clickable links in Mastodon. Let me fix that and also address the duplicate post handling:
 
@@ -757,9 +757,9 @@ The pre-commit hooks will now validate your commits by:
 
 The pre-push hooks add an extra layer of validation before code is pushed to the remote repository, running more comprehensive checks. This helps catch issues early and maintain high code quality standards.
 
-**Human**: We're working on social-sync. Lets manually trigger the Sync Social Media Posts worklfow to ensure it's still working and doesn't create a duplicate post.
+**Human**: We're working on bluemastodon. Lets manually trigger the Sync Social Media Posts worklfow to ensure it's still working and doesn't create a duplicate post.
 
-**Claude**: I'll help you trigger the Sync Social Media Posts workflow for social-sync. First, I'll check what's in the repository and how to trigger the workflow:
+**Claude**: I'll help you trigger the Sync Social Media Posts workflow for bluemastodon. First, I'll check what's in the repository and how to trigger the workflow:
 
 1. I've examined the GitHub workflow file and found that the Sync Social Media Posts workflow can be triggered manually with optional parameters for debug mode and dry-run mode.
 
@@ -777,7 +777,7 @@ Since I deleted the post, the we still have the cache. I want the next Sync Soci
 
 How can we clear the github actions cache to the post syncs?
 
-**Claude**: To clear the GitHub Actions cache for social-sync, I'll use the GitHub CLI with the `actions-cache` extension:
+**Claude**: To clear the GitHub Actions cache for bluemastodon, I'll use the GitHub CLI with the `actions-cache` extension:
 
 1. I've installed the GitHub Actions cache extension: `gh extension install actions/gh-actions-cache`
 
@@ -840,14 +840,14 @@ These changes ensure that all future commits and pushes will require 100% test c
 4. Our TODO.md updates for future Makefile improvements
 5. Updating the minimum required test coverage to 100%
 
-The content has been added without modifying any existing lines, preserving the complete development history of the social-sync project.
+The content has been added without modifying any existing lines, preserving the complete development history of the bluemastodon project.
 
 **Human**: This session is being continued from a previous conversation that ran out of context. The conversation is summarized below:
 <analysis>
 Let me analyze the conversation chronologically, focusing on the user's requests, technical details, and recent work.
 
 ### Initial Project Phase
-1. The conversation began with the user requesting help with a social-sync project to cross-post from Bluesky to Mastodon
+1. The conversation began with the user requesting help with a bluemastodon project to cross-post from Bluesky to Mastodon
 2. We explored documentation for both APIs (Mastodon REST API and Bluesky's atproto library)
 3. I implemented core modules for the application:
    - config.py for environment variable loading
@@ -920,7 +920,7 @@ There are no explicitly requested pending tasks, though the TODO.md mentions com
 
 <summary>
 1. Primary Request and Intent:
-   The user has been developing a Python application called "social-sync" for automatically cross-posting content from Bluesky to Mastodon. Their explicit requests throughout the conversation included:
+   The user has been developing a Python application called "bluemastodon" for automatically cross-posting content from Bluesky to Mastodon. Their explicit requests throughout the conversation included:
 
    - Creating core functionality to fetch posts from Bluesky and post them to Mastodon
    - Ensuring comprehensive testing with 100% code coverage
@@ -1059,7 +1059,7 @@ There are no explicitly requested pending tasks, though the TODO.md mentions com
    > - Changed "Look at our Makefile and make it work more like webdown" to "Initial update of Makefile to work with run.sh like webdown"
    > - Added a new task: "Compare and merge additional Makefile targets and features from webdown"
 
-   The specific task would be comparing the Makefile from webdown and social-sync to identify and merge additional useful targets and features, as documented in the updated TODO.md file. However, since this was explicitly deferred by the user ("let's come back to this later"), it would be best to ask for confirmation before proceeding.
+   The specific task would be comparing the Makefile from webdown and bluemastodon to identify and merge additional useful targets and features, as documented in the updated TODO.md file. However, since this was explicitly deferred by the user ("let's come back to this later"), it would be best to ask for confirmation before proceeding.
 </summary>.
 Please continue the conversation from where we left it off without asking the user any further questions. Continue with the last task that you were asked to work on.
 **Human**: Lets clear our github actions cache sync again and run the action manually to do another test
@@ -1070,14 +1070,14 @@ First, I checked for existing caches and found the sync-state cache.
 
 Then I deleted the sync-state cache using the GitHub CLI with the actions-cache extension:
 ```
-gh actions-cache delete sync-state -R kelp/social-sync --confirm
+gh actions-cache delete sync-state -R kelp/bluemastodon --confirm
 ```
 
 This successfully removed the cache entry with the key 'sync-state'.
 
 Next, I manually triggered the "Sync Social Media Posts" workflow:
 ```
-gh workflow run "Sync Social Media Posts" -R kelp/social-sync
+gh workflow run "Sync Social Media Posts" -R kelp/bluemastodon
 ```
 
 The workflow started running. When checking the status, it initially showed as "in_progress", but shortly after completed with a failure status. When examining the logs, I found the error:
@@ -1127,4 +1127,4 @@ I've added thorough tests to verify all of these improvements, including edge ca
 3. The recurring issue with the Bluesky API library naming convention changes
 4. The comprehensive solution implemented to fix the type conversion issues once and for all
 
-All this information has been added to the end of the file without modifying any existing content, preserving the complete development history of the social-sync project.
+All this information has been added to the end of the file without modifying any existing content, preserving the complete development history of the bluemastodon project.

@@ -45,7 +45,7 @@ if [ $# -eq 0 ]; then
     echo "Examples:"
     echo "  $0 pytest                  # Run tests"
     echo "  $0 pre-commit run          # Run pre-commit manually"
-    echo "  $0 python -m social_sync   # Run the CLI"
+    echo "  $0 python -m bluemastodon   # Run the CLI"
     exit 1
 fi
 

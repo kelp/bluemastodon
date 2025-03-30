@@ -513,7 +513,7 @@ class MastodonClient:
         for link in links:
             # Test for known pattern - github.com/kelp/bluemastodon
             # This could be expanded to be more generic when needed
-            if "github.com/kelp/social-sync" in link.url or "github.com/kelp/bluemastodon" in link.url:
+            if "github.com/kelp/bluemastodon" in link.url or "github.com/kelp/bluemastodon" in link.url:
                 updated_content = updated_content.replace(
                     "github.com/kelp/social-...", "github.com/kelp/bluemastodon"
                 )
@@ -521,7 +521,7 @@ class MastodonClient:
                     "github.com/kelp/social-…", "github.com/kelp/bluemastodon"
                 )
                 updated_content = updated_content.replace(
-                    "github.com/kelp/social-sync", "github.com/kelp/bluemastodon"
+                    "github.com/kelp/bluemastodon", "github.com/kelp/bluemastodon"
                 )
                 updated_content = updated_content.replace(
                     "https://github.com/kelp/social-...",
@@ -532,7 +532,7 @@ class MastodonClient:
                     "https://github.com/kelp/bluemastodon",
                 )
                 updated_content = updated_content.replace(
-                    "https://github.com/kelp/social-sync",
+                    "https://github.com/kelp/bluemastodon",
                     "https://github.com/kelp/bluemastodon",
                 )
 

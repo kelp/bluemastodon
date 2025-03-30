@@ -1,5 +1,5 @@
 """
-Test the if __name__ == "__main__" block in social_sync modules.
+Test the if __name__ == "__main__" block in bluemastodon modules.
 """
 
 import sys
@@ -16,7 +16,7 @@ class TestMainModule(unittest.TestCase):
         original_sys_modules = sys.modules.copy()
 
         # Mock main function to prevent actual execution
-        with patch("social_sync.main") as mock_main:
+        with patch("bluemastodon.main") as mock_main:
             mock_main.return_value = 0
 
             # Execute the module in a way that __name__ == "__main__" evaluates to True
@@ -24,20 +24,20 @@ class TestMainModule(unittest.TestCase):
                 # This import executes the code in __main__.py with
                 # __name__ set to "__main__"
                 with patch.dict(
-                    sys.modules, {"__main__": __import__("social_sync.__main__")}
+                    sys.modules, {"__main__": __import__("bluemastodon.__main__")}
                 ):
-                    import social_sync.__main__
+                    import bluemastodon.__main__
 
                     # Manually invoke the main block from __main__ with
                     # name set to __main__
                     # to trigger the execution of sys.exit(main())
-                    social_sync.__main__.__name__ = "__main__"
+                    bluemastodon.__main__.__name__ = "__main__"
                     exec(
                         """
 if __name__ == "__main__":
     sys.exit(main())
                         """,
-                        vars(social_sync.__main__),
+                        vars(bluemastodon.__main__),
                     )
             except SystemExit as e:
                 # Ensure the exit code is the one returned by our mock

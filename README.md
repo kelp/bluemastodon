@@ -2,7 +2,7 @@
 
 A Python application to automatically cross-post manual Bluesky posts to Mastodon.
 
-*Formerly known as social-sync*
+*Formerly known as bluemastodon*
 
 ![Version](https://img.shields.io/badge/version-0.9.2-blue)
 ![Status](https://img.shields.io/badge/status-beta-orange)
@@ -53,8 +53,8 @@ pip install bluemastodon
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/kelp/social-sync.git
-cd social-sync
+git clone https://github.com/kelp/bluemastodon.git
+cd bluemastodon
 ```
 
 2. Install with Poetry:
@@ -142,7 +142,7 @@ bluemastodon --state /path/to/state.json
 
 #### Setting Up Securely with GitHub Secrets
 
-Social-Sync is designed to work with GitHub Actions in a secure way, using
+BlueMastodon is designed to work with GitHub Actions in a secure way, using
 GitHub's encrypted secrets feature to store sensitive credentials:
 
 1. Fork this repository or copy the workflow files to your own repository

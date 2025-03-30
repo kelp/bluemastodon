@@ -1,4 +1,4 @@
-# Social-Sync Project Guidelines
+# BlueMastodon Project Guidelines
 
 ## Project Overview
 A Python application to automatically cross-post manual Bluesky posts to

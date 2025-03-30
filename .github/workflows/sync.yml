@@ -1,4 +1,4 @@
-name: Social Sync
+name: BlueMastodon
 
 on:
   schedule:

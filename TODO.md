@@ -1,5 +1,5 @@
 # BlueMastodon Implementation Plan
-(Formerly social-sync)
+(Formerly bluemastodon)
 
 ## Scope Clarification
 This tool specifically handles synchronizing manual posts from Bluesky to
@@ -76,7 +76,7 @@ posts to social platforms.
     - Added CHANGELOG verification
     - Added comprehensive bump-version target
 - [x] Change the name of the Test workflow to something more descriptive
-  - Renamed sync.yml to social-sync.yml with name "Social Sync"
+  - Renamed sync.yml to bluemastodon.yml with name "BlueMastodon"
   - Renamed test.yml to python-tests.yml with name "Python Tests"
   - Added new security-scan.yml workflow for dependency vulnerability scanning
 - [x] Initial update of Makefile to work with run.sh like webdown
@@ -90,7 +90,7 @@ posts to social platforms.
   - Fully refactored package and repository to use the new name
 - [x] Add documentation on managing GitHub Actions cache
 - [ ] Setup GitHub Pages documentation site
-- [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match social-sync's approach
+- [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match bluemastodon's approach
 - [ ] Consider adding a Homebrew formula after PyPI publishing is complete
   - Lower priority than PyPI but useful for macOS users
   - Could reuse pattern from webdown formula in homebrew-tools tap
