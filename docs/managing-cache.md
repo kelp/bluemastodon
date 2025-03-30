@@ -1,6 +1,6 @@
 # Managing GitHub Actions Cache
 
-Social-Sync uses GitHub's cache to store state between workflow runs. This state
+BlueMastodon uses GitHub's cache to store state between workflow runs. This state
 file (`sync_state.json`) contains records of which posts have already been
 synced to prevent duplicate posts.
 
@@ -25,17 +25,17 @@ extension:
 
 2. List all caches to identify the sync-state cache:
    ```bash
-   gh actions-cache list -R username/social-sync
+   gh actions-cache list -R username/bluemastodon
    ```
 
 3. Delete the sync-state cache:
    ```bash
-   gh actions-cache delete sync-state -R username/social-sync --confirm
+   gh actions-cache delete sync-state -R username/bluemastodon --confirm
    ```
 
 4. Run the workflow again to create a fresh state:
    ```bash
-   gh workflow run "Sync Social Media Posts" -R username/social-sync
+   gh workflow run "Sync Social Media Posts" -R username/bluemastodon
    ```
 
 ### Method 2: Using GitHub REST API
@@ -46,7 +46,7 @@ If you prefer using the API directly:
    ```bash
    curl -H "Accept: application/vnd.github.v3+json" \
         -H "Authorization: token YOUR_GITHUB_TOKEN" \
-        https://api.github.com/repos/username/social-sync/actions/caches
+        https://api.github.com/repos/username/bluemastodon/actions/caches
    ```
 
 2. Delete cache by key:
@@ -54,7 +54,7 @@ If you prefer using the API directly:
    curl -X DELETE \
         -H "Accept: application/vnd.github.v3+json" \
         -H "Authorization: token YOUR_GITHUB_TOKEN" \
-        https://api.github.com/repos/username/social-sync/actions/caches?key=sync-state
+        https://api.github.com/repos/username/bluemastodon/actions/caches?key=sync-state
    ```
 
 ## How the Cache Works
@@ -70,7 +70,7 @@ If you experience duplicate posts or missing syncs:
 
 1. Enable debug mode on your next workflow run:
    ```bash
-   gh workflow run "Sync Social Media Posts" -R username/social-sync --field debug=true
+   gh workflow run "Sync Social Media Posts" -R username/bluemastodon --field debug=true
    ```
 
 2. Check the workflow run logs for cache-related messages:
@@ -80,6 +80,6 @@ If you experience duplicate posts or missing syncs:
 
 3. Clear the cache and run with dry-run mode to safely test:
    ```bash
-   gh actions-cache delete sync-state -R username/social-sync --confirm
-   gh workflow run "Sync Social Media Posts" -R username/social-sync --field dry_run=true
+   gh actions-cache delete sync-state -R username/bluemastodon --confirm
+   gh workflow run "Sync Social Media Posts" -R username/bluemastodon --field dry_run=true
    ```

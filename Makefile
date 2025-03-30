@@ -5,7 +5,7 @@ SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 RUN_SCRIPT := $(SCRIPT_DIR)/scripts/run.sh
 
 # Variables
-PACKAGE = social_sync
+PACKAGE = bluemastodon
 PYTHON = python
 POETRY = poetry
 POETRY_RUN := $(RUN_SCRIPT)
@@ -69,7 +69,8 @@ test-ci:  ## Run tests for CI environment
 	$(PYTEST_COV) --cov-report=xml
 
 docs:  ## Generate API documentation
-	$(POETRY) run pydoc -w src/$(PACKAGE)/*.py
+	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(POETRY_RUN) python -m pydoc -w bluemastodon
+	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(POETRY_RUN) python -m pydoc -w bluemastodon.config bluemastodon.models bluemastodon.bluesky bluemastodon.mastodon bluemastodon.sync
 	mkdir -p docs
 	mv *.html docs/
 

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Python: module social_sync.config</title>
+<title>Python: module bluemastodon.config</title>
 </head><body>
 
 <table class="heading">
 <tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="social_sync.html" class="white">social_sync</a>.config</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/social_sync/config.py">/Users/tcole/code/claude/social-sync/src/social_sync/config.py</a></td></tr></table>
-    <p><span class="code">Configuration&nbsp;management&nbsp;for&nbsp;social-sync.<br>
+<td class="title">&nbsp;<br><strong class="title"><a href="bluemastodon.html" class="white">bluemastodon</a>.config</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/bluemastodon/config.py">/Users/tcole/code/claude/social-sync/src/bluemastodon/config.py</a></td></tr></table>
+    <p><span class="code">Configuration&nbsp;management&nbsp;for&nbsp;bluemastodon.<br>
 &nbsp;<br>
 This&nbsp;module&nbsp;handles&nbsp;loading&nbsp;configuration&nbsp;from&nbsp;environment&nbsp;variables&nbsp;and<br>
 providing&nbsp;access&nbsp;to&nbsp;API&nbsp;credentials&nbsp;and&nbsp;settings.</span></p>
@@ -17,22 +17,22 @@ providing&nbsp;access&nbsp;to&nbsp;API&nbsp;credentials&nbsp;and&nbsp;settings.<
 <table class="section">
 <tr class="decor pkg-content-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
-
+    
 <tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><table><tr><td class="multicolumn"><a href="os.html">os</a><br>
 </td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
 <table class="section">
 <tr class="decor index-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-
+    
 <tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><dl>
 <dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.config.html#BlueskyConfig">BlueskyConfig</a>
-</dt><dt class="heading-text"><a href="social_sync.config.html#Config">Config</a>
-</dt><dt class="heading-text"><a href="social_sync.config.html#MastodonConfig">MastodonConfig</a>
+<dt class="heading-text"><a href="bluemastodon.config.html#BlueskyConfig">BlueskyConfig</a>
+</dt><dt class="heading-text"><a href="bluemastodon.config.html#Config">Config</a>
+</dt><dt class="heading-text"><a href="bluemastodon.config.html#MastodonConfig">MastodonConfig</a>
 </dt></dl>
 </dd>
 </dl>
@@ -40,7 +40,7 @@ providing&nbsp;access&nbsp;to&nbsp;API&nbsp;credentials&nbsp;and&nbsp;settings.<
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="BlueskyConfig">class <strong>BlueskyConfig</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#BlueskyConfig">BlueskyConfig</a>(username:&nbsp;str,&nbsp;password:&nbsp;str)&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
@@ -79,11 +79,11 @@ Data and other attributes defined here:<br>
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="Config">class <strong>Config</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#Config">Config</a>(<br>
-&nbsp;&nbsp;&nbsp;&nbsp;bluesky:&nbsp;social_sync.config.<a href="#BlueskyConfig">BlueskyConfig</a>,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;mastodon:&nbsp;social_sync.config.<a href="#MastodonConfig">MastodonConfig</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bluesky:&nbsp;bluemastodon.config.<a href="#BlueskyConfig">BlueskyConfig</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mastodon:&nbsp;bluemastodon.config.<a href="#MastodonConfig">MastodonConfig</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;lookback_hours:&nbsp;int&nbsp;=&nbsp;24,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;sync_interval_minutes:&nbsp;int&nbsp;=&nbsp;60,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;max_posts_per_run:&nbsp;int&nbsp;=&nbsp;5,<br>
@@ -98,8 +98,8 @@ Main&nbsp;configuration&nbsp;container.<br>&nbsp;</span></td></tr>
 
 <dl><dt><a name="Config-__init__"><strong>__init__</strong></a>(
     self,
-    bluesky: social_sync.config.BlueskyConfig,
-    mastodon: social_sync.config.MastodonConfig,
+    bluesky: bluemastodon.config.BlueskyConfig,
+    mastodon: bluemastodon.config.MastodonConfig,
     lookback_hours: int = 24,
     sync_interval_minutes: int = 60,
     max_posts_per_run: int = 5,
@@ -121,9 +121,9 @@ Data descriptors defined here:<br>
 </dl>
 <hr>
 Data and other attributes defined here:<br>
-<dl><dt><strong>__annotations__</strong> = {'bluesky': &lt;class 'social_sync.config.BlueskyConfig'&gt;, 'include_links': &lt;class 'bool'&gt;, 'include_media': &lt;class 'bool'&gt;, 'lookback_hours': &lt;class 'int'&gt;, 'mastodon': &lt;class 'social_sync.config.MastodonConfig'&gt;, 'max_posts_per_run': &lt;class 'int'&gt;, 'sync_interval_minutes': &lt;class 'int'&gt;}</dl>
+<dl><dt><strong>__annotations__</strong> = {'bluesky': &lt;class 'bluemastodon.config.BlueskyConfig'&gt;, 'include_links': &lt;class 'bool'&gt;, 'include_media': &lt;class 'bool'&gt;, 'lookback_hours': &lt;class 'int'&gt;, 'mastodon': &lt;class 'bluemastodon.config.MastodonConfig'&gt;, 'max_posts_per_run': &lt;class 'int'&gt;, 'sync_interval_minutes': &lt;class 'int'&gt;}</dl>
 
-<dl><dt><strong>__dataclass_fields__</strong> = {'bluesky': Field(name='bluesky',type=&lt;class 'social_sync.co...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_links': Field(name='include_links',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_media': Field(name='include_media',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'lookback_hours': Field(name='lookback_hours',type=&lt;class 'int'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'mastodon': Field(name='mastodon',type=&lt;class 'social_sync.c...appingproxy({}),kw_only=False,_field_type=_FIELD), 'max_posts_per_run': Field(name='max_posts_per_run',type=&lt;class 'int'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'sync_interval_minutes': Field(name='sync_interval_minutes',type=&lt;class '...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+<dl><dt><strong>__dataclass_fields__</strong> = {'bluesky': Field(name='bluesky',type=&lt;class 'bluemastodon.c...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_links': Field(name='include_links',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_media': Field(name='include_media',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'lookback_hours': Field(name='lookback_hours',type=&lt;class 'int'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'mastodon': Field(name='mastodon',type=&lt;class 'bluemastodon....appingproxy({}),kw_only=False,_field_type=_FIELD), 'max_posts_per_run': Field(name='max_posts_per_run',type=&lt;class 'int'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'sync_interval_minutes': Field(name='sync_interval_minutes',type=&lt;class '...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
 
 <dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
 
@@ -145,7 +145,7 @@ Data and other attributes defined here:<br>
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="MastodonConfig">class <strong>MastodonConfig</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#MastodonConfig">MastodonConfig</a>(instance_url:&nbsp;str,&nbsp;access_token:&nbsp;str)&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
@@ -184,9 +184,9 @@ Data and other attributes defined here:<br>
 <table class="section">
 <tr class="decor functions-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
-
+    
 <tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><dl><dt><a name="-load_config"><strong>load_config</strong></a>(env_file: Optional[str] = None) -&gt; social_sync.config.Config</dt><dd><span class="code">Load&nbsp;configuration&nbsp;from&nbsp;environment&nbsp;variables.<br>
+<td class="singlecolumn"><dl><dt><a name="-load_config"><strong>load_config</strong></a>(env_file: Optional[str] = None) -&gt; bluemastodon.config.Config</dt><dd><span class="code">Load&nbsp;configuration&nbsp;from&nbsp;environment&nbsp;variables.<br>
 &nbsp;<br>
 Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;env_file:&nbsp;Optional&nbsp;path&nbsp;to&nbsp;.env&nbsp;file<br>
@@ -200,7 +200,7 @@ Raises:<br>
 <table class="section">
 <tr class="decor data-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
-
+    
 <tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><strong>Optional</strong> = typing.Optional</td></tr></table>
 </body></html>

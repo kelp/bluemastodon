@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Python: module social_sync.sync</title>
+<title>Python: module bluemastodon.sync</title>
 </head><body>
 
 <table class="heading">
 <tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="social_sync.html" class="white">social_sync</a>.sync</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/social_sync/sync.py">/Users/tcole/code/claude/social-sync/src/social_sync/sync.py</a></td></tr></table>
-    <p><span class="code">Synchronization&nbsp;orchestration&nbsp;for&nbsp;social-sync.<br>
+<td class="title">&nbsp;<br><strong class="title"><a href="bluemastodon.html" class="white">bluemastodon</a>.sync</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/bluemastodon/sync.py">/Users/tcole/code/claude/social-sync/src/bluemastodon/sync.py</a></td></tr></table>
+    <p><span class="code">Synchronization&nbsp;orchestration&nbsp;for&nbsp;bluemastodon.<br>
 &nbsp;<br>
 This&nbsp;module&nbsp;handles&nbsp;the&nbsp;core&nbsp;logic&nbsp;for&nbsp;syncing&nbsp;posts&nbsp;from&nbsp;Bluesky&nbsp;to&nbsp;Mastodon,<br>
 including&nbsp;post&nbsp;mapping,&nbsp;cross-posting&nbsp;workflow,&nbsp;and&nbsp;state&nbsp;tracking.</span></p>
@@ -17,7 +17,7 @@ including&nbsp;post&nbsp;mapping,&nbsp;cross-posting&nbsp;workflow,&nbsp;and&nbs
 <table class="section">
 <tr class="decor pkg-content-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
-
+    
 <tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
 </td><td class="multicolumn"><a href="os.html">os</a><br>
@@ -25,13 +25,13 @@ including&nbsp;post&nbsp;mapping,&nbsp;cross-posting&nbsp;workflow,&nbsp;and&nbs
 <table class="section">
 <tr class="decor index-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-
+    
 <tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><dl>
 <dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.sync.html#SyncManager">SyncManager</a>
+<dt class="heading-text"><a href="bluemastodon.sync.html#SyncManager">SyncManager</a>
 </dt></dl>
 </dd>
 </dl>
@@ -39,16 +39,19 @@ including&nbsp;post&nbsp;mapping,&nbsp;cross-posting&nbsp;workflow,&nbsp;and&nbs
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="SyncManager">class <strong>SyncManager</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#SyncManager">SyncManager</a>(config:&nbsp;social_sync.config.Config,&nbsp;state_file:&nbsp;Optional[str]&nbsp;=&nbsp;None)<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SyncManager">SyncManager</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;bluemastodon.config.Config,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;state_file:&nbsp;Optional[str]&nbsp;=&nbsp;None<br>
+)<br>
 &nbsp;<br>
 Manager&nbsp;for&nbsp;syncing&nbsp;posts&nbsp;between&nbsp;platforms.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
 <dl><dt><a name="SyncManager-__init__"><strong>__init__</strong></a>(
     self,
-    config: social_sync.config.Config,
+    config: bluemastodon.config.Config,
     state_file: Optional[str] = None
 )</dt><dd><span class="code">Initialize&nbsp;the&nbsp;sync&nbsp;manager.<br>
 &nbsp;<br>
@@ -56,7 +59,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;Application&nbsp;configuration<br>
 &nbsp;&nbsp;&nbsp;&nbsp;state_file:&nbsp;Path&nbsp;to&nbsp;the&nbsp;state&nbsp;file&nbsp;for&nbsp;tracking&nbsp;synced&nbsp;posts</span></dd></dl>
 
-<dl><dt><a name="SyncManager-run_sync"><strong>run_sync</strong></a>(self) -&gt; List[social_sync.models.SyncRecord]</dt><dd><span class="code">Run&nbsp;the&nbsp;synchronization&nbsp;process.<br>
+<dl><dt><a name="SyncManager-run_sync"><strong>run_sync</strong></a>(self) -&gt; List[bluemastodon.models.SyncRecord]</dt><dd><span class="code">Run&nbsp;the&nbsp;synchronization&nbsp;process.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;of&nbsp;SyncRecord&nbsp;objects&nbsp;for&nbsp;newly&nbsp;synced&nbsp;posts</span></dd></dl>
@@ -73,7 +76,7 @@ Data descriptors defined here:<br>
 <table class="section">
 <tr class="decor data-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
-
+    
 <tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><strong>List</strong> = typing.List<br>
 <strong>Optional</strong> = typing.Optional<br>

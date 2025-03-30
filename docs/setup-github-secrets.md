@@ -1,6 +1,6 @@
-# Setting Up GitHub Repository Secrets for Social-Sync
+# Setting Up GitHub Repository Secrets for BlueMastodon
 
-To enable the Social-Sync application to access your Bluesky and Mastodon
+To enable the BlueMastodon application to access your Bluesky and Mastodon
 accounts when running in GitHub Actions, you need to set up repository
 secrets. This guide explains how to create these secrets.
 
@@ -33,7 +33,7 @@ You need to set up four repository secrets:
    - Log in to your Bluesky account in a web browser
    - Go to Settings → App Passwords
    - Click "Add app password"
-   - Give it a name like "Social-Sync"
+   - Give it a name like "BlueMastodon"
    - Copy the generated password and store it securely
    - Use this as your `BLUESKY_PASSWORD` secret
 
@@ -45,7 +45,7 @@ You need to set up four repository secrets:
 2. **Mastodon Access Token**:
    - Log in to your Mastodon account in a web browser
    - Go to Preferences → Development → New Application
-   - Give it a name like "Social-Sync"
+   - Give it a name like "BlueMastodon"
    - Set the required permissions (scopes):
      - `read:accounts`
      - `read:statuses`

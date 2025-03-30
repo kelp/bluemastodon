@@ -2,57 +2,123 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Python: module social_sync.models</title>
+<title>Python: package bluemastodon</title>
 </head><body>
 
 <table class="heading">
 <tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="social_sync.html" class="white">social_sync</a>.models</strong></td>
-<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/social_sync/models.py">/Users/tcole/code/claude/social-sync/src/social_sync/models.py</a></td></tr></table>
-    <p><span class="code">Data&nbsp;models&nbsp;for&nbsp;social-sync.<br>
+<td class="title">&nbsp;<br><strong class="title">bluemastodon</strong> (version 0.9.2)</td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/claude/social-sync/src/bluemastodon/__init__.py">/Users/tcole/code/claude/social-sync/src/bluemastodon/__init__.py</a></td></tr></table>
+    <p><span class="code">BlueMastodon:&nbsp;A&nbsp;tool&nbsp;to&nbsp;automatically&nbsp;cross-post&nbsp;from&nbsp;Bluesky&nbsp;to&nbsp;Mastodon.<br>
 &nbsp;<br>
-This&nbsp;module&nbsp;defines&nbsp;the&nbsp;data&nbsp;structures&nbsp;used&nbsp;throughout&nbsp;the&nbsp;application,<br>
-particularly&nbsp;for&nbsp;representing&nbsp;posts&nbsp;from&nbsp;different&nbsp;platforms.</span></p>
+This&nbsp;package&nbsp;provides&nbsp;tools&nbsp;for&nbsp;syncing&nbsp;posts&nbsp;from&nbsp;Bluesky&nbsp;to&nbsp;Mastodon.</span></p>
 <p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Package Contents</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="bluemastodon.__main__.html">__main__</a><br>
+<a href="bluemastodon.bluesky.html">bluesky</a><br>
+</td><td class="multicolumn"><a href="bluemastodon.config.html">config</a><br>
+<a href="bluemastodon.mastodon.html">mastodon</a><br>
+</td><td class="multicolumn"><a href="bluemastodon.models.html">models</a><br>
+<a href="bluemastodon.sync.html">sync</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
 <table class="section">
 <tr class="decor index-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
-
+    
 <tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
 <td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="bluemastodon.bluesky.html#BlueskyClient">bluemastodon.bluesky.BlueskyClient</a>
+</dt><dt class="heading-text"><a href="bluemastodon.config.html#Config">bluemastodon.config.Config</a>
+</dt><dt class="heading-text"><a href="bluemastodon.mastodon.html#MastodonClient">bluemastodon.mastodon.MastodonClient</a>
+</dt><dt class="heading-text"><a href="bluemastodon.sync.html#SyncManager">bluemastodon.sync.SyncManager</a>
+</dt></dl>
+</dd>
 <dt class="heading-text"><a href="builtins.html#str">builtins.str</a>(<a href="builtins.html#object">builtins.object</a>)
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.models.html#MediaType">MediaType</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+<dt class="heading-text"><a href="bluemastodon.models.html#MediaType">bluemastodon.models.MediaType</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
 </dt></dl>
 </dd>
 <dt class="heading-text"><a href="enum.html#Enum">enum.Enum</a>(<a href="builtins.html#object">builtins.object</a>)
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.models.html#MediaType">MediaType</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+<dt class="heading-text"><a href="bluemastodon.models.html#MediaType">bluemastodon.models.MediaType</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
 </dt></dl>
 </dd>
 <dt class="heading-text"><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>(<a href="builtins.html#object">builtins.object</a>)
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.models.html#Link">Link</a>
-</dt><dt class="heading-text"><a href="social_sync.models.html#MediaAttachment">MediaAttachment</a>
-</dt><dt class="heading-text"><a href="social_sync.models.html#SocialPost">SocialPost</a>
+<dt class="heading-text"><a href="bluemastodon.models.html#Link">bluemastodon.models.Link</a>
+</dt><dt class="heading-text"><a href="bluemastodon.models.html#MediaAttachment">bluemastodon.models.MediaAttachment</a>
+</dt><dt class="heading-text"><a href="bluemastodon.models.html#SocialPost">bluemastodon.models.SocialPost</a>
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="social_sync.models.html#BlueskyPost">BlueskyPost</a>
-</dt><dt class="heading-text"><a href="social_sync.models.html#MastodonPost">MastodonPost</a>
+<dt class="heading-text"><a href="bluemastodon.models.html#BlueskyPost">bluemastodon.models.BlueskyPost</a>
+</dt><dt class="heading-text"><a href="bluemastodon.models.html#MastodonPost">bluemastodon.models.MastodonPost</a>
 </dt></dl>
 </dd>
-<dt class="heading-text"><a href="social_sync.models.html#SyncRecord">SyncRecord</a>
+<dt class="heading-text"><a href="bluemastodon.models.html#SyncRecord">bluemastodon.models.SyncRecord</a>
 </dt></dl>
 </dd>
 </dl>
  <p>
 <table class="section">
 <tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="BlueskyPost">class <strong>BlueskyPost</strong></a>(<a href="social_sync.models.html#SocialPost">SocialPost</a>)</td></tr>
+<td class="section-title" colspan=3>&nbsp;<br><a name="BlueskyClient">class <strong>BlueskyClient</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#BlueskyClient">BlueskyClient</a>(config:&nbsp;bluemastodon.config.BlueskyConfig)<br>
+&nbsp;<br>
+Client&nbsp;for&nbsp;interacting&nbsp;with&nbsp;the&nbsp;Bluesky&nbsp;API.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="BlueskyClient-__init__"><strong>__init__</strong></a>(self, config: bluemastodon.config.BlueskyConfig)</dt><dd><span class="code">Initialize&nbsp;the&nbsp;Bluesky&nbsp;client.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;Bluesky&nbsp;configuration&nbsp;with&nbsp;credentials</span></dd></dl>
 
+<dl><dt><a name="BlueskyClient-authenticate"><strong>authenticate</strong></a>(self) -&gt; bool</dt><dd><span class="code">Authenticate&nbsp;with&nbsp;the&nbsp;Bluesky&nbsp;API.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;authentication&nbsp;was&nbsp;successful,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<dl><dt><a name="BlueskyClient-ensure_authenticated"><strong>ensure_authenticated</strong></a>(self) -&gt; bool</dt><dd><span class="code">Check&nbsp;authentication&nbsp;and&nbsp;re-authenticate&nbsp;if&nbsp;needed.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;authenticated,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<dl><dt><a name="BlueskyClient-get_recent_posts"><strong>get_recent_posts</strong></a>(self, hours_back: int = 24, limit: int = 20) -&gt; List[bluemastodon.models.BlueskyPost]</dt><dd><span class="code">Get&nbsp;recent&nbsp;posts&nbsp;from&nbsp;the&nbsp;authenticated&nbsp;user.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hours_back:&nbsp;How&nbsp;many&nbsp;hours&nbsp;to&nbsp;look&nbsp;back<br>
+&nbsp;&nbsp;&nbsp;&nbsp;limit:&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;posts&nbsp;to&nbsp;return<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;of&nbsp;<a href="#BlueskyPost">BlueskyPost</a>&nbsp;objects<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValueError:&nbsp;If&nbsp;not&nbsp;authenticated</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="BlueskyPost">class <strong>BlueskyPost</strong></a>(<a href="bluemastodon.models.html#SocialPost">SocialPost</a>)</td></tr>
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#BlueskyPost">BlueskyPost</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
@@ -63,8 +129,8 @@ particularly&nbsp;for&nbsp;representing&nbsp;posts&nbsp;from&nbsp;different&nbsp
 &nbsp;&nbsp;&nbsp;&nbsp;author_id:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_handle:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_display_name:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[social_sync.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[social_sync.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[bluemastodon.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[bluemastodon.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_reply:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_repost:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;in_reply_to_id:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
@@ -82,8 +148,8 @@ particularly&nbsp;for&nbsp;representing&nbsp;posts&nbsp;from&nbsp;different&nbsp
 Bluesky-specific&nbsp;post&nbsp;model.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#BlueskyPost">BlueskyPost</a></dd>
-<dd><a href="social_sync.models.html#SocialPost">SocialPost</a></dd>
+<dd><a href="bluemastodon.models.html#BlueskyPost">BlueskyPost</a></dd>
+<dd><a href="bluemastodon.models.html#SocialPost">SocialPost</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -101,7 +167,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.BlueskyPost'&gt;, 'config': {'title': 'BlueskyPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'social_sync.models.BlueskyPost'&gt;&gt;]}, 'ref': 'social_sync.models.BlueskyPost:5401963504', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'cid': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'is_repost': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'BlueskyPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.BlueskyPost'&gt;, 'config': {'title': 'BlueskyPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'bluemastodon.models.BlueskyPost'&gt;&gt;]}, 'ref': 'bluemastodon.models.BlueskyPost:5404811008', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'cid': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'is_repost': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'BlueskyPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -131,7 +197,7 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>model_config</strong> = {}</dl>
 
 <hr>
-Data descriptors inherited from <a href="social_sync.models.html#SocialPost">SocialPost</a>:<br>
+Data descriptors inherited from <a href="bluemastodon.models.html#SocialPost">SocialPost</a>:<br>
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
 </dl>
@@ -169,7 +235,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="BlueskyPost-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="BlueskyPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="BlueskyPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="BlueskyPost-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -246,7 +312,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -370,7 +436,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="BlueskyPost-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -476,15 +542,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -512,7 +578,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="BlueskyPost-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -521,10 +587,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -607,8 +673,74 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 </td></tr></table> <p>
 <table class="section">
 <tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="Link">class <strong>Link</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
+<td class="section-title" colspan=3>&nbsp;<br><a name="Config">class <strong>Config</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Config">Config</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bluesky:&nbsp;bluemastodon.config.BlueskyConfig,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mastodon:&nbsp;bluemastodon.config.MastodonConfig,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lookback_hours:&nbsp;int&nbsp;=&nbsp;24,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sync_interval_minutes:&nbsp;int&nbsp;=&nbsp;60,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;max_posts_per_run:&nbsp;int&nbsp;=&nbsp;5,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;include_media:&nbsp;bool&nbsp;=&nbsp;True,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;include_links:&nbsp;bool&nbsp;=&nbsp;True<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Main&nbsp;configuration&nbsp;container.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Config-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
 
+<dl><dt><a name="Config-__init__"><strong>__init__</strong></a>(
+    self,
+    bluesky: bluemastodon.config.BlueskyConfig,
+    mastodon: bluemastodon.config.MastodonConfig,
+    lookback_hours: int = 24,
+    sync_interval_minutes: int = 60,
+    max_posts_per_run: int = 5,
+    include_media: bool = True,
+    include_links: bool = True
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Config-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Config-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'bluesky': &lt;class 'bluemastodon.config.BlueskyConfig'&gt;, 'include_links': &lt;class 'bool'&gt;, 'include_media': &lt;class 'bool'&gt;, 'lookback_hours': &lt;class 'int'&gt;, 'mastodon': &lt;class 'bluemastodon.config.MastodonConfig'&gt;, 'max_posts_per_run': &lt;class 'int'&gt;, 'sync_interval_minutes': &lt;class 'int'&gt;}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'bluesky': Field(name='bluesky',type=&lt;class 'bluemastodon.c...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_links': Field(name='include_links',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'include_media': Field(name='include_media',type=&lt;class 'bool'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'lookback_hours': Field(name='lookback_hours',type=&lt;class 'int'&gt;,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'mastodon': Field(name='mastodon',type=&lt;class 'bluemastodon....appingproxy({}),kw_only=False,_field_type=_FIELD), 'max_posts_per_run': Field(name='max_posts_per_run',type=&lt;class 'int'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'sync_interval_minutes': Field(name='sync_interval_minutes',type=&lt;class '...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('bluesky', 'mastodon', 'lookback_hours', 'sync_interval_minutes', 'max_posts_per_run', 'include_media', 'include_links')</dl>
+
+<dl><dt><strong>include_links</strong> = True</dl>
+
+<dl><dt><strong>include_media</strong> = True</dl>
+
+<dl><dt><strong>lookback_hours</strong> = 24</dl>
+
+<dl><dt><strong>max_posts_per_run</strong> = 5</dl>
+
+<dl><dt><strong>sync_interval_minutes</strong> = 60</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Link">class <strong>Link</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#Link">Link</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
@@ -621,7 +753,7 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 Represents&nbsp;an&nbsp;external&nbsp;link&nbsp;in&nbsp;a&nbsp;post.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#Link">Link</a></dd>
+<dd><a href="bluemastodon.models.html#Link">Link</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -644,7 +776,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.Link'&gt;, 'config': {'title': 'Link'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'social_sync.models.Link'&gt;&gt;]}, 'ref': 'social_sync.models.Link:5401939696', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'description': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'image_url': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'title': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'url': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}}, 'model_name': 'Link', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.Link'&gt;, 'config': {'title': 'Link'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'bluemastodon.models.Link'&gt;&gt;]}, 'ref': 'bluemastodon.models.Link:5404787328', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'description': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'image_url': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'title': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'url': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}}, 'model_name': 'Link', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -709,7 +841,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="Link-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="Link-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="Link-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="Link-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -786,7 +918,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -910,7 +1042,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="Link-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -1016,15 +1148,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -1052,7 +1184,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="Link-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -1061,10 +1193,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -1147,8 +1279,50 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 </td></tr></table> <p>
 <table class="section">
 <tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="MastodonPost">class <strong>MastodonPost</strong></a>(<a href="social_sync.models.html#SocialPost">SocialPost</a>)</td></tr>
+<td class="section-title" colspan=3>&nbsp;<br><a name="MastodonClient">class <strong>MastodonClient</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#MastodonClient">MastodonClient</a>(config:&nbsp;bluemastodon.config.MastodonConfig)<br>
+&nbsp;<br>
+Client&nbsp;for&nbsp;interacting&nbsp;with&nbsp;the&nbsp;Mastodon&nbsp;API.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="MastodonClient-__init__"><strong>__init__</strong></a>(self, config: bluemastodon.config.MastodonConfig)</dt><dd><span class="code">Initialize&nbsp;the&nbsp;Mastodon&nbsp;client.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;Configuration&nbsp;for&nbsp;the&nbsp;Mastodon&nbsp;API</span></dd></dl>
 
+<dl><dt><a name="MastodonClient-ensure_authenticated"><strong>ensure_authenticated</strong></a>(self) -&gt; bool</dt><dd><span class="code">Check&nbsp;authentication&nbsp;and&nbsp;re-verify&nbsp;if&nbsp;needed.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;authenticated,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<dl><dt><a name="MastodonClient-post"><strong>post</strong></a>(self, post: bluemastodon.models.SocialPost) -&gt; Optional[bluemastodon.models.MastodonPost]</dt><dd><span class="code">Post&nbsp;content&nbsp;to&nbsp;Mastodon.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;post:&nbsp;The&nbsp;post&nbsp;to&nbsp;create&nbsp;on&nbsp;Mastodon<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#MastodonPost">MastodonPost</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;if&nbsp;successful,&nbsp;None&nbsp;if&nbsp;failed</span></dd></dl>
+
+<dl><dt><a name="MastodonClient-verify_credentials"><strong>verify_credentials</strong></a>(self) -&gt; bool</dt><dd><span class="code">Verify&nbsp;the&nbsp;credentials&nbsp;for&nbsp;the&nbsp;Mastodon&nbsp;client.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;credentials&nbsp;are&nbsp;valid,&nbsp;False&nbsp;otherwise</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MastodonPost">class <strong>MastodonPost</strong></a>(<a href="bluemastodon.models.html#SocialPost">SocialPost</a>)</td></tr>
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#MastodonPost">MastodonPost</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
@@ -1159,8 +1333,8 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 &nbsp;&nbsp;&nbsp;&nbsp;author_id:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_handle:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_display_name:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[social_sync.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[social_sync.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[bluemastodon.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[bluemastodon.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_reply:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_repost:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;in_reply_to_id:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
@@ -1178,8 +1352,8 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 Mastodon-specific&nbsp;post&nbsp;model.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#MastodonPost">MastodonPost</a></dd>
-<dd><a href="social_sync.models.html#SocialPost">SocialPost</a></dd>
+<dd><a href="bluemastodon.models.html#MastodonPost">MastodonPost</a></dd>
+<dd><a href="bluemastodon.models.html#SocialPost">SocialPost</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -1197,7 +1371,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.MastodonPost'&gt;, 'config': {'title': 'MastodonPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'social_sync.models.MastodonPost'&gt;&gt;]}, 'ref': 'social_sync.models.MastodonPost:5401983072', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'application': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'favourites_count': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'MastodonPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.MastodonPost'&gt;, 'config': {'title': 'MastodonPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'bluemastodon.models.MastodonPost'&gt;&gt;]}, 'ref': 'bluemastodon.models.MastodonPost:5404830576', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'application': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'favourites_count': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'MastodonPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -1227,7 +1401,7 @@ Data and other attributes defined here:<br>
 <dl><dt><strong>model_config</strong> = {}</dl>
 
 <hr>
-Data descriptors inherited from <a href="social_sync.models.html#SocialPost">SocialPost</a>:<br>
+Data descriptors inherited from <a href="bluemastodon.models.html#SocialPost">SocialPost</a>:<br>
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
 </dl>
@@ -1265,7 +1439,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="MastodonPost-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="MastodonPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="MastodonPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="MastodonPost-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -1342,7 +1516,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -1466,7 +1640,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="MastodonPost-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -1572,15 +1746,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -1608,7 +1782,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="MastodonPost-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -1617,10 +1791,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -1704,14 +1878,14 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="MediaAttachment">class <strong>MediaAttachment</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#MediaAttachment">MediaAttachment</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;url:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;alt_text:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;mime_type:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;media_type:&nbsp;social_sync.models.<a href="#MediaType">MediaType</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;media_type:&nbsp;bluemastodon.models.<a href="#MediaType">MediaType</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;width:&nbsp;Optional[int]&nbsp;=&nbsp;None,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;height:&nbsp;Optional[int]&nbsp;=&nbsp;None,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;size_bytes:&nbsp;Optional[int]&nbsp;=&nbsp;None<br>
@@ -1720,7 +1894,7 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 Represents&nbsp;a&nbsp;media&nbsp;attachment&nbsp;in&nbsp;a&nbsp;post.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#MediaAttachment">MediaAttachment</a></dd>
+<dd><a href="bluemastodon.models.html#MediaAttachment">MediaAttachment</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -1743,7 +1917,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.MediaAttachment'&gt;, 'config': {'title': 'MediaAttachment'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_sche... of &lt;class 'social_sync.models.MediaAttachment'&gt;&gt;]}, 'ref': 'social_sync.models.MediaAttachment:5401936320', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'alt_text': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'height': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'media_type': {'metadata': {}, 'schema': {'cls': &lt;enum 'MediaType'&gt;, 'members': [&lt;MediaType.IMAGE: 'image'&gt;, &lt;MediaType.VIDEO: 'video'&gt;, &lt;MediaType.AUDIO: 'audio'&gt;, &lt;MediaType.OTHER: 'other'&gt;], 'metadata': {'pydantic_js_functions': [...]}, 'ref': 'social_sync.models.MediaType:5401934560', 'sub_type': 'str', 'type': 'enum'}, 'type': 'model-field'}, 'mime_type': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'size_bytes': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'url': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'width': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}}, 'model_name': 'MediaAttachment', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.MediaAttachment'&gt;, 'config': {'title': 'MediaAttachment'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_sche...of &lt;class 'bluemastodon.models.MediaAttachment'&gt;&gt;]}, 'ref': 'bluemastodon.models.MediaAttachment:5404784448', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'alt_text': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'height': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'media_type': {'metadata': {}, 'schema': {'cls': &lt;enum 'MediaType'&gt;, 'members': [&lt;MediaType.IMAGE: 'image'&gt;, &lt;MediaType.VIDEO: 'video'&gt;, &lt;MediaType.AUDIO: 'audio'&gt;, &lt;MediaType.OTHER: 'other'&gt;], 'metadata': {'pydantic_js_functions': [...]}, 'ref': 'bluemastodon.models.MediaType:5404782688', 'sub_type': 'str', 'type': 'enum'}, 'type': 'model-field'}, 'mime_type': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'size_bytes': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'url': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'width': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}}, 'model_name': 'MediaAttachment', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -1806,7 +1980,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="MediaAttachment-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="MediaAttachment-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="MediaAttachment-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="MediaAttachment-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -1883,7 +2057,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -2007,7 +2181,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="MediaAttachment-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -2113,15 +2287,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -2149,7 +2323,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="MediaAttachment-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -2158,10 +2332,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -2245,25 +2419,25 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="MediaType">class <strong>MediaType</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#MediaType">MediaType</a>(*values)<br>
 &nbsp;<br>
 Types&nbsp;of&nbsp;media&nbsp;attachments.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#MediaType">MediaType</a></dd>
+<dd><a href="bluemastodon.models.html#MediaType">MediaType</a></dd>
 <dd><a href="builtins.html#str">builtins.str</a></dd>
 <dd><a href="enum.html#Enum">enum.Enum</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="MediaType-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;object&nbsp;formatter.<br>
+<dl><dt><a name="MediaType-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
 &nbsp;<br>
 Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
 
-<dl><dt><a name="MediaType-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="MediaType-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
 <dl><dt><a name="MediaType-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
 
@@ -2618,7 +2792,7 @@ is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.<
 <table class="section">
 <tr class="decor title-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><a name="SocialPost">class <strong>SocialPost</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
-
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#SocialPost">SocialPost</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
@@ -2629,8 +2803,8 @@ is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.<
 &nbsp;&nbsp;&nbsp;&nbsp;author_id:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_handle:&nbsp;<a href="builtins.html#str">str</a>,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;author_display_name:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[social_sync.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[social_sync.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;media_attachments:&nbsp;List[bluemastodon.models.<a href="#MediaAttachment">MediaAttachment</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;links:&nbsp;List[bluemastodon.models.<a href="#Link">Link</a>]&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_reply:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;is_repost:&nbsp;bool&nbsp;=&nbsp;False,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;in_reply_to_id:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None,<br>
@@ -2642,7 +2816,7 @@ is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.<
 Base&nbsp;model&nbsp;for&nbsp;social&nbsp;media&nbsp;posts.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#SocialPost">SocialPost</a></dd>
+<dd><a href="bluemastodon.models.html#SocialPost">SocialPost</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -2665,7 +2839,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.SocialPost'&gt;, 'config': {'title': 'SocialPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'social_sync.models.SocialPost'&gt;&gt;]}, 'ref': 'social_sync.models.SocialPost:5401948080', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'is_repost': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'language': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'SocialPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.SocialPost'&gt;, 'config': {'title': 'SocialPost'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'bluemastodon.models.SocialPost'&gt;&gt;]}, 'ref': 'bluemastodon.models.SocialPost:5404795584', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'author_display_name': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'author_handle': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'author_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'content': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'created_at': {'metadata': {}, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'model-field'}, 'id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'in_reply_to_id': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'is_reply': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'is_repost': {'metadata': {}, 'schema': {'default': False, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'language': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, ...}, 'model_name': 'SocialPost', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -2728,7 +2902,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="SocialPost-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="SocialPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="SocialPost-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="SocialPost-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -2805,7 +2979,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -2929,7 +3103,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="SocialPost-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -3035,15 +3209,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -3071,7 +3245,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="SocialPost-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -3080,10 +3254,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -3166,8 +3340,45 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 </td></tr></table> <p>
 <table class="section">
 <tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="SyncRecord">class <strong>SyncRecord</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
+<td class="section-title" colspan=3>&nbsp;<br><a name="SyncManager">class <strong>SyncManager</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SyncManager">SyncManager</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;bluemastodon.config.<a href="#Config">Config</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;state_file:&nbsp;Optional[<a href="builtins.html#str">str</a>]&nbsp;=&nbsp;None<br>
+)<br>
+&nbsp;<br>
+Manager&nbsp;for&nbsp;syncing&nbsp;posts&nbsp;between&nbsp;platforms.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SyncManager-__init__"><strong>__init__</strong></a>(
+    self,
+    config: bluemastodon.config.Config,
+    state_file: Optional[str] = None
+)</dt><dd><span class="code">Initialize&nbsp;the&nbsp;sync&nbsp;manager.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config:&nbsp;Application&nbsp;configuration<br>
+&nbsp;&nbsp;&nbsp;&nbsp;state_file:&nbsp;Path&nbsp;to&nbsp;the&nbsp;state&nbsp;file&nbsp;for&nbsp;tracking&nbsp;synced&nbsp;posts</span></dd></dl>
 
+<dl><dt><a name="SyncManager-run_sync"><strong>run_sync</strong></a>(self) -&gt; List[bluemastodon.models.SyncRecord]</dt><dd><span class="code">Run&nbsp;the&nbsp;synchronization&nbsp;process.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;of&nbsp;<a href="#SyncRecord">SyncRecord</a>&nbsp;objects&nbsp;for&nbsp;newly&nbsp;synced&nbsp;posts</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SyncRecord">class <strong>SyncRecord</strong></a>(<a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a>)</td></tr>
+    
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
 <td class="decor title-decor" colspan=2><span class="code"><a href="#SyncRecord">SyncRecord</a>(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;*,<br>
@@ -3183,7 +3394,7 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 Record&nbsp;of&nbsp;a&nbsp;cross-posted&nbsp;item.<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="social_sync.models.html#SyncRecord">SyncRecord</a></dd>
+<dd><a href="bluemastodon.models.html#SyncRecord">SyncRecord</a></dd>
 <dd><a href="pydantic.main.html#BaseModel">pydantic.main.BaseModel</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
@@ -3206,7 +3417,7 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>__pydantic_computed_fields__</strong> = {}</dl>
 
-<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'social_sync.models.SyncRecord'&gt;, 'config': {'title': 'SyncRecord'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'social_sync.models.SyncRecord'&gt;&gt;]}, 'ref': 'social_sync.models.SyncRecord:5402003136', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'error_message': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'source_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'source_platform': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'success': {'metadata': {}, 'schema': {'default': True, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'synced_at': {'metadata': {}, 'schema': {'default_factory': &lt;built-in method now of type object&gt;, 'default_factory_takes_data': False, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'default'}, 'type': 'model-field'}, 'target_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'target_platform': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}}, 'model_name': 'SyncRecord', 'type': 'model-fields'}, 'type': 'model'}</dl>
+<dl><dt><strong>__pydantic_core_schema__</strong> = {'cls': &lt;class 'bluemastodon.models.SyncRecord'&gt;, 'config': {'title': 'SyncRecord'}, 'custom_init': False, 'metadata': {'pydantic_js_functions': [&lt;bound method BaseModel.__get_pydantic_json_schema__ of &lt;class 'bluemastodon.models.SyncRecord'&gt;&gt;]}, 'ref': 'bluemastodon.models.SyncRecord:5404850640', 'root_model': False, 'schema': {'computed_fields': [], 'fields': {'error_message': {'metadata': {}, 'schema': {'default': None, 'schema': {'schema': {...}, 'type': 'nullable'}, 'type': 'default'}, 'type': 'model-field'}, 'source_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'source_platform': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'success': {'metadata': {}, 'schema': {'default': True, 'schema': {'type': 'bool'}, 'type': 'default'}, 'type': 'model-field'}, 'synced_at': {'metadata': {}, 'schema': {'default_factory': &lt;built-in method now of type object&gt;, 'default_factory_takes_data': False, 'schema': {'microseconds_precision': 'truncate', 'type': 'datetime'}, 'type': 'default'}, 'type': 'model-field'}, 'target_id': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}, 'target_platform': {'metadata': {}, 'schema': {'type': 'str'}, 'type': 'model-field'}}, 'model_name': 'SyncRecord', 'type': 'model-fields'}, 'type': 'model'}</dl>
 
 <dl><dt><strong>__pydantic_custom_init__</strong> = False</dl>
 
@@ -3269,7 +3480,7 @@ validated&nbsp;to&nbsp;form&nbsp;a&nbsp;valid&nbsp;model.<br>
 
 <dl><dt><a name="SyncRecord-__repr_name__"><strong>__repr_name__</strong></a>(self) -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Name&nbsp;of&nbsp;the&nbsp;instance's&nbsp;class,&nbsp;used&nbsp;in&nbsp;__repr__.</span></dd></dl>
 
-<dl><dt><a name="SyncRecord-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;object.</span></dd></dl>
+<dl><dt><a name="SyncRecord-__repr_recursion__"><strong>__repr_recursion__</strong></a>(self, object: 'Any') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt><dd><span class="code">Returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;recursive&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="SyncRecord-__repr_str__"><strong>__repr_str__</strong></a>(self, join_str: 'str') -&gt; 'str'<span class="grey"><span class="heading-text"> from pydantic._internal._repr.Representation</span></span></dt></dl>
 
@@ -3346,7 +3557,7 @@ Returns:<br>
 Returns&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;model.<br>
 &nbsp;<br>
 !!!&nbsp;note<br>
-&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][object.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;underlying&nbsp;instance's&nbsp;[`__dict__`][<a href="builtins.html#object">object</a>.__dict__]&nbsp;attribute&nbsp;is&nbsp;copied.&nbsp;This<br>
 &nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;have&nbsp;unexpected&nbsp;side&nbsp;effects&nbsp;if&nbsp;you&nbsp;store&nbsp;anything&nbsp;in&nbsp;it,&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;model<br>
 &nbsp;&nbsp;&nbsp;&nbsp;fields&nbsp;(e.g.&nbsp;the&nbsp;value&nbsp;of&nbsp;[cached&nbsp;properties][functools.cached_property]).<br>
 &nbsp;<br>
@@ -3470,7 +3681,7 @@ Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;type.<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;object.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;JSON&nbsp;schema,&nbsp;as&nbsp;a&nbsp;Python&nbsp;<a href="builtins.html#object">object</a>.</span></dd></dl>
 
 <dl><dt><a name="SyncRecord-__pydantic_init_subclass__"><strong>__pydantic_init_subclass__</strong></a>(**kwargs: 'Any') -&gt; 'None'</dt><dd><span class="code">This&nbsp;is&nbsp;intended&nbsp;to&nbsp;behave&nbsp;just&nbsp;like&nbsp;`__init_subclass__`,&nbsp;but&nbsp;is&nbsp;called&nbsp;by&nbsp;`ModelMetaclass`<br>
 only&nbsp;after&nbsp;the&nbsp;class&nbsp;is&nbsp;actually&nbsp;fully&nbsp;initialized.&nbsp;In&nbsp;particular,&nbsp;attributes&nbsp;like&nbsp;`model_fields`&nbsp;will<br>
@@ -3576,15 +3787,15 @@ Returns:<br>
 ) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;a&nbsp;pydantic&nbsp;model&nbsp;instance.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;object&nbsp;attributes.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from_attributes:&nbsp;Whether&nbsp;to&nbsp;extract&nbsp;data&nbsp;from&nbsp;<a href="builtins.html#object">object</a>&nbsp;attributes.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Additional&nbsp;context&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_name:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;name&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;model&nbsp;instance.</span></dd></dl>
@@ -3612,7 +3823,7 @@ Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;validated&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Raises:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;object&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;ValidationError:&nbsp;If&nbsp;`json_data`&nbsp;is&nbsp;not&nbsp;a&nbsp;JSON&nbsp;string&nbsp;or&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;could&nbsp;not&nbsp;be&nbsp;validated.</span></dd></dl>
 
 <dl><dt><a name="SyncRecord-model_validate_strings"><strong>model_validate_strings</strong></a>(
     obj: 'Any',
@@ -3621,10 +3832,10 @@ Raises:<br>
     context: 'Any | None' = None,
     by_alias: 'bool | None' = None,
     by_name: 'bool | None' = None
-) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;object&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
+) -&gt; 'Self'</dt><dd><span class="code">Validate&nbsp;the&nbsp;given&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;string&nbsp;data&nbsp;against&nbsp;the&nbsp;Pydantic&nbsp;model.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;object&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;obj:&nbsp;The&nbsp;<a href="builtins.html#object">object</a>&nbsp;containing&nbsp;string&nbsp;data&nbsp;to&nbsp;validate.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;strict:&nbsp;Whether&nbsp;to&nbsp;enforce&nbsp;types&nbsp;strictly.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;context:&nbsp;Extra&nbsp;variables&nbsp;to&nbsp;pass&nbsp;to&nbsp;the&nbsp;validator.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;by_alias:&nbsp;Whether&nbsp;to&nbsp;use&nbsp;the&nbsp;field's&nbsp;alias&nbsp;when&nbsp;validating&nbsp;against&nbsp;the&nbsp;provided&nbsp;input&nbsp;data.<br>
@@ -3706,10 +3917,32 @@ Data and other attributes inherited from <a href="pydantic.main.html#BaseModel">
 
 </td></tr></table></td></tr></table><p>
 <table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-load_config"><strong>load_config</strong></a>(env_file: Optional[str] = None) -&gt; bluemastodon.config.Config</dt><dd><span class="code">Load&nbsp;configuration&nbsp;from&nbsp;environment&nbsp;variables.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;env_file:&nbsp;Optional&nbsp;path&nbsp;to&nbsp;.env&nbsp;file<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Config">Config</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;loaded&nbsp;settings<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ValueError:&nbsp;If&nbsp;required&nbsp;environment&nbsp;variables&nbsp;are&nbsp;missing</span></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>(args: Optional[List[str]] = None) -&gt; int</dt><dd><span class="code">Run&nbsp;the&nbsp;bluemastodon&nbsp;tool&nbsp;from&nbsp;the&nbsp;command&nbsp;line.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;args:&nbsp;Command&nbsp;line&nbsp;arguments<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Exit&nbsp;code&nbsp;(0&nbsp;for&nbsp;success,&nbsp;non-zero&nbsp;for&nbsp;errors)</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
 <tr class="decor data-decor heading-text">
 <td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
-
+    
 <tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
-<td class="singlecolumn"><strong>List</strong> = typing.List<br>
-<strong>Optional</strong> = typing.Optional</td></tr></table>
+<td class="singlecolumn"><strong>__all__</strong> = ['Config', 'load_config', 'BlueskyClient', 'MastodonClient', 'SyncManager', 'SocialPost', 'BlueskyPost', 'MastodonPost', 'MediaAttachment', 'Link', 'MediaType', 'SyncRecord', 'main']</td></tr></table>
 </body></html>

@@ -1,6 +1,6 @@
-# Versioning Guidelines for Social-Sync
+# Versioning Guidelines for BlueMastodon
 
-Social-Sync follows [Semantic Versioning](https://semver.org/) (SemVer) for its
+BlueMastodon follows [Semantic Versioning](https://semver.org/) (SemVer) for its
 release numbering.
 
 ## Version Structure
