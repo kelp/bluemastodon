@@ -1,14 +1,13 @@
 """Tests for the mastodon module."""
 
-import os
-import tempfile
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import MagicMock, patch
 
 import pytest
 
-from social_sync.mastodon import MastodonClient
 from social_sync.config import MastodonConfig
-from social_sync.models import MastodonPost, BlueskyPost, MediaAttachment, Link, MediaType
+from social_sync.mastodon import MastodonClient
+from social_sync.models import (BlueskyPost, Link, MastodonPost,
+                                MediaAttachment, MediaType)
 
 
 class TestMastodonClient:
@@ -17,11 +16,10 @@ class TestMastodonClient:
     def test_init(self):
         """Test initialization of MastodonClient."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         assert client.config == config
         assert client._authenticated is False
         assert client._account is None
@@ -36,15 +34,14 @@ class TestMastodonClient:
         mock_account.username = "test_user"
         mock_client.account_verify_credentials.return_value = mock_account
         mock_mastodon_api.return_value = mock_client
-        
+
         # Create client and verify credentials
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         result = client.verify_credentials()
-        
+
         # Check results
         assert result is True
         assert client._authenticated is True
@@ -58,15 +55,14 @@ class TestMastodonClient:
         mock_client = MagicMock()
         mock_client.account_verify_credentials.side_effect = Exception("Auth failed")
         mock_mastodon_api.return_value = mock_client
-        
+
         # Create client and verify credentials
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         result = client.verify_credentials()
-        
+
         # Check results
         assert result is False
         assert client._authenticated is False
@@ -76,42 +72,39 @@ class TestMastodonClient:
     def test_ensure_authenticated_already_authed(self):
         """Test ensure_authenticated when already authenticated."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         client._authenticated = True
-        
-        with patch.object(client, 'verify_credentials') as mock_verify:
+
+        with patch.object(client, "verify_credentials") as mock_verify:
             result = client.ensure_authenticated()
-            
+
             assert result is True
             mock_verify.assert_not_called()
 
     def test_ensure_authenticated_not_authed(self):
         """Test ensure_authenticated when not authenticated."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         client._authenticated = False
-        
-        with patch.object(client, 'verify_credentials') as mock_verify:
+
+        with patch.object(client, "verify_credentials") as mock_verify:
             mock_verify.return_value = True
             result = client.ensure_authenticated()
-            
+
             assert result is True
             mock_verify.assert_called_once()
 
     def test_format_post_content_basic(self):
         """Test _format_post_content with basic content."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Create a simple post
         post = BlueskyPost(
             id="test123",
@@ -121,12 +114,12 @@ class TestMastodonClient:
             created_at=MagicMock(),
             author_id="did:plc:test",
             author_handle="test.bsky.social",
-            links=[]
+            links=[],
         )
-        
+
         # Call the method
         result = client._format_post_content(post)
-        
+
         # Expected format: content + footer
         expected = "This is a test post\n\n📱 Originally posted on Bluesky: https://bsky.app/profile/test.bsky.social/post/test123"
         assert result == expected
@@ -134,11 +127,10 @@ class TestMastodonClient:
     def test_format_post_content_with_links(self):
         """Test _format_post_content with external links."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Create a post with links
         post = BlueskyPost(
             id="test123",
@@ -150,16 +142,16 @@ class TestMastodonClient:
             author_handle="test.bsky.social",
             links=[
                 Link(url="https://example.com", title="Example Website"),
-                Link(url="https://already-in.com")
-            ]
+                Link(url="https://already-in.com"),
+            ],
         )
-        
+
         # Simulate link already in content
         post.content = "Check out this link https://already-in.com"
-        
+
         # Call the method
         result = client._format_post_content(post)
-        
+
         # Should add only the missing link
         expected = "Check out this link https://already-in.com\n\nhttps://example.com\n\n📱 Originally posted on Bluesky: https://bsky.app/profile/test.bsky.social/post/test123"
         assert result == expected
@@ -170,53 +162,60 @@ class TestMastodonClient:
     def test_upload_media_success(self, mock_unlink, mock_temp_file, mock_urlretrieve):
         """Test _upload_media success case."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Mock the client and temp file
         client.client = MagicMock()
         mock_temp = MagicMock()
         mock_temp.name = "/tmp/test_file"
         mock_temp_file.return_value.__enter__.return_value = mock_temp
-        
+
         # Mock the media_post response
         mock_media = MagicMock()
         mock_media.id = "media123"
         client.client.media_post.return_value = mock_media
-        
+
         # Create test attachments
         attachments = [
             MediaAttachment(
                 url="https://example.com/image1.jpg",
                 alt_text="Image 1",
                 mime_type="image/jpeg",
-                media_type=MediaType.IMAGE
+                media_type=MediaType.IMAGE,
             ),
             MediaAttachment(
                 url="https://example.com/image2.jpg",
                 alt_text=None,
                 mime_type="image/jpeg",
-                media_type=MediaType.IMAGE
-            )
+                media_type=MediaType.IMAGE,
+            ),
         ]
-        
+
         # Call the method
         result = client._upload_media(attachments)
-        
+
         # Check results
         assert result == ["media123", "media123"]
-        
+
         # Verify mock calls
         assert mock_urlretrieve.call_count == 2
-        mock_urlretrieve.assert_any_call("https://example.com/image1.jpg", "/tmp/test_file")
-        mock_urlretrieve.assert_any_call("https://example.com/image2.jpg", "/tmp/test_file")
-        
+        mock_urlretrieve.assert_any_call(
+            "https://example.com/image1.jpg", "/tmp/test_file"
+        )
+        mock_urlretrieve.assert_any_call(
+            "https://example.com/image2.jpg", "/tmp/test_file"
+        )
+
         assert client.client.media_post.call_count == 2
-        client.client.media_post.assert_any_call("/tmp/test_file", mime_type="image/jpeg", description="Image 1")
-        client.client.media_post.assert_any_call("/tmp/test_file", mime_type="image/jpeg", description="")
-        
+        client.client.media_post.assert_any_call(
+            "/tmp/test_file", mime_type="image/jpeg", description="Image 1"
+        )
+        client.client.media_post.assert_any_call(
+            "/tmp/test_file", mime_type="image/jpeg", description=""
+        )
+
         assert mock_unlink.call_count == 2
         mock_unlink.assert_called_with("/tmp/test_file")
 
@@ -226,67 +225,68 @@ class TestMastodonClient:
     def test_upload_media_error(self, mock_unlink, mock_temp_file, mock_urlretrieve):
         """Test _upload_media with error."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Mock the client and temp file
         client.client = MagicMock()
         mock_temp = MagicMock()
         mock_temp.name = "/tmp/test_file"
         mock_temp_file.return_value.__enter__.return_value = mock_temp
-        
+
         # Mock media_post to raise an exception
         client.client.media_post.side_effect = Exception("Upload failed")
-        
+
         # Create test attachment
         attachments = [
             MediaAttachment(
                 url="https://example.com/image.jpg",
                 alt_text="Image",
                 mime_type="image/jpeg",
-                media_type=MediaType.IMAGE
+                media_type=MediaType.IMAGE,
             )
         ]
-        
+
         # Call the method
         result = client._upload_media(attachments)
-        
+
         # Check result is empty list (error handled)
         assert result == []
-        
+
         # Verify mock calls
-        mock_urlretrieve.assert_called_once_with("https://example.com/image.jpg", "/tmp/test_file")
-        client.client.media_post.assert_called_once_with("/tmp/test_file", mime_type="image/jpeg", description="Image")
+        mock_urlretrieve.assert_called_once_with(
+            "https://example.com/image.jpg", "/tmp/test_file"
+        )
+        client.client.media_post.assert_called_once_with(
+            "/tmp/test_file", mime_type="image/jpeg", description="Image"
+        )
         # We don't assert unlink because in the error case it's not called (exception happens during upload)
 
     def test_determine_media_type(self):
         """Test _determine_media_type method."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Test all known types
         assert client._determine_media_type("image") == "image"
         assert client._determine_media_type("video") == "video"
         assert client._determine_media_type("gifv") == "video"
         assert client._determine_media_type("audio") == "audio"
         assert client._determine_media_type("unknown") == "other"
-        
+
         # Test unknown type
         assert client._determine_media_type("something_else") == "other"
 
     def test_convert_to_mastodon_post(self):
         """Test _convert_to_mastodon_post method."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Create a mock toot response
         toot = MagicMock()
         toot.id = 12345
@@ -294,15 +294,15 @@ class TestMastodonClient:
         toot.created_at = "2023-01-01T12:00:00Z"
         toot.url = "https://mastodon.test/@user/12345"
         toot.visibility = "public"
-        
+
         # Mock account
         toot.account.id = 67890
         toot.account.acct = "user@mastodon.test"
         toot.account.display_name = "User Name"
-        
+
         # Mock application
         toot.application.name = "TestApp"
-        
+
         # Mock media_attachments
         media = MagicMock()
         media.url = "https://mastodon.test/media/image.jpg"
@@ -310,18 +310,20 @@ class TestMastodonClient:
         media.type = "image"
         media.mime_type = "image/jpeg"
         toot.media_attachments = [media]
-        
+
         # Additional properties
         toot.sensitive = True
         toot.spoiler_text = "Content warning"
         toot.favourites_count = 5
         toot.reblogs_count = 2
-        
+
         # Mock determine_media_type
-        with patch.object(client, '_determine_media_type', return_value=MediaType.IMAGE):
+        with patch.object(
+            client, "_determine_media_type", return_value=MediaType.IMAGE
+        ):
             # Call the method
             result = client._convert_to_mastodon_post(toot)
-            
+
             # Check the result
             assert isinstance(result, MastodonPost)
             assert result.id == "12345"
@@ -338,10 +340,11 @@ class TestMastodonClient:
             assert result.favourites_count == 5
             assert result.reblogs_count == 2
             assert result.platform == "mastodon"
-            
+
             # Check media attachment
             assert len(result.media_attachments) == 1
-            assert result.media_attachments[0].url == "https://mastodon.test/media/image.jpg"
+            assert (result.media_attachments[0].url ==
+                   "https://mastodon.test/media/image.jpg")
             assert result.media_attachments[0].alt_text == "Test image"
             assert result.media_attachments[0].media_type == MediaType.IMAGE
             assert result.media_attachments[0].mime_type == "image/jpeg"
@@ -356,33 +359,32 @@ class TestMastodonClient:
         """Test cross_post success case."""
         # Setup configuration and client
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         client.client = MagicMock()
-        
+
         # Setup mocks
         mock_auth.return_value = True
         mock_format_content.return_value = "Formatted content"
         mock_upload_media.return_value = ["media1", "media2"]
-        
+
         mock_toot = MagicMock()
         client.client.status_post.return_value = mock_toot
-        
+
         mock_mastodon_post = MagicMock()
         mock_convert.return_value = mock_mastodon_post
-        
+
         # Create test Bluesky post
         bluesky_post = MagicMock()
         bluesky_post.media_attachments = ["attachment1", "attachment2"]
-        
+
         # Call the method
         result = client.cross_post(bluesky_post)
-        
+
         # Check the result
         assert result == mock_mastodon_post
-        
+
         # Verify mock calls
         mock_auth.assert_called_once()
         mock_format_content.assert_called_once_with(bluesky_post)
@@ -391,7 +393,7 @@ class TestMastodonClient:
             status="Formatted content",
             media_ids=["media1", "media2"],
             visibility="public",
-            sensitive=False
+            sensitive=False,
         )
         mock_convert.assert_called_once_with(mock_toot)
 
@@ -399,18 +401,17 @@ class TestMastodonClient:
     def test_cross_post_not_authenticated(self, mock_auth):
         """Test cross_post when not authenticated."""
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
-        
+
         # Setup mock to return False for authentication
         mock_auth.return_value = False
-        
+
         # Call the method and check exception
         with pytest.raises(ValueError, match="Not authenticated with Mastodon"):
             client.cross_post(MagicMock())
-            
+
         # Verify mock call
         mock_auth.assert_called_once()
 
@@ -421,30 +422,29 @@ class TestMastodonClient:
         """Test cross_post when posting fails."""
         # Setup configuration and client
         config = MastodonConfig(
-            instance_url="https://mastodon.test",
-            access_token="test_token"
+            instance_url="https://mastodon.test", access_token="test_token"
         )
         client = MastodonClient(config)
         client.client = MagicMock()
-        
+
         # Setup mocks
         mock_auth.return_value = True
         mock_format_content.return_value = "Formatted content"
         mock_upload_media.return_value = ["media1", "media2"]
-        
+
         # Mock status_post to raise an exception
         client.client.status_post.side_effect = Exception("Posting failed")
-        
+
         # Create test Bluesky post
         bluesky_post = MagicMock()
         bluesky_post.media_attachments = ["attachment1", "attachment2"]
-        
+
         # Call the method
         result = client.cross_post(bluesky_post)
-        
+
         # Check the result is None
         assert result is None
-        
+
         # Verify mock calls
         mock_auth.assert_called_once()
         mock_format_content.assert_called_once_with(bluesky_post)
@@ -453,5 +453,5 @@ class TestMastodonClient:
             status="Formatted content",
             media_ids=["media1", "media2"],
             visibility="public",
-            sensitive=False
+            sensitive=False,
         )

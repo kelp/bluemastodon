@@ -2,12 +2,11 @@
 
 from datetime import datetime
 
-import pytest
+# No unused imports
 
-from social_sync.models import (
-    MediaType, MediaAttachment, Link, SocialPost,
-    BlueskyPost, MastodonPost, SyncRecord
-)
+from social_sync.models import (BlueskyPost, Link, MastodonPost,
+                                MediaAttachment, MediaType, SocialPost,
+                                SyncRecord)
 
 
 class TestModels:
@@ -19,7 +18,7 @@ class TestModels:
         assert MediaType.VIDEO == "video"
         assert MediaType.AUDIO == "audio"
         assert MediaType.OTHER == "other"
-        
+
         # Test comparison
         assert MediaType.IMAGE == MediaType.IMAGE
         assert MediaType.IMAGE != MediaType.VIDEO
@@ -38,7 +37,7 @@ class TestModels:
         assert media.width is None
         assert media.height is None
         assert media.size_bytes is None
-        
+
         # Test with all fields
         media = MediaAttachment(
             url="https://example.com/image.jpg",
@@ -65,7 +64,7 @@ class TestModels:
         assert link.title is None
         assert link.description is None
         assert link.image_url is None
-        
+
         # Test with all fields
         link = Link(
             url="https://example.com",
@@ -81,7 +80,7 @@ class TestModels:
     def test_social_post_base_model(self):
         """Test the SocialPost base model."""
         now = datetime.now()
-        
+
         # Test with required fields
         post = SocialPost(
             id="123",
@@ -106,11 +105,13 @@ class TestModels:
         assert post.repost_of_id is None
         assert post.language is None
         assert post.visibility is None
-        
+
         # Test with all fields
-        media = MediaAttachment(url="https://example.com/image.jpg", media_type=MediaType.IMAGE)
+        media = MediaAttachment(
+            url="https://example.com/image.jpg", media_type=MediaType.IMAGE
+        )
         link = Link(url="https://example.com")
-        
+
         post = SocialPost(
             id="123",
             content="Test post",
@@ -141,7 +142,7 @@ class TestModels:
     def test_bluesky_post_model(self):
         """Test the BlueskyPost model."""
         now = datetime.now()
-        
+
         post = BlueskyPost(
             id="123",
             content="Test post",
@@ -151,7 +152,7 @@ class TestModels:
             uri="at://did:plc:123/app.bsky.feed.post/123",
             cid="cid123",
         )
-        
+
         assert post.platform == "bluesky"  # Default value
         assert post.uri == "at://did:plc:123/app.bsky.feed.post/123"
         assert post.cid == "cid123"
@@ -159,7 +160,7 @@ class TestModels:
         assert post.reply_parent is None
         assert post.like_count is None
         assert post.repost_count is None
-        
+
         # Test with all fields
         post = BlueskyPost(
             id="123",
@@ -174,7 +175,7 @@ class TestModels:
             like_count=5,
             repost_count=2,
         )
-        
+
         assert post.reply_root == "root123"
         assert post.reply_parent == "parent123"
         assert post.like_count == 5
@@ -183,7 +184,7 @@ class TestModels:
     def test_mastodon_post_model(self):
         """Test the MastodonPost model."""
         now = datetime.now()
-        
+
         post = MastodonPost(
             id="123",
             content="Test post",
@@ -192,7 +193,7 @@ class TestModels:
             author_handle="user@example.com",
             url="https://example.com/@user/123",
         )
-        
+
         assert post.platform == "mastodon"  # Default value
         assert post.url == "https://example.com/@user/123"
         assert post.application is None
@@ -200,7 +201,7 @@ class TestModels:
         assert post.spoiler_text is None
         assert post.favourites_count is None
         assert post.reblogs_count is None
-        
+
         # Test with all fields
         post = MastodonPost(
             id="123",
@@ -215,7 +216,7 @@ class TestModels:
             favourites_count=5,
             reblogs_count=2,
         )
-        
+
         assert post.application == "TestApp"
         assert post.sensitive is True
         assert post.spoiler_text == "Spoiler"
@@ -231,7 +232,7 @@ class TestModels:
             target_id="tgt456",
             target_platform="mastodon",
         )
-        
+
         assert record.source_id == "src123"
         assert record.source_platform == "bluesky"
         assert record.target_id == "tgt456"
@@ -239,7 +240,7 @@ class TestModels:
         assert record.synced_at is not None  # Should have default current time
         assert record.success is True  # Default value
         assert record.error_message is None
-        
+
         # Test with all fields
         now = datetime.now()
         record = SyncRecord(
@@ -251,7 +252,7 @@ class TestModels:
             success=False,
             error_message="Error message",
         )
-        
+
         assert record.synced_at == now
         assert record.success is False
         assert record.error_message == "Error message"

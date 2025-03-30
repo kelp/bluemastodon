@@ -1,16 +1,15 @@
 """Common test fixtures and utilities."""
 
-import os
 import json
+import os
 import tempfile
-from datetime import datetime, timedelta
-from typing import Dict, Any
+from datetime import datetime
 
 import pytest
-from pydantic import BaseModel
 
-from social_sync.config import Config, BlueskyConfig, MastodonConfig
-from social_sync.models import BlueskyPost, MastodonPost, MediaAttachment, Link, MediaType
+from social_sync.config import BlueskyConfig, Config, MastodonConfig
+from social_sync.models import (BlueskyPost, Link, MastodonPost,
+                                MediaAttachment, MediaType)
 
 
 @pytest.fixture
@@ -27,13 +26,13 @@ def sample_env_file():
     INCLUDE_MEDIA=true
     INCLUDE_LINKS=true
     """
-    
-    with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
         temp_file.write(env_content)
         temp_path = temp_file.name
-    
+
     yield temp_path
-    
+
     # Clean up
     if os.path.exists(temp_path):
         os.unlink(temp_path)
@@ -120,65 +119,65 @@ def sample_bluesky_api_response():
     # We'll expand it based on testing needs
     now = datetime.now()
     created_at = now.isoformat() + "Z"
-    
+
     class FeedViewPost:
         class Author:
             did = "did:plc:test_user"
             handle = "test_user.bsky.social"
             displayName = "Test User"
-        
+
         class Record:
             text = "This is a test post with #hashtag"
             createdAt = created_at
             reply = None
-            
+
             class Embed:
                 class Image:
                     class ImageData:
                         class Ref:
                             link = "image_cid"
-                        
+
                         class Size:
                             width = 800
                             height = 600
-                        
+
                         mimeType = "image/jpeg"
-                        
+
                     alt = "Test image"
                     image = ImageData()
-                
+
                 class External:
                     uri = "https://example.com"
                     title = "Example Website"
                     description = "An example website for testing"
-                    
+
                     class Thumb:
                         class Ref:
                             link = "thumb_cid"
-                        
+
                         mimeType = "image/jpeg"
-                    
+
                     thumb = Thumb()
-                
+
                 images = [Image()]
                 external = External()
-            
+
             embed = Embed()
-        
+
         uri = "at://test_user/app.bsky.feed.post/test123"
         cid = "cid123"
         author = Author()
         record = Record()
         likeCount = 5
         repostCount = 2
-    
+
     class FeedView:
         post = FeedViewPost()
         reason = None
-    
+
     class Response:
         feed = [FeedView()]
-    
+
     return Response()
 
 
@@ -187,21 +186,21 @@ def sample_mastodon_api_response():
     """Create a sample Mastodon API response for mocking."""
     # This is a simplified version of the actual API response
     now = datetime.now().isoformat() + "Z"
-    
+
     class MediaAttachment:
         url = "https://mastodon.test/media/image.jpg"
         description = "Test image"
         type = "image"
         mime_type = "image/jpeg"
-    
+
     class Account:
         id = 67890
         acct = "test_user@mastodon.test"
         display_name = "Test User"
-    
+
     class Application:
         name = "social-sync"
-    
+
     class Response:
         id = 12345
         content = "This is a test post with #hashtag"
@@ -215,7 +214,7 @@ def sample_mastodon_api_response():
         visibility = "public"
         favourites_count = 3
         reblogs_count = 1
-    
+
     return Response()
 
 
@@ -233,7 +232,7 @@ def sample_sync_state_file():
                 "target_platform": "mastodon",
                 "synced_at": now,
                 "success": True,
-                "error_message": None
+                "error_message": None,
             },
             {
                 "source_id": "existing2",
@@ -242,17 +241,17 @@ def sample_sync_state_file():
                 "target_platform": "mastodon",
                 "synced_at": now,
                 "success": True,
-                "error_message": None
-            }
-        ]
+                "error_message": None,
+            },
+        ],
     }
-    
-    with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+
+    with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
         json.dump(state_content, temp_file)
         temp_path = temp_file.name
-    
+
     yield temp_path
-    
+
     # Clean up
     if os.path.exists(temp_path):
         os.unlink(temp_path)

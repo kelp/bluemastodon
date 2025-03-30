@@ -6,7 +6,6 @@ providing access to API credentials and settings.
 
 import os
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -74,7 +73,9 @@ def load_config(env_file: Optional[str] = None) -> Config:
 
     missing = [var for var in required_vars if not os.getenv(var)]
     if missing:
-        raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        raise ValueError(
+            f"Missing required environment variables: {', '.join(missing)}"
+        )
 
     # Load optional settings with defaults
     lookback_hours = int(os.getenv("LOOKBACK_HOURS", "24"))
@@ -83,7 +84,7 @@ def load_config(env_file: Optional[str] = None) -> Config:
     # Handle invalid boolean values by defaulting to True
     include_media_str = os.getenv("INCLUDE_MEDIA", "true").lower()
     include_media = include_media_str in ["true", "1", "yes", "y"]
-    
+
     include_links_str = os.getenv("INCLUDE_LINKS", "true").lower()
     include_links = include_links_str in ["true", "1", "yes", "y"]
 
