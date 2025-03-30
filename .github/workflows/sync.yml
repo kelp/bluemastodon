@@ -17,6 +17,12 @@ on:
         default: false
         type: boolean
 
+# Ensure only one sync job runs at a time
+# If a run is already in progress, wait for it to complete
+concurrency:
+  group: sync-posts
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -44,8 +50,9 @@ jobs:
       id: restore-cache
       with:
         path: sync_state.json
-        key: sync-state
+        key: sync-state-${{ github.run_id }}
         restore-keys: |
+          sync-state-
           sync-state
 
     - name: Initialize state file if missing
@@ -89,4 +96,4 @@ jobs:
       uses: actions/cache/save@v4
       with:
         path: sync_state.json
-        key: ${{ steps.restore-cache.outputs.cache-primary-key || 'sync-state' }}
+        key: sync-state-${{ github.run_id }}
