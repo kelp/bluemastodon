@@ -63,11 +63,24 @@ posts to social platforms.
 - [x] Fix synced post format and link
     - Fixed regex patterns to avoid creating duplicated "https://" prefixes
     - Implemented URL expansion to fix truncated URLs by using the links data from Bluesky
+- [x] Fix state file management to prevent double posts
+    - Added immediate state saving after successful Mastodon posts
+    - Added detection for partial success scenarios
+    - Added sync_state.json to .gitignore to prevent committing state
+- [x] Improve GitHub Actions cache handling
+    - Added unique cache keys with restore-key fallbacks
+    - Added workflow concurrency control to prevent race conditions
+- [x] Enhance release process in Makefile
+    - Added version consistency checks
+    - Added CHANGELOG verification
+    - Added comprehensive bump-version target
 - [ ] Change the name of the Test workflow to something more descriptive
 - [x] Initial update of Makefile to work with run.sh like webdown
-- [ ] Compare and merge additional Makefile targets and features from webdown
+- [x] Compare and merge additional Makefile targets and features from webdown
 - [ ] Setup publishing to pypi, copy what we can from webdown
 - [x] Add documentation on managing GitHub Actions cache
+- [ ] Setup GitHub Pages documentation site
+- [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match social-sync's approach
 
 ## 8. Future Enhancements
 - [ ] Add support for images and other media types
