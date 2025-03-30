@@ -10,17 +10,17 @@ A Python application to automatically cross-post manual Bluesky posts to Mastodo
 
 ## Overview
 
-Social-Sync monitors your Bluesky account for new posts and automatically 
-cross-posts them to your Mastodon account. It's designed to be run as a 
+Social-Sync monitors your Bluesky account for new posts and automatically
+cross-posts them to your Mastodon account. It's designed to be run as a
 scheduled job via GitHub Actions or any other scheduler.
 
-This tool specifically handles synchronizing manual posts from Bluesky to 
-Mastodon. Blog post publishing to social platforms can be managed by a 
+This tool specifically handles synchronizing manual posts from Bluesky to
+Mastodon. Blog post publishing to social platforms can be managed by a
 separate tool.
 
 ## Features
 
-- 🔄 **Automatic Synchronization**: Fetches recent Bluesky posts and 
+- 🔄 **Automatic Synchronization**: Fetches recent Bluesky posts and
   cross-posts to Mastodon
 - 🖼️ **Media Support**: Transfers images and attachments between platforms
 - 🔗 **Link Handling**: Preserves external links in your posts
@@ -140,11 +140,11 @@ social-sync --state /path/to/state.json
 
 #### Setting Up Securely with GitHub Secrets
 
-Social-Sync is designed to work with GitHub Actions in a secure way, using 
+Social-Sync is designed to work with GitHub Actions in a secure way, using
 GitHub's encrypted secrets feature to store sensitive credentials:
 
 1. Fork this repository or copy the workflow files to your own repository
-2. In your GitHub repository, go to "Settings" > "Secrets and variables" > 
+2. In your GitHub repository, go to "Settings" > "Secrets and variables" >
    "Actions"
 3. Add the following repository secrets (these are encrypted and secure):
    - `BLUESKY_USERNAME`: Your Bluesky username
@@ -152,15 +152,15 @@ GitHub's encrypted secrets feature to store sensitive credentials:
    - `MASTODON_INSTANCE_URL`: Your Mastodon instance URL
    - `MASTODON_ACCESS_TOKEN`: Your Mastodon API access token
 
-For detailed instructions on obtaining and setting up these secrets, see the 
+For detailed instructions on obtaining and setting up these secrets, see the
 [GitHub Secrets Setup Guide](docs/setup-github-secrets.md).
 
-> **SECURITY WARNING**: Never commit your actual credentials to the repository! 
+> **SECURITY WARNING**: Never commit your actual credentials to the repository!
 > Always use GitHub Secrets for sensitive information.
 
 #### Optional Configuration Variables
 
-You can also add these as repository variables (not secrets, as they're not 
+You can also add these as repository variables (not secrets, as they're not
 sensitive):
 
 1. Go to "Settings" > "Secrets and variables" > "Actions" > "Variables" tab
@@ -175,29 +175,32 @@ sensitive):
 
 1. Enable the workflow in your GitHub repository (go to "Actions" tab)
 2. The sync will run automatically according to the schedule (hourly by default)
-3. You can also trigger it manually from the Actions tab by clicking "Run 
+3. You can also trigger it manually from the Actions tab by clicking "Run
    workflow"
-4. For manual runs, you can enable debug mode or dry-run mode using the provided 
+4. For manual runs, you can enable debug mode or dry-run mode using the provided
    options
 
 #### How Duplicate Posts Are Prevented
 
 Social-Sync uses a robust state tracking system to prevent duplicate posts:
 
-1. **State File**: Each run maintains a JSON file with IDs of previously synced 
+1. **State File**: Each run maintains a JSON file with IDs of previously synced
    posts
-2. **GitHub Actions Cache**: The state file is persisted between runs using 
+2. **GitHub Actions Cache**: The state file is persisted between runs using
    GitHub's cache
-3. **Lookback Window**: The tool only examines posts from the last 6 hours 
+3. **Lookback Window**: The tool only examines posts from the last 6 hours
    (configurable)
-4. **Deduplication Logic**: Posts with IDs already in the state file are 
+4. **Deduplication Logic**: Posts with IDs already in the state file are
    automatically skipped
 
 This system ensures:
 - Each post is only synced once, even across multiple workflow runs
 - If a workflow run is missed, posts are still captured in the next run
-- Even if the cache is lost, only posts within the lookback window might be 
+- Even if the cache is lost, only posts within the lookback window might be
   duplicated
+
+For advanced cache management options (including how to clear the cache), see
+[Managing GitHub Actions Cache](docs/managing-cache.md).
 
 ## Development
 
@@ -236,7 +239,7 @@ This project uses pre-commit hooks to ensure code quality. The hooks run:
 - Security analysis (Bandit)
 - Tests with minimum coverage requirements (pytest)
 
-Pre-commit hooks run automatically on commit. Pre-push hooks run more 
+Pre-commit hooks run automatically on commit. Pre-push hooks run more
 comprehensive checks before pushing to the remote repository.
 
 ### Testing
@@ -306,13 +309,13 @@ make publish
    - If you suspect your tokens were compromised, regenerate them immediately
 
 6. **Cache Issues**:
-   - If you experience duplicate posts, the GitHub Actions cache may have been 
+   - If you experience duplicate posts, the GitHub Actions cache may have been
      lost
    - Cache can expire after 7 days of non-use or during GitHub maintenance
-   - To debug cache issues, check workflow logs for "Cache restored from key: 
+   - To debug cache issues, check workflow logs for "Cache restored from key:
      sync-state"
-   - If needed, you can manually clear the cache through GitHub's API or 
-     interface
+   - For instructions on how to view, clear, or reset the cache, see
+     [Managing GitHub Actions Cache](docs/managing-cache.md)
 
 ## License
 

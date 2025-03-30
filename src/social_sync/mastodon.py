@@ -278,13 +278,16 @@ class MastodonClient:
                     )
                 )
 
-        # Ensure the ID is a string to prevent 'str' object cannot be interpreted as an integer error
+        # Convert ID to string to fix type errors
+        # (Prevents the "str object cannot be interpreted as integer" error)
         post_id = str(toot.id) if hasattr(toot, "id") else "unknown"
-        
+
         # Handle datetime - ensure it's in the right format
         if hasattr(toot, "created_at"):
             if isinstance(toot.created_at, str):
-                created_at = datetime.fromisoformat(toot.created_at.replace("Z", "+00:00"))
+                created_at = datetime.fromisoformat(
+                    toot.created_at.replace("Z", "+00:00")
+                )
             elif isinstance(toot.created_at, datetime):
                 created_at = toot.created_at
             else:
@@ -298,14 +301,28 @@ class MastodonClient:
             id=post_id,
             content=toot.content if hasattr(toot, "content") else "",
             created_at=created_at,
-            author_id=str(toot.account.id) if hasattr(toot, "account") and hasattr(toot.account, "id") else "",
-            author_handle=toot.account.acct if hasattr(toot, "account") and hasattr(toot.account, "acct") else "",
-            author_display_name=toot.account.display_name if hasattr(toot, "account") and hasattr(toot.account, "display_name") else "",
+            author_id=(
+                str(toot.account.id)
+                if hasattr(toot, "account") and hasattr(toot.account, "id")
+                else ""
+            ),
+            author_handle=(
+                toot.account.acct
+                if hasattr(toot, "account") and hasattr(toot.account, "acct")
+                else ""
+            ),
+            author_display_name=(
+                toot.account.display_name
+                if hasattr(toot, "account") and hasattr(toot.account, "display_name")
+                else ""
+            ),
             media_attachments=media_attachments,
             url=toot.url if hasattr(toot, "url") else "",
             application=(
                 toot.application.name
-                if hasattr(toot, "application") and toot.application and hasattr(toot.application, "name")
+                if hasattr(toot, "application")
+                and toot.application
+                and hasattr(toot.application, "name")
                 else None
             ),
             sensitive=toot.sensitive if hasattr(toot, "sensitive") else False,

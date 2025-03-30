@@ -1,8 +1,8 @@
 # Social-Sync Implementation Plan
 
 ## Scope Clarification
-This tool specifically handles synchronizing manual posts from Bluesky to 
-Mastodon. A separate tool in the blog repository will handle publishing blog 
+This tool specifically handles synchronizing manual posts from Bluesky to
+Mastodon. A separate tool in the blog repository will handle publishing blog
 posts to social platforms.
 
 ## 1. Project Setup (Day 1)
@@ -57,7 +57,15 @@ posts to social platforms.
 - [x] Add examples and troubleshooting guide
 - [x] Final code review and quality check
 
-## 7. Future Enhancements
+## 7. Cleanup and Bug Fixes
+- [ ] Fix the pre-commit hooks
+- [ ] Fix synced post format and link
+    Claude and I just wrote Social Sync: https://https://github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
+- [ ] Change the name of the Test workflow to something more descriptive
+- [ ] Look at our Makefile and make it work more like webdown
+- [ ] Setup publishing to pypi, copy what we can from webdown
+
+## 8. Future Enhancements
 - [ ] Add support for images and other media types
 - [ ] Implement bi-directional sync
 - [ ] Add support for replies and interactions

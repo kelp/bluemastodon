@@ -1,11 +1,11 @@
 # Social-Sync Project Guidelines
 
 ## Project Overview
-A Python application to automatically cross-post manual Bluesky posts to 
+A Python application to automatically cross-post manual Bluesky posts to
 Mastodon using GitHub Actions.
 
-**Scope**: This tool specifically handles synchronizing manual posts from 
-Bluesky to Mastodon. Blog post publishing to social platforms will be 
+**Scope**: This tool specifically handles synchronizing manual posts from
+Bluesky to Mastodon. Blog post publishing to social platforms will be
 managed by a separate tool in the blog repository.
 
 ## Architecture
@@ -81,7 +81,7 @@ managed by a separate tool in the blog repository.
 - Example usage:
   ```python
   from atproto import Client
-  
+
   client = Client()
   client.login('username', 'password')
   client.send_post(text='Hello World!')
