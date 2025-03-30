@@ -9,7 +9,6 @@ from social_sync.models import (BlueskyPost, Link, MastodonPost,
 # No unused imports
 
 
-
 class TestModels:
     """Test the models module."""
 

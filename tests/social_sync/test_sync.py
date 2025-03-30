@@ -12,7 +12,6 @@ from social_sync.sync import SyncManager
 # Tests need pytest fixtures
 
 
-
 class TestSyncManager:
     """Test the SyncManager class."""
 

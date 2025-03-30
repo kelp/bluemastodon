@@ -11,7 +11,6 @@ from social_sync import main
 # Tests need pytest fixtures
 
 
-
 class TestMain:
     """Test the main function."""
 
