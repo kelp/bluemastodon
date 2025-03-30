@@ -1,6 +1,6 @@
 # BlueMastodon
 
-A Python application to automatically cross-post manual Bluesky posts to Mastodon.
+A Python tool to automatically cross-post manual Bluesky posts to Mastodon.
 
 *Formerly known as bluemastodon*
 
