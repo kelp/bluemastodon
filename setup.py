@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 if __name__ == "__main__":
     setup(
         name="social-sync",
-        version="0.1.0",
+        version="0.9.1",
         description="Automatically cross-post from Bluesky to Mastodon",
         author="Travis Cole",
         author_email="kelp@plek.org",

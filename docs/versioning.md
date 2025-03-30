@@ -44,6 +44,14 @@ make version-tag
 
 ## Version History
 
+- **0.9.1**: Bug fix release
+  - Improved state file management to prevent double posts
+  - Added immediate state saving after successful Mastodon posts
+  - Added detection for partial success scenarios
+  - Added sync_state.json to .gitignore to prevent committing state
+  - Aligned CI and pre-commit lint configurations
+  - 100% test coverage maintained
+
 - **0.9.0**: Initial beta release
   - Complete implementation of Bluesky to Mastodon cross-posting
   - Robust duplicate post prevention with two-layer approach
