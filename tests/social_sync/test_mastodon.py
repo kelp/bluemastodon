@@ -474,6 +474,52 @@ class TestMastodonClient:
         assert result.id == "duplicate"
         assert result.content == "This is a test post"
         client.client.status_post.assert_not_called()
+        
+    @patch.object(MastodonClient, "_convert_to_mastodon_post")
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_duplicate_with_conversion_error(
+        self, mock_auth, mock_is_duplicate, mock_convert
+    ):
+        """Test post with duplicate detection but error in conversion."""
+        # Setup
+        mock_auth.return_value = True
+        mock_existing_post = MagicMock()
+        mock_existing_post.id = "12345"
+        mock_existing_post.url = "https://mastodon.test/@user/12345"
+        mock_is_duplicate.return_value = (True, mock_existing_post)
+        mock_convert.side_effect = Exception("Conversion error")
+
+        # Create client
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+
+        # Create test post
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="This is a test post",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            media_attachments=[],
+            links=[],
+        )
+
+        # Post
+        result = client.post(bluesky_post)
+
+        # Assert
+        assert result is not None
+        assert result.id == "12345"
+        assert result.content == "This is a test post"
+        assert result.url == "https://mastodon.test/@user/12345"
+        client.client.status_post.assert_not_called()
 
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "ensure_authenticated")

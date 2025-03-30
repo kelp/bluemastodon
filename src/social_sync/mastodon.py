@@ -74,28 +74,53 @@ class MastodonClient:
         try:
             # Check for duplicate content
             is_duplicate, existing_post = self._is_duplicate_post(post.content)
-            if is_duplicate and existing_post:
-                logger.info(
-                    f"Skipping duplicate post on Mastodon: {post.content[:50]}..."
-                )
-                return self._convert_to_mastodon_post(existing_post)
-            elif is_duplicate:
-                logger.info(
-                    f"Duplicate detected but post info not available: "
-                    f"{post.content[:40]}..."
-                )
-                # Create a minimal post object to indicate success without posting
-                minimal_post = MastodonPost(
-                    id="duplicate",
-                    content=post.content,
-                    created_at=datetime.now(),
-                    author_id="",
-                    author_handle="",
-                    author_display_name="",
-                    media_attachments=[],
-                    url="",
-                )
-                return minimal_post
+            if is_duplicate:
+                # Handle both cases: when we have the existing post info or not
+                if existing_post:
+                    logger.info(
+                        f"Skipping duplicate post on Mastodon: {post.content[:50]}..."
+                    )
+                    try:
+                        return self._convert_to_mastodon_post(existing_post)
+                    except Exception as e:
+                        logger.warning(f"Error converting existing post: {e}")
+                        # Fall back to a minimal post if conversion fails
+                        minimal_post = MastodonPost(
+                            id=(
+                                str(existing_post.id)
+                                if hasattr(existing_post, "id")
+                                else "duplicate"
+                            ),
+                            content=post.content,
+                            created_at=datetime.now(),
+                            author_id="",
+                            author_handle="",
+                            author_display_name="",
+                            media_attachments=[],
+                            url=(
+                                existing_post.url
+                                if hasattr(existing_post, "url")
+                                else ""
+                            ),
+                        )
+                        return minimal_post
+                else:
+                    logger.info(
+                        f"Duplicate detected but post info not available: "
+                        f"{post.content[:40]}..."
+                    )
+                    # Create a minimal post object to indicate success without posting
+                    minimal_post = MastodonPost(
+                        id="duplicate",
+                        content=post.content,
+                        created_at=datetime.now(),
+                        author_id="",
+                        author_handle="",
+                        author_display_name="",
+                        media_attachments=[],
+                        url="",
+                    )
+                    return minimal_post
 
             # Apply character limits
             content = self._apply_character_limits(post.content)
@@ -205,6 +230,21 @@ class MastodonClient:
         """
         # Mastodon has a 500 character limit
         max_length = 500
+
+        # Make sure URLs are properly formatted
+        # This converts shortened URLs like "github.com/..." to full URLs
+        content = re.sub(
+            r'(?<!\w)((?:github|twitter|mastodon|bsky)\.com/[^\s]+)',
+            r'https://\1',
+            content
+        )
+
+        # Make sure domains like example.com are linked
+        content = re.sub(
+            r'(?<!\w|\.)([a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}\b(?:/\S*)?)',
+            r'https://\1',
+            content
+        )
 
         if len(content) <= max_length:
             return content
