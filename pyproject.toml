@@ -3,7 +3,32 @@ name = "bluemastodon"
 version = "0.9.3"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = ["Travis Cole <kelp@plek.org>"]
+license = "MIT"
 readme = "README.md"
+repository = "https://github.com/kelp/bluemastodon"
+homepage = "https://github.com/kelp/bluemastodon"
+documentation = "https://github.com/kelp/bluemastodon/tree/main/docs"
+keywords = ["bluesky", "mastodon", "social-media", "cross-posting", "automation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Communications",
+    "Topic :: Internet",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/kelp/bluemastodon/issues"
+"Changelog" = "https://github.com/kelp/bluemastodon/blob/main/CHANGELOG.md"
+
+[tool.poetry.scripts]
+bluemastodon = "bluemastodon:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
