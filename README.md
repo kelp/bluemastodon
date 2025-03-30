@@ -1,6 +1,8 @@
-# Social-Sync
+# BlueMastodon
 
 A Python application to automatically cross-post manual Bluesky posts to Mastodon.
+
+*Formerly known as social-sync*
 
 ![Version](https://img.shields.io/badge/version-0.9.2-blue)
 ![Status](https://img.shields.io/badge/status-beta-orange)
@@ -10,7 +12,7 @@ A Python application to automatically cross-post manual Bluesky posts to Mastodo
 
 ## Overview
 
-Social-Sync monitors your Bluesky account for new posts and automatically
+BlueMastodon monitors your Bluesky account for new posts and automatically
 cross-posts them to your Mastodon account. It's designed to be run as a
 scheduled job via GitHub Actions or any other scheduler.
 
@@ -43,7 +45,7 @@ separate tool.
 #### Using pip
 
 ```bash
-pip install social-sync
+pip install bluemastodon
 ```
 
 #### Using Poetry
@@ -105,7 +107,7 @@ Run the sync manually:
 
 ```bash
 # If installed with pip
-social-sync
+bluemastodon
 
 # If using Poetry
 poetry run python -m social_sync
@@ -124,16 +126,16 @@ poetry run python -m social_sync
 
 ```bash
 # Run with debug logging
-social-sync --debug
+bluemastodon --debug
 
 # Dry run (no actual posts)
-social-sync --dry-run
+bluemastodon --dry-run
 
 # Use custom config file
-social-sync --config /path/to/custom.env
+bluemastodon --config /path/to/custom.env
 
 # Specify state file location
-social-sync --state /path/to/state.json
+bluemastodon --state /path/to/state.json
 ```
 
 ### Scheduled Sync with GitHub Actions
@@ -182,7 +184,7 @@ sensitive):
 
 #### How Duplicate Posts Are Prevented
 
-Social-Sync uses a robust state tracking system to prevent duplicate posts:
+BlueMastodon uses a robust state tracking system to prevent duplicate posts:
 
 1. **State File**: Each run maintains a JSON file with IDs of previously synced
    posts
@@ -206,7 +208,7 @@ For advanced cache management options (including how to clear the cache), see
 
 ### Version Information
 
-Social-Sync follows [Semantic Versioning](https://semver.org/) and is currently
+BlueMastodon follows [Semantic Versioning](https://semver.org/) and is currently
 at version 0.9.2 (beta). For more information about our versioning system
 and release process, see [Versioning Guidelines](docs/versioning.md).
 
@@ -215,7 +217,7 @@ and release process, see [Versioning Guidelines](docs/versioning.md).
 ```bash
 # Clone the repository
 git clone https://github.com/kelp/social-sync.git
-cd social-sync
+cd social-sync  # Repository name remains the same for now
 
 # Run the setup script (installs dependencies and pre-commit hooks)
 ./scripts/setup-dev.sh

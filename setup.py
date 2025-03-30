@@ -1,10 +1,10 @@
-"""Setup script for social-sync."""
+"""Setup script for bluemastodon."""
 
 from setuptools import find_packages, setup
 
 if __name__ == "__main__":
     setup(
-        name="social-sync",
+        name="bluemastodon",
         version="0.9.1",
         description="Automatically cross-post from Bluesky to Mastodon",
         author="Travis Cole",
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         ],
         entry_points={
             "console_scripts": [
-                "social-sync=social_sync:main",
+                "bluemastodon=social_sync:main",
             ],
         },
         classifiers=[

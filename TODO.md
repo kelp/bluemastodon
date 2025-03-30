@@ -85,6 +85,7 @@ posts to social platforms.
   - Ensure proper entry points and CLI functionality
   - Update instructions in README when complete
   - Added python-release.yml workflow for automated PyPI publishing
+  - Renamed package to "bluemastodon" to avoid naming conflicts on PyPI
 - [x] Add documentation on managing GitHub Actions cache
 - [ ] Setup GitHub Pages documentation site
 - [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match social-sync's approach
