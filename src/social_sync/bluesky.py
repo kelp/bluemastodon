@@ -183,7 +183,9 @@ class BlueskyClient:
                         url=self._get_blob_url(post, blob.ref.link),
                         alt_text=img.alt if hasattr(img, "alt") else None,
                         media_type=MediaType.IMAGE,
-                        mime_type=blob.mime_type if hasattr(blob, "mime_type") else None,
+                        mime_type=(
+                            blob.mime_type if hasattr(blob, "mime_type") else None
+                        ),
                         width=blob.size.width if hasattr(blob, "size") else None,
                         height=blob.size.height if hasattr(blob, "size") else None,
                     )

@@ -470,7 +470,9 @@ class TestMastodonClient:
         result = client.post(bluesky_post)
 
         # Assert
-        assert result is None
+        assert result is not None
+        assert result.id == "duplicate"
+        assert result.content == "This is a test post"
         client.client.status_post.assert_not_called()
 
     @patch.object(MastodonClient, "_is_duplicate_post")

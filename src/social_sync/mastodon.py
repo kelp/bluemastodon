@@ -81,7 +81,8 @@ class MastodonClient:
                 return self._convert_to_mastodon_post(existing_post)
             elif is_duplicate:
                 logger.info(
-                    f"Duplicate detected but post info not available: {post.content[:50]}..."
+                    f"Duplicate detected but post info not available: "
+                    f"{post.content[:40]}..."
                 )
                 # Create a minimal post object to indicate success without posting
                 minimal_post = MastodonPost(
