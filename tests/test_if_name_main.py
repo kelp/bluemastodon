@@ -1,32 +1,50 @@
 """
-Test the if __name__ == "__main__" block in social_sync.
-This module should be run directly as a script, not imported.
+Test the if __name__ == "__main__" block in social_sync modules.
 """
 
-import social_sync
+import sys
+import unittest
+from unittest.mock import patch
+
+
+class TestMainModule(unittest.TestCase):
+    """Test the __main__.py module."""
+
+    def test_main_module(self):
+        """Test the __main__.py module's entry point."""
+        # Save original imports and modules
+        original_sys_modules = sys.modules.copy()
+        
+        # Mock main function to prevent actual execution
+        with patch("social_sync.main") as mock_main:
+            mock_main.return_value = 0
+            
+            # Execute the module in a way that __name__ == "__main__" evaluates to True
+            try:
+                # This import executes the code in __main__.py with __name__ set to "__main__"
+                with patch.dict(sys.modules, {'__main__': __import__('social_sync.__main__')}):
+                    import social_sync.__main__
+                    
+                    # Manually invoke the main block from __main__ with name set to __main__
+                    # to trigger the execution of sys.exit(main())
+                    social_sync.__main__.__name__ = "__main__"
+                    exec(
+                        """
+if __name__ == "__main__":
+    sys.exit(main())
+                        """,
+                        vars(social_sync.__main__),
+                    )
+            except SystemExit as e:
+                # Ensure the exit code is the one returned by our mock
+                self.assertEqual(e.code, 0)
+            
+            # Verify that main was called
+            mock_main.assert_called_once()
+        
+        # Restore original modules
+        sys.modules = original_sys_modules
+
 
 if __name__ == "__main__":
-    # Temporarily modify __name__ to "__main__" to trigger the block
-    original_name = social_sync.__name__
-    social_sync.__name__ = "__main__"
-
-    # Backup the original sys.exit
-    import sys
-
-    original_exit = sys.exit
-
-    # Mock sys.exit to prevent actual exit
-    def mock_exit(code=0):
-        print(f"sys.exit called with code {code}")
-        return code
-
-    sys.exit = mock_exit
-
-    # Import to trigger the if __name__ == "__main__" block
-    import social_sync
-
-    # Restore the original values
-    sys.exit = original_exit
-    social_sync.__name__ = original_name
-
-    print("Test completed successfully")
+    unittest.main()

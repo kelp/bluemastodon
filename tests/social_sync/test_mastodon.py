@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 from social_sync.config import MastodonConfig
 from social_sync.mastodon import MastodonClient
-from social_sync.models import BlueskyPost, MastodonPost, MediaType
+from social_sync.models import BlueskyPost, MastodonPost, MediaAttachment, MediaType
 
 
 class TestMastodonClient:
@@ -509,3 +509,142 @@ class TestMastodonClient:
         # Assert
         assert result is None
         client.client.status_post.assert_called_once()
+    
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "_convert_to_mastodon_post") 
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_with_media_attachments(self, mock_auth, mock_convert, mock_is_duplicate):
+        """Test post with media attachments."""
+        # Setup
+        mock_auth.return_value = True
+        mock_is_duplicate.return_value = (False, None)
+        
+        mock_toot = MagicMock()
+        mock_mastodon_post = MastodonPost(
+            id="12345",
+            content="Test content",
+            created_at=datetime.now(),
+            author_id="67890",
+            author_handle="test_user@mastodon.test",
+            author_display_name="Test User",
+            url="https://mastodon.test/@test_user/12345",
+            media_attachments=[],
+        )
+        mock_convert.return_value = mock_mastodon_post
+        
+        # Create client
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+        client.client.status_post.return_value = mock_toot
+        
+        # Create test post with media attachments
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="This is a test post with media",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            media_attachments=[
+                MediaAttachment(
+                    url="https://example.com/image.jpg",
+                    alt_text="Test image",
+                    media_type=MediaType.IMAGE,
+                    mime_type="image/jpeg"
+                ),
+                MediaAttachment(
+                    url="",  # Empty URL (will be skipped)
+                    alt_text="Missing image",
+                    media_type=MediaType.IMAGE,
+                    mime_type="image/jpeg"
+                )
+            ],
+            links=[],
+        )
+        
+        # Post
+        result = client.post(bluesky_post)
+        
+        # Assert
+        assert result == mock_mastodon_post
+        client.client.status_post.assert_called_once()
+        mock_convert.assert_called_once_with(mock_toot)
+    
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "_convert_to_mastodon_post") 
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_with_media_error(self, mock_auth, mock_convert, mock_is_duplicate):
+        """Test post with media attachments that cause errors."""
+        # Setup
+        mock_auth.return_value = True
+        mock_is_duplicate.return_value = (False, None)
+        
+        mock_toot = MagicMock()
+        mock_mastodon_post = MastodonPost(
+            id="12345",
+            content="Test content",
+            created_at=datetime.now(),
+            author_id="67890",
+            author_handle="test_user@mastodon.test",
+            author_display_name="Test User",
+            url="https://mastodon.test/@test_user/12345",
+            media_attachments=[],
+        )
+        mock_convert.return_value = mock_mastodon_post
+        
+        # Create client with mocked logging
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+        client.client.status_post.return_value = mock_toot
+        
+        # Create test post with media attachments
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="This is a test post with media",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            media_attachments=[
+                MediaAttachment(
+                    url="https://example.com/image.jpg",
+                    alt_text="Test image",
+                    media_type=MediaType.IMAGE,
+                    mime_type="image/jpeg"
+                )
+            ],
+            links=[],
+        )
+        
+        # Patch only the first logger.info call to throw an exception to test the media attachment error handling
+        def selective_info_exception(message):
+            # Only throw exception for media upload log messages
+            if "Would upload media" in message:
+                raise Exception("Mock media upload error")
+            # Let other log messages go through
+            
+        with patch("social_sync.mastodon.logger.info") as mock_logger_info:
+            with patch("social_sync.mastodon.logger.error") as mock_logger_error:
+                # Set up the selective exception
+                mock_logger_info.side_effect = selective_info_exception
+                result = client.post(bluesky_post)
+                
+                # Verify error was logged
+                assert mock_logger_error.call_count >= 1
+                # The first call should be about media upload
+                assert "Error uploading media to Mastodon" in str(mock_logger_error.call_args_list[0])
+        
+        # The post should succeed even though media attachment failed
+        assert result == mock_mastodon_post
+        client.client.status_post.assert_called_once()
+        mock_convert.assert_called_once_with(mock_toot)
