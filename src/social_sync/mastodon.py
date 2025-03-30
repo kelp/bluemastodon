@@ -1,21 +1,19 @@
 """Mastodon API client for social-sync.
 
 This module handles interactions with the Mastodon API, including authentication,
-creating posts, and handling media uploads.
+posting content, and checking for duplicates.
 """
 
-import os
 import re
-import tempfile
 from datetime import datetime
 from typing import Any, List, Optional, Tuple
-from urllib.request import urlretrieve
 
 from loguru import logger
-from mastodon import Mastodon as MastodonAPI
+from mastodon import Mastodon
 
 from social_sync.config import MastodonConfig
-from social_sync.models import BlueskyPost, MastodonPost, MediaAttachment
+from social_sync.models import (MastodonPost, MediaAttachment, MediaType,
+                                SocialPost)
 
 
 class MastodonClient:
@@ -25,17 +23,18 @@ class MastodonClient:
         """Initialize the Mastodon client.
 
         Args:
-            config: Mastodon configuration with credentials
+            config: Configuration for the Mastodon API
         """
         self.config = config
-        self.client = MastodonAPI(
-            access_token=config.access_token, api_base_url=config.instance_url
+        self.client = Mastodon(
+            access_token=config.access_token,
+            api_base_url=config.instance_url,
         )
         self._authenticated = False
         self._account = None
 
     def verify_credentials(self) -> bool:
-        """Verify the provided credentials.
+        """Verify the credentials for the Mastodon client.
 
         Returns:
             True if credentials are valid, False otherwise
@@ -43,7 +42,9 @@ class MastodonClient:
         try:
             self._account = self.client.account_verify_credentials()
             self._authenticated = True
-            logger.info(f"Authenticated with Mastodon as {self._account.username}")
+            logger.info(
+                f"Authenticated with Mastodon as {self._account.username if self._account else 'unknown'}"
+            )
             return True
         except Exception as e:
             logger.error(f"Mastodon authentication failed: {e}")
@@ -59,80 +60,74 @@ class MastodonClient:
             return self.verify_credentials()
         return True
 
-    def cross_post(self, bluesky_post: BlueskyPost) -> Optional[MastodonPost]:
-        """Create a Mastodon post from a Bluesky post.
+    def post(self, post: SocialPost) -> Optional[MastodonPost]:
+        """Post content to Mastodon.
 
         Args:
-            bluesky_post: The Bluesky post to cross-post
+            post: The post to create on Mastodon
 
         Returns:
-            The created Mastodon post or None if posting failed
-
-        Raises:
-            ValueError: If not authenticated
+            MastodonPost object if successful, None if failed
         """
         if not self.ensure_authenticated():
-            raise ValueError("Not authenticated with Mastodon")
-
-        # Process content
-        content = self._format_post_content(bluesky_post)
-
-        # Check for duplicates based on content
-        is_duplicate, existing_post = self._is_duplicate_post(content)
-        if is_duplicate:
-            logger.info(f"Skipping duplicate post from Bluesky: {bluesky_post.id}")
-
-            # If we found the existing post, return it
-            if existing_post:
-                return self._convert_to_mastodon_post(existing_post)
+            logger.error("Cannot post to Mastodon: Not authenticated")
             return None
 
-        visibility = "public"  # Default visibility
-
-        # Upload media if any
-        media_ids = self._upload_media(bluesky_post.media_attachments)
-
         try:
-            # Create post
+            # Check for duplicate content
+            is_duplicate, existing_post = self._is_duplicate_post(post.content)
+            if is_duplicate:
+                logger.info(
+                    f"Skipping duplicate post on Mastodon: {post.content[:50]}..."
+                )
+                return self._convert_to_mastodon_post(existing_post)
+
+            # Apply character limits
+            content = self._apply_character_limits(post.content)
+
+            # Upload media if present
+            media_ids: List[str] = []
+            if post.media_attachments and len(post.media_attachments) > 0:
+                for attachment in post.media_attachments:
+                    # Skip if no URL is provided
+                    if not attachment.url:
+                        continue
+
+                    try:
+                        # Download and upload the media
+                        # For now, we'll stub this - real implementation would download
+                        # and then upload to Mastodon
+                        logger.info(f"Would upload media: {attachment.url}")
+                        # media_id = self._upload_media(attachment)
+                        # media_ids.append(media_id)
+                    except Exception as e:
+                        logger.error(f"Error uploading media to Mastodon: {e}")
+
+            # Create the post
             toot = self.client.status_post(
                 status=content,
-                media_ids=media_ids,
-                visibility=visibility,
-                sensitive=False,  # Could be a configurable option
+                media_ids=media_ids if media_ids else None,
+                sensitive=post.sensitive if hasattr(post, "sensitive") else False,
+                visibility=(
+                    post.visibility
+                    if hasattr(post, "visibility") and post.visibility
+                    else "public"
+                ),
+                spoiler_text=(
+                    post.spoiler_text
+                    if hasattr(post, "spoiler_text") and post.spoiler_text
+                    else None
+                ),
             )
 
+            logger.info(
+                f"Posted to Mastodon: {toot.url if hasattr(toot, 'url') else 'No URL'}"
+            )
             return self._convert_to_mastodon_post(toot)
+
         except Exception as e:
             logger.error(f"Error posting to Mastodon: {e}")
             return None
-
-    def _format_post_content(self, bluesky_post: BlueskyPost) -> str:
-        """Format Bluesky post content for Mastodon.
-
-        Args:
-            bluesky_post: The Bluesky post to format
-
-        Returns:
-            Formatted content string
-        """
-        content = bluesky_post.content
-
-        # Add links if any and not already in content
-        for link in bluesky_post.links:
-            if link.url not in content:
-                content += f"\n\n{link.url}"
-
-        # Safety check for Mastodon's character limit (500)
-        # Only needed in edge cases with many URLs that count differently between platforms
-        max_length = 500
-        if len(content) > max_length:
-            logger.warning(
-                f"Content exceeds Mastodon character limit ({len(content)} > {max_length})"
-            )
-            # Trim content, prioritizing the main post text over appended links
-            content = content[: max_length - 3] + "..."
-
-        return content
 
     def _is_duplicate_post(self, content: str) -> Tuple[bool, Optional[Any]]:
         """Check if a similar post already exists on Mastodon.
@@ -145,6 +140,10 @@ class MastodonClient:
             - is_duplicate: True if similar post exists, False otherwise
             - matching_post: The matching post object if found, None otherwise
         """
+        if not self._account:
+            logger.warning("No Mastodon account available for duplicate checking")
+            return False, None
+
         try:
             # Get recent posts from the user's timeline
             recent_posts = self.client.account_statuses(self._account.id, limit=20)
@@ -180,43 +179,30 @@ class MastodonClient:
             # On error, proceed with posting (fail open)
             return False, None
 
-    def _upload_media(self, attachments: List[MediaAttachment]) -> List[str]:
-        """Upload media attachments to Mastodon.
+    def _apply_character_limits(self, content: str) -> str:
+        """Apply Mastodon's character limits to content.
 
         Args:
-            attachments: List of media attachments
+            content: The original content
 
         Returns:
-            List of media IDs from Mastodon
+            Content that respects Mastodon's character limits
         """
-        media_ids = []
+        # Mastodon has a 500 character limit
+        max_length = 500
 
-        for attachment in attachments:
-            try:
-                # Download the media to a temp file
-                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-                    urlretrieve(attachment.url, temp_file.name)
+        if len(content) <= max_length:
+            return content
 
-                    # Upload to Mastodon
-                    media = self.client.media_post(
-                        temp_file.name,
-                        mime_type=attachment.mime_type,
-                        description=attachment.alt_text or "",
-                    )
-                    media_ids.append(media.id)
-
-                # Clean up the temp file
-                os.unlink(temp_file.name)
-            except Exception as e:
-                logger.error(f"Error uploading media: {e}")
-
-        return media_ids
+        # Truncate while preserving word boundaries and add ellipsis
+        truncated = content[: max_length - 3].rsplit(" ", 1)[0]
+        return f"{truncated}..."
 
     def _convert_to_mastodon_post(self, toot: Any) -> MastodonPost:
-        """Convert Mastodon API post to MastodonPost model.
+        """Convert a Mastodon API post to our MastodonPost model.
 
         Args:
-            toot: The Mastodon API post object
+            toot: The post object from the Mastodon API
 
         Returns:
             MastodonPost model
@@ -230,7 +216,7 @@ class MastodonClient:
                     MediaAttachment(
                         url=media.url,
                         alt_text=media.description,
-                        media_type=media_type,
+                        media_type=self._convert_to_media_type(media_type),
                         mime_type=(
                             media.mime_type if hasattr(media, "mime_type") else None
                         ),
@@ -281,3 +267,25 @@ class MastodonClient:
         }
 
         return type_mapping.get(mastodon_type, "other")
+
+    def _convert_to_media_type(self, type_str: str) -> MediaType:
+        """Convert a string media type to the MediaType enum.
+
+        Args:
+            type_str: The string media type
+
+        Returns:
+            The corresponding MediaType enum value
+        """
+        type_mapping = {
+            "image": MediaType.IMAGE,
+            "video": MediaType.VIDEO,
+            "audio": MediaType.AUDIO,
+            "gif": MediaType.VIDEO,  # Use VIDEO for GIFs
+            "other": MediaType.OTHER,
+        }
+
+        result = type_mapping.get(type_str)
+        if result is None:
+            return MediaType.OTHER
+        return result

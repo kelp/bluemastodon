@@ -237,7 +237,7 @@ class TestSyncManager:
             # Mock mastodon post response
             mock_mastodon_post = MagicMock()
             mock_mastodon_post.id = "toot123"
-            mock_masto.cross_post.return_value = mock_mastodon_post
+            mock_masto.post.return_value = mock_mastodon_post
 
             # Create manager
             manager = SyncManager(sample_config)
@@ -259,14 +259,14 @@ class TestSyncManager:
             assert result in manager.sync_records
 
             # Verify mock calls
-            mock_masto.cross_post.assert_called_once_with(sample_bluesky_post)
+            mock_masto.post.assert_called_once_with(sample_bluesky_post)
             mock_save_state.assert_not_called()  # _save_state is called after run_sync, not after each post
 
     @patch("social_sync.sync.SyncManager._save_state")
     def test_sync_post_failure(
         self, mock_save_state, sample_config, sample_bluesky_post
     ):
-        """Test _sync_post when cross-posting fails."""
+        """Test _sync_post when posting fails."""
         with (
             patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
             patch("social_sync.sync.MastodonClient") as mock_masto_class,
@@ -278,8 +278,8 @@ class TestSyncManager:
             mock_bsky_class.return_value = mock_bsky
             mock_masto_class.return_value = mock_masto
 
-            # Mock cross_post to return None (failure)
-            mock_masto.cross_post.return_value = None
+            # Mock post to return None (failure)
+            mock_masto.post.return_value = None
 
             # Create manager
             manager = SyncManager(sample_config)
@@ -301,7 +301,7 @@ class TestSyncManager:
             assert result in manager.sync_records
 
             # Verify mock calls
-            mock_masto.cross_post.assert_called_once_with(sample_bluesky_post)
+            mock_masto.post.assert_called_once_with(sample_bluesky_post)
             mock_save_state.assert_not_called()
 
     @patch("social_sync.sync.SyncManager._sync_post")
@@ -461,7 +461,7 @@ class TestSyncManager:
             mock_save_state.assert_called_once()
 
     def test_sync_post_exception(self, sample_config, sample_bluesky_post):
-        """Test _sync_post with an exception during cross-posting."""
+        """Test _sync_post with an exception during posting."""
         with (
             patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
             patch("social_sync.sync.MastodonClient") as mock_masto_class,
@@ -474,8 +474,8 @@ class TestSyncManager:
             mock_bsky_class.return_value = mock_bsky
             mock_masto_class.return_value = mock_masto
 
-            # Mock cross_post to raise an exception
-            mock_masto.cross_post.side_effect = Exception(
+            # Mock post to raise an exception
+            mock_masto.post.side_effect = Exception(
                 "Unexpected error during cross-posting"
             )
 

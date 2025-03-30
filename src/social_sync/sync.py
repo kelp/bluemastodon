@@ -147,7 +147,7 @@ class SyncManager:
             logger.info(f"Syncing post {post.id} from Bluesky to Mastodon")
 
             # Cross-post to Mastodon
-            mastodon_post = self.mastodon.cross_post(post)
+            mastodon_post = self.mastodon.post(post)
 
             if not mastodon_post:
                 logger.error(f"Failed to cross-post {post.id}")

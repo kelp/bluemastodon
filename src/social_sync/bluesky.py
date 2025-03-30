@@ -95,7 +95,7 @@ class BlueskyClient:
 
         return posts
 
-    def _get_user_profile(self):
+    def _get_user_profile(self) -> Any:
         """Get the authenticated user's profile."""
         try:
             return self.client.app.bsky.actor.getProfile(
@@ -105,7 +105,7 @@ class BlueskyClient:
             logger.error(f"Error fetching user profile: {e}")
             return None
 
-    def _fetch_author_feed(self, author_did: str, limit: int):
+    def _fetch_author_feed(self, author_did: str, limit: int) -> Any:
         """Fetch posts from the specified author."""
         try:
             return self.client.app.bsky.feed.getAuthorFeed(
@@ -118,7 +118,7 @@ class BlueskyClient:
             logger.error(f"Error fetching posts: {e}")
             return None
 
-    def _should_include_post(self, feed_view, since_time: datetime) -> bool:
+    def _should_include_post(self, feed_view: Any, since_time: datetime) -> bool:
         """Determine if a post should be included based on filters."""
         post = feed_view.post
 
@@ -138,7 +138,7 @@ class BlueskyClient:
 
         return True
 
-    def _convert_to_bluesky_post(self, feed_view, profile) -> BlueskyPost:
+    def _convert_to_bluesky_post(self, feed_view: Any, profile: Any) -> BlueskyPost:
         """Convert Bluesky API post to BlueskyPost model."""
         post = feed_view.post
         created_at = datetime.fromisoformat(
@@ -168,9 +168,9 @@ class BlueskyClient:
             repost_count=post.repostCount if hasattr(post, "repostCount") else None,
         )
 
-    def _extract_media_attachments(self, post) -> List[MediaAttachment]:
+    def _extract_media_attachments(self, post: Any) -> List[MediaAttachment]:
         """Extract media attachments from a post."""
-        attachments = []
+        attachments: List[MediaAttachment] = []
 
         if not (hasattr(post.record, "embed") and post.record.embed):
             return attachments
@@ -191,9 +191,9 @@ class BlueskyClient:
 
         return attachments
 
-    def _extract_links(self, post) -> List[Link]:
+    def _extract_links(self, post: Any) -> List[Link]:
         """Extract links from a post."""
-        links = []
+        links: List[Link] = []
 
         if not (hasattr(post.record, "embed") and post.record.embed):
             return links
