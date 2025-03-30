@@ -278,24 +278,39 @@ class MastodonClient:
                     )
                 )
 
+        # Ensure the ID is a string to prevent 'str' object cannot be interpreted as an integer error
+        post_id = str(toot.id) if hasattr(toot, "id") else "unknown"
+        
+        # Handle datetime - ensure it's in the right format
+        if hasattr(toot, "created_at"):
+            if isinstance(toot.created_at, str):
+                created_at = datetime.fromisoformat(toot.created_at.replace("Z", "+00:00"))
+            elif isinstance(toot.created_at, datetime):
+                created_at = toot.created_at
+            else:
+                # Fallback to current time if we can't parse the date
+                created_at = datetime.now()
+        else:
+            created_at = datetime.now()
+
         # Create the post object
         return MastodonPost(
-            id=str(toot.id),
-            content=toot.content,
-            created_at=datetime.fromisoformat(toot.created_at.replace("Z", "+00:00")),
-            author_id=str(toot.account.id),
-            author_handle=toot.account.acct,
-            author_display_name=toot.account.display_name,
+            id=post_id,
+            content=toot.content if hasattr(toot, "content") else "",
+            created_at=created_at,
+            author_id=str(toot.account.id) if hasattr(toot, "account") and hasattr(toot.account, "id") else "",
+            author_handle=toot.account.acct if hasattr(toot, "account") and hasattr(toot.account, "acct") else "",
+            author_display_name=toot.account.display_name if hasattr(toot, "account") and hasattr(toot.account, "display_name") else "",
             media_attachments=media_attachments,
-            url=toot.url,
+            url=toot.url if hasattr(toot, "url") else "",
             application=(
                 toot.application.name
-                if hasattr(toot, "application") and toot.application
+                if hasattr(toot, "application") and toot.application and hasattr(toot.application, "name")
                 else None
             ),
             sensitive=toot.sensitive if hasattr(toot, "sensitive") else False,
             spoiler_text=toot.spoiler_text if hasattr(toot, "spoiler_text") else None,
-            visibility=toot.visibility,
+            visibility=toot.visibility if hasattr(toot, "visibility") else "public",
             favourites_count=(
                 toot.favourites_count if hasattr(toot, "favourites_count") else None
             ),
