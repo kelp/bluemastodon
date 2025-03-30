@@ -1,7 +1,9 @@
 # Social-Sync Implementation Plan
 
 ## Scope Clarification
-This tool specifically handles synchronizing manual posts from Bluesky to Mastodon. A separate tool in the blog repository will handle publishing blog posts to social platforms.
+This tool specifically handles synchronizing manual posts from Bluesky to 
+Mastodon. A separate tool in the blog repository will handle publishing blog 
+posts to social platforms.
 
 ## 1. Project Setup (Day 1)
 - [x] Define architecture and coding standards
