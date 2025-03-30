@@ -1,20 +1,11 @@
 """Tests for the mastodon module."""
 
-import re
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from social_sync.config import MastodonConfig
 from social_sync.mastodon import MastodonClient
-from social_sync.models import (
-    BlueskyPost,
-    Link,
-    MastodonPost,
-    MediaAttachment,
-    MediaType,
-)
+from social_sync.models import BlueskyPost, MastodonPost, MediaType
 
 
 class TestMastodonClient:
@@ -399,7 +390,7 @@ class TestMastodonClient:
     def test_post_duplicate_with_existing_post(
         self, mock_auth, mock_convert, mock_is_duplicate
     ):
-        """Test post when a duplicate post is detected with the existing post available."""
+        """Test post with duplicate detection (existing post available)."""
         # Setup
         mock_auth.return_value = True
 
@@ -449,7 +440,7 @@ class TestMastodonClient:
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "ensure_authenticated")
     def test_post_duplicate_without_existing_post(self, mock_auth, mock_is_duplicate):
-        """Test post when a duplicate post is detected but the existing post is not available."""
+        """Test post with duplicate detection (no existing post)."""
         # Setup
         mock_auth.return_value = True
         mock_is_duplicate.return_value = (True, None)

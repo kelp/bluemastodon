@@ -260,7 +260,8 @@ class TestSyncManager:
 
             # Verify mock calls
             mock_masto.post.assert_called_once_with(sample_bluesky_post)
-            mock_save_state.assert_not_called()  # _save_state is called after run_sync, not after each post
+            # _save_state is called after run_sync, not after each post
+            mock_save_state.assert_not_called()
 
     @patch("social_sync.sync.SyncManager._save_state")
     def test_sync_post_failure(

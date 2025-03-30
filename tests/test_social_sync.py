@@ -125,7 +125,8 @@ class TestMain:
         mock_manager_class.assert_called_once_with(mock_config, None)
         mock_bluesky.ensure_authenticated.assert_called_once()
         mock_bluesky.get_recent_posts.assert_called_once()
-        mock_manager.run_sync.assert_not_called()  # Should not call run_sync in dry-run mode
+        # Should not call run_sync in dry-run mode
+        mock_manager.run_sync.assert_not_called()
 
     @patch("social_sync.argparse.ArgumentParser.parse_args")
     @patch("social_sync.load_config")

@@ -393,7 +393,8 @@ class TestBlueskyClient:
         result = client._get_blob_url(post, "blob123")
 
         # Check the result
-        expected = "https://bsky.social/xrpc/com.atproto.sync.getBlob?did=did:plc:test&cid=blob123"
+        base_url = "https://bsky.social/xrpc/com.atproto.sync.getBlob"
+        expected = f"{base_url}?did=did:plc:test&cid=blob123"
         assert result == expected
 
     @patch("social_sync.bluesky.BlueskyClient.ensure_authenticated")
