@@ -2,8 +2,8 @@
 
 A Python application to automatically cross-post manual Bluesky posts to Mastodon.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Status](https://img.shields.io/badge/status-stable-green)
+![Version](https://img.shields.io/badge/version-0.9.0-blue)
+![Status](https://img.shields.io/badge/status-beta-orange)
 ![Test Status](https://github.com/kelp/social-sync/actions/workflows/test.yml/badge.svg)
 ![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
 ![License](https://img.shields.io/github/license/kelp/social-sync)
@@ -204,7 +204,7 @@ This system ensures:
 ### Version Information
 
 Social-Sync follows [Semantic Versioning](https://semver.org/) and is currently
-at version 1.0.0 (stable release). For more information about our versioning system
+at version 0.9.0 (beta). For more information about our versioning system
 and release process, see [Versioning Guidelines](docs/versioning.md).
 
 ### Setup Development Environment

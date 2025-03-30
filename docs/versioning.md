@@ -44,12 +44,13 @@ make version-tag
 
 ## Version History
 
-- **1.0.0**: Initial stable release
+- **0.9.0**: Initial beta release
   - Complete implementation of Bluesky to Mastodon cross-posting
   - Robust duplicate post prevention with two-layer approach
   - Comprehensive test suite with 100% coverage
   - GitHub Actions workflows for CI/CD and scheduled cross-posting
   - Complete documentation
+  - Pending bugfixes for production stability
 
 ## Future Development
 

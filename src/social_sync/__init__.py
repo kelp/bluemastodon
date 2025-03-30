@@ -24,7 +24,7 @@ from social_sync.models import (
 )
 from social_sync.sync import SyncManager
 
-__version__ = "0.1.0"
+__version__ = "0.9.0"
 
 # Export public classes
 __all__ = [

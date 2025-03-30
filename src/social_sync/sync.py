@@ -31,7 +31,7 @@ class SyncManager:
         self.bluesky = BlueskyClient(config.bluesky)
         self.mastodon = MastodonClient(config.mastodon)
 
-        self.state_file = state_file or os.path.expanduser("~/.social-sync/state.json")
+        self.state_file = state_file or "sync_state.json"
         self.synced_posts: Set[str] = set()
         self.sync_records: List[SyncRecord] = []
 
@@ -165,10 +165,11 @@ class SyncManager:
                 return record
 
             # Create sync record
+            target_id = str(mastodon_post.id) if mastodon_post.id else ""
             record = SyncRecord(
                 source_id=post.id,
                 source_platform="bluesky",
-                target_id=mastodon_post.id,
+                target_id=target_id,
                 target_platform="mastodon",
                 synced_at=datetime.now(),
                 success=True,
