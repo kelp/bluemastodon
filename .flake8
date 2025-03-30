@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 79
+exclude = .git,__pycache__,build,dist
+ignore = E501,W503,W504
+per-file-ignores =
+    tests/*:F401,E501
+    src/social_sync/models.py:E501
+    src/social_sync/bluesky.py:E501,E128
+    src/social_sync/mastodon.py:E501,E128
+    src/social_sync/sync.py:E501
+    src/social_sync/__init__.py:E501
