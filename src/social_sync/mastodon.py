@@ -5,9 +5,10 @@ creating posts, and handling media uploads.
 """
 
 import os
+import re
 import tempfile
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 from urllib.request import urlretrieve
 
 from loguru import logger
@@ -75,6 +76,17 @@ class MastodonClient:
 
         # Process content
         content = self._format_post_content(bluesky_post)
+        
+        # Check for duplicates based on content
+        is_duplicate, existing_post = self._is_duplicate_post(content)
+        if is_duplicate:
+            logger.info(f"Skipping duplicate post from Bluesky: {bluesky_post.id}")
+            
+            # If we found the existing post, return it
+            if existing_post:
+                return self._convert_to_mastodon_post(existing_post)
+            return None
+            
         visibility = "public"  # Default visibility
 
         # Upload media if any
@@ -110,12 +122,59 @@ class MastodonClient:
             if link.url not in content:
                 content += f"\n\n{link.url}"
 
-        # Add footer with source attribution
-        content += (f"\n\n📱 Originally posted on Bluesky: "
-                  f"https://bsky.app/profile/{bluesky_post.author_handle}/"
-                  f"post/{bluesky_post.id}")
+        # Safety check for Mastodon's character limit (500)
+        # Only needed in edge cases with many URLs that count differently between platforms
+        max_length = 500
+        if len(content) > max_length:
+            logger.warning(f"Content exceeds Mastodon character limit ({len(content)} > {max_length})")
+            # Trim content, prioritizing the main post text over appended links
+            content = content[:max_length - 3] + "..."
 
         return content
+        
+    def _is_duplicate_post(self, content: str) -> Tuple[bool, Optional[Any]]:
+        """Check if a similar post already exists on Mastodon.
+        
+        Args:
+            content: The content to check for duplication
+            
+        Returns:
+            Tuple of (is_duplicate, matching_post)
+            - is_duplicate: True if similar post exists, False otherwise
+            - matching_post: The matching post object if found, None otherwise
+        """
+        try:
+            # Get recent posts from the user's timeline
+            recent_posts = self.client.account_statuses(
+                self._account.id, limit=20
+            )
+            
+            # Normalize the content for comparison
+            normalized_content = ' '.join(content.split()).lower()
+            
+            for post in recent_posts:
+                # Strip HTML and normalize existing post content
+                post_text = post.content
+                # Remove HTML tags
+                post_text = re.sub(r'<[^>]+>', '', post_text)
+                # Normalize whitespace and case
+                post_text = ' '.join(post_text.split()).lower()
+                
+                # Check for high similarity (80% of words match)
+                post_words = set(post_text.split())
+                content_words = set(normalized_content.split())
+                if len(post_words) > 0 and len(content_words) > 0:
+                    common_words = post_words.intersection(content_words)
+                    similarity = len(common_words) / max(len(post_words), len(content_words))
+                    if similarity > 0.8:
+                        logger.info(f"Found similar post (similarity: {similarity:.2f})")
+                        return True, post
+            
+            return False, None
+        except Exception as e:
+            logger.warning(f"Error checking for duplicate posts: {e}")
+            # On error, proceed with posting (fail open)
+            return False, None
 
     def _upload_media(self, attachments: List[MediaAttachment]) -> List[str]:
         """Upload media attachments to Mastodon.
