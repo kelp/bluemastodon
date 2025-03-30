@@ -60,3 +60,26 @@ A Python application to automatically cross-post manual Bluesky posts to Mastodo
 - Descriptive variable and function names
 - Isolate dependencies and use dependency injection
 - Proper error handling with specific exceptions
+
+## API Documentation
+
+### Mastodon API
+- Documentation: [Mastodon API Intro](https://docs.joinmastodon.org/client/intro/)
+- REST API using HTTP requests and JSON responses
+- Supports various parameter formats including query strings, form data, and JSON
+- Authentication via OAuth
+- Standard HTTP status codes (200 for success, 4xx for client errors, 5xx for server errors)
+
+### Bluesky/AT Protocol
+- Documentation: [atproto Python Library](https://atproto.blue/en/latest/)
+- Comprehensive Python SDK for AT Protocol and Bluesky
+- Supports both synchronous and asynchronous API interactions
+- Features include authentication, posting, following, likes, etc.
+- Example usage:
+  ```python
+  from atproto import Client
+  
+  client = Client()
+  client.login('username', 'password')
+  client.send_post(text='Hello World!')
+  ```

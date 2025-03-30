@@ -5,41 +5,41 @@ This tool specifically handles synchronizing manual posts from Bluesky to Mastod
 
 ## 1. Project Setup (Day 1)
 - [x] Define architecture and coding standards
-- [ ] Initialize project structure
-- [ ] Set up virtual environment
-- [ ] Configure pyproject.toml with dependencies
-- [ ] Add .gitignore
+- [x] Initialize project structure
+- [x] Set up virtual environment
+- [x] Configure pyproject.toml with dependencies
+- [x] Add .gitignore
 - [ ] Configure pre-commit hooks
 - [ ] Set up basic GitHub Actions workflow
 
 ## 2. API Research (Day 1-2)
-- [ ] Research Bluesky API authentication and endpoints
-- [ ] Research Mastodon API authentication and endpoints
-- [ ] Document required API credentials and how to obtain them
-- [ ] Plan data models for posts and interaction mapping
+- [x] Research Bluesky API authentication and endpoints
+- [x] Research Mastodon API authentication and endpoints
+- [x] Document required API credentials and how to obtain them
+- [x] Plan data models for posts and interaction mapping
 
 ## 3. Core Implementation (Day 2-4)
-- [ ] Implement config.py for loading secrets and settings
-- [ ] Implement models.py with data classes for posts
-- [ ] Implement bluesky.py client
-  - [ ] Authentication
-  - [ ] Fetching recent posts
-  - [ ] Handling post content and media
-- [ ] Implement mastodon.py client
-  - [ ] Authentication
-  - [ ] Creating posts
-  - [ ] Handling media uploads
-- [ ] Implement sync.py for orchestration
-  - [ ] Post mapping logic
-  - [ ] Cross-posting workflow
-  - [ ] State tracking to avoid duplicates
+- [x] Implement config.py for loading secrets and settings
+- [x] Implement models.py with data classes for posts
+- [x] Implement bluesky.py client
+  - [x] Authentication
+  - [x] Fetching recent posts
+  - [x] Handling post content and media
+- [x] Implement mastodon.py client
+  - [x] Authentication
+  - [x] Creating posts
+  - [x] Handling media uploads
+- [x] Implement sync.py for orchestration
+  - [x] Post mapping logic
+  - [x] Cross-posting workflow
+  - [x] State tracking to avoid duplicates
 
 ## 4. Testing (Day 4-5)
-- [ ] Write unit tests for each module
-- [ ] Set up mock API responses
-- [ ] Create integration tests
-- [ ] Ensure 100% test coverage
-- [ ] Add test for edge cases (rate limits, API errors, etc.)
+- [x] Write unit tests for each module
+- [x] Set up mock API responses
+- [x] Create integration tests
+- [x] Ensure 100% test coverage
+- [x] Add test for edge cases (rate limits, API errors, etc.)
 
 ## 5. GitHub Actions Setup (Day 6)
 - [ ] Create workflow for running tests and linters
