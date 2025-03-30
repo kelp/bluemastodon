@@ -4,7 +4,7 @@ A Python application to automatically cross-post manual Bluesky posts to Mastodo
 
 *Formerly known as bluemastodon*
 
-![Version](https://img.shields.io/badge/version-0.9.2-blue)
+![Version](https://img.shields.io/badge/version-0.9.3-blue)
 ![Status](https://img.shields.io/badge/status-beta-orange)
 ![Test Status](https://github.com/kelp/bluemastodon/actions/workflows/test.yml/badge.svg)
 ![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
@@ -209,7 +209,7 @@ For advanced cache management options (including how to clear the cache), see
 ### Version Information
 
 BlueMastodon follows [Semantic Versioning](https://semver.org/) and is currently
-at version 0.9.2 (beta). For more information about our versioning system
+at version 0.9.3 (beta). For more information about our versioning system
 and release process, see [Versioning Guidelines](docs/versioning.md).
 
 ### Setup Development Environment

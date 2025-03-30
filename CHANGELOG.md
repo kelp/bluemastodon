@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.3] - 2025-03-30
+
+### Changed
+- Renamed project from social-sync to bluemastodon to avoid name conflicts on PyPI
+- Fixed code formatting and linting issues across the codebase
+- Updated project configuration files to use correct module paths
+- Updated dependencies to latest versions
+
 ## [0.9.2] - 2025-03-30
 
 ### Fixed
