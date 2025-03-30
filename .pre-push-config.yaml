@@ -5,7 +5,7 @@ repos:
       # Run comprehensive tests
       - id: pytest-full
         name: Run comprehensive tests
-        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=100
+        entry: poetry run pytest --cov=bluemastodon --cov-report=term-missing --cov-fail-under=100
         language: system
         pass_filenames: false
         always_run: true
@@ -14,7 +14,7 @@ repos:
       # Run type checking
       - id: mypy-full
         name: Run full type checking
-        entry: poetry run mypy src
+        entry: poetry run mypy src/bluemastodon
         language: system
         pass_filenames: false
         always_run: true
@@ -25,10 +25,10 @@ repos:
         name: Run comprehensive linting
         entry: |
           bash -c '
-            poetry run black --check src tests
-            poetry run isort --check-only src tests
-            poetry run flake8 src tests
-            poetry run bandit -r src
+            poetry run black --check src/bluemastodon tests
+            poetry run isort --check-only src/bluemastodon tests
+            poetry run flake8 src/bluemastodon tests
+            poetry run bandit -r src/bluemastodon
           '
         language: system
         pass_filenames: false

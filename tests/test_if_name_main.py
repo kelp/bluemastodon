@@ -1,6 +1,4 @@
-"""
-Test the if __name__ == "__main__" block in bluemastodon modules.
-"""
+"""Test the if __name__ == "__main__" block in bluemastodon modules."""
 
 import sys
 import unittest

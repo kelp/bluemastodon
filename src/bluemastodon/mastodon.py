@@ -513,7 +513,10 @@ class MastodonClient:
         for link in links:
             # Test for known pattern - github.com/kelp/bluemastodon
             # This could be expanded to be more generic when needed
-            if "github.com/kelp/bluemastodon" in link.url or "github.com/kelp/bluemastodon" in link.url:
+            if (
+                "github.com/kelp/bluemastodon" in link.url
+                or "github.com/kelp/bluemastodon" in link.url
+            ):
                 updated_content = updated_content.replace(
                     "github.com/kelp/social-...", "github.com/kelp/bluemastodon"
                 )
