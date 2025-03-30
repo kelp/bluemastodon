@@ -91,14 +91,14 @@ class TestBlueskyClient:
         # Create mock client and response
         mock_response = MagicMock()
         client.client = MagicMock()
-        client.client.app.bsky.actor.getProfile.return_value = mock_response
+        client.client.app.bsky.actor.get_profile.return_value = mock_response
 
         # Call the method
         result = client._get_user_profile()
 
         # Check results
         assert result == mock_response
-        client.client.app.bsky.actor.getProfile.assert_called_once_with(
+        client.client.app.bsky.actor.get_profile.assert_called_once_with(
             {"actor": "test_user"}
         )
 
@@ -109,7 +109,7 @@ class TestBlueskyClient:
 
         # Create mock client with error
         client.client = MagicMock()
-        client.client.app.bsky.actor.getProfile.side_effect = AtProtocolError(
+        client.client.app.bsky.actor.get_profile.side_effect = AtProtocolError(
             "API error"
         )
 
@@ -118,7 +118,7 @@ class TestBlueskyClient:
 
         # Check results
         assert result is None
-        client.client.app.bsky.actor.getProfile.assert_called_once_with(
+        client.client.app.bsky.actor.get_profile.assert_called_once_with(
             {"actor": "test_user"}
         )
 
@@ -130,14 +130,14 @@ class TestBlueskyClient:
         # Create mock client and response
         mock_response = MagicMock()
         client.client = MagicMock()
-        client.client.app.bsky.feed.getAuthorFeed.return_value = mock_response
+        client.client.app.bsky.feed.get_author_feed.return_value = mock_response
 
         # Call the method
         result = client._fetch_author_feed("did:test", 10)
 
         # Check results
         assert result == mock_response
-        client.client.app.bsky.feed.getAuthorFeed.assert_called_once_with(
+        client.client.app.bsky.feed.get_author_feed.assert_called_once_with(
             {
                 "actor": "did:test",
                 "limit": 10,
@@ -151,7 +151,7 @@ class TestBlueskyClient:
 
         # Create mock client with error
         client.client = MagicMock()
-        client.client.app.bsky.feed.getAuthorFeed.side_effect = AtProtocolError(
+        client.client.app.bsky.feed.get_author_feed.side_effect = AtProtocolError(
             "API error"
         )
 
@@ -160,7 +160,7 @@ class TestBlueskyClient:
 
         # Check results
         assert result is None
-        client.client.app.bsky.feed.getAuthorFeed.assert_called_once_with(
+        client.client.app.bsky.feed.get_author_feed.assert_called_once_with(
             {
                 "actor": "did:test",
                 "limit": 10,

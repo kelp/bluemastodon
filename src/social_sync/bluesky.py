@@ -98,7 +98,7 @@ class BlueskyClient:
     def _get_user_profile(self) -> Any:
         """Get the authenticated user's profile."""
         try:
-            return self.client.app.bsky.actor.getProfile(
+            return self.client.app.bsky.actor.get_profile(
                 {"actor": self.config.username}
             )
         except AtProtocolError as e:
@@ -108,7 +108,7 @@ class BlueskyClient:
     def _fetch_author_feed(self, author_did: str, limit: int) -> Any:
         """Fetch posts from the specified author."""
         try:
-            return self.client.app.bsky.feed.getAuthorFeed(
+            return self.client.app.bsky.feed.get_author_feed(
                 {
                     "actor": author_did,
                     "limit": limit,
