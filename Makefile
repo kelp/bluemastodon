@@ -1,4 +1,4 @@
-.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release help
+.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release version-patch version-minor version-major help
 
 # Variables
 PACKAGE = social_sync
@@ -66,6 +66,30 @@ publish-test:  ## Publish to Test PyPI
 
 publish:  ## Publish to PyPI
 	$(POETRY) publish
+
+version-patch:  ## Bump patch version (1.0.0 -> 1.0.1)
+	$(POETRY) version patch
+	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
+	@echo "Don't forget to commit the version change and create a tag"
+
+version-minor:  ## Bump minor version (1.0.0 -> 1.1.0)
+	$(POETRY) version minor
+	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
+	@echo "Don't forget to commit the version change and create a tag"
+
+version-major:  ## Bump major version (1.0.0 -> 2.0.0)
+	$(POETRY) version major
+	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
+	@echo "Don't forget to commit the version change and create a tag"
+
+version-set:  ## Set specific version (make version-set VERSION=1.2.3)
+	$(POETRY) version $(VERSION)
+	@echo "Set to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
+	@echo "Don't forget to commit the version change and create a tag"
+
+version-tag:  ## Create a git tag for the current version
+	git tag -a v$(VERSION) -m "Version $(VERSION)"
+	@echo "Created tag v$(VERSION). Use 'git push origin v$(VERSION)' to push to remote."
 
 release: clean lint type-check test-cov build  ## Prepare a release (run linters, tests, build)
 	@echo "Release $(VERSION) ready to publish."
