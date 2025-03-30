@@ -74,13 +74,24 @@ posts to social platforms.
     - Added version consistency checks
     - Added CHANGELOG verification
     - Added comprehensive bump-version target
-- [ ] Change the name of the Test workflow to something more descriptive
+- [x] Change the name of the Test workflow to something more descriptive
+  - Renamed sync.yml to social-sync.yml with name "Social Sync"
+  - Renamed test.yml to python-tests.yml with name "Python Tests"
+  - Added new security-scan.yml workflow for dependency vulnerability scanning
 - [x] Initial update of Makefile to work with run.sh like webdown
 - [x] Compare and merge additional Makefile targets and features from webdown
-- [ ] Setup publishing to pypi, copy what we can from webdown
+- [x] Setup publishing to pypi, copy what we can from webdown
+  - This is the first priority for distribution as it's the most universal method
+  - Ensure proper entry points and CLI functionality
+  - Update instructions in README when complete
+  - Added python-release.yml workflow for automated PyPI publishing
 - [x] Add documentation on managing GitHub Actions cache
 - [ ] Setup GitHub Pages documentation site
 - [ ] Decide whether to implement mkdocs documentation system from webdown or simplify webdown's docs to match social-sync's approach
+- [ ] Consider adding a Homebrew formula after PyPI publishing is complete
+  - Lower priority than PyPI but useful for macOS users
+  - Could reuse pattern from webdown formula in homebrew-tools tap
+  - Should reference the PyPI package rather than installing from source
 
 ## 8. Future Enhancements
 - [ ] Add support for images and other media types
