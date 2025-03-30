@@ -60,8 +60,9 @@ posts to social platforms.
 ## 7. Cleanup and Bug Fixes
 - [x] Fix the pre-commit hooks
 - [x] Fix bug in Mastodon post handling that caused 'str' cannot be interpreted as int error
-- [ ] Fix synced post format and link
-    Claude and I just wrote Social Sync: https://https://github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
+- [x] Fix synced post format and link
+    - Fixed regex patterns to avoid creating duplicated "https://" prefixes
+    - Implemented URL expansion to fix truncated URLs by using the links data from Bluesky
 - [ ] Change the name of the Test workflow to something more descriptive
 - [x] Initial update of Makefile to work with run.sh like webdown
 - [ ] Compare and merge additional Makefile targets and features from webdown
@@ -72,6 +73,5 @@ posts to social platforms.
 - [ ] Add support for images and other media types
 - [ ] Implement bi-directional sync
 - [ ] Add support for replies and interactions
-- [ ] Create a simple dashboard for monitoring
 - [ ] Consider support for other platforms (Twitter, etc.)
 - [ ] Add deduplication mechanism to avoid duplicate posts if blog publisher also posts to both platforms

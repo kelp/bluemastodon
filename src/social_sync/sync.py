@@ -166,7 +166,7 @@ class SyncManager:
                 self.sync_records.append(record)
                 return record
 
-            # Create sync record
+            # Create sync record - ensure target_id is always a string
             target_id = str(mastodon_post.id) if mastodon_post.id else ""
             record = SyncRecord(
                 source_id=post.id,

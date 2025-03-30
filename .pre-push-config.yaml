@@ -5,7 +5,7 @@ repos:
       # Run comprehensive tests
       - id: pytest-full
         name: Run comprehensive tests
-        entry: poetry run pytest --cov=src --cov-report=term-missing
+        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=100
         language: system
         pass_filenames: false
         always_run: true

@@ -54,7 +54,7 @@ repos:
     hooks:
       - id: pytest
         name: pytest
-        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=95
+        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=100
         language: system
         pass_filenames: false
         always_run: true
@@ -66,11 +66,11 @@ repos:
           bash -c '
             poetry run pytest --cov=src --cov-report=xml --quiet
             COV=$(python -c "import xml.etree.ElementTree as ET; tree = ET.parse(\"coverage.xml\"); root = tree.getroot(); print(float(root.attrib[\"line-rate\"]) * 100)")
-            if (( $(echo "$COV < 95" | bc -l) )); then
-              echo "Coverage is $COV%, which is below the minimum required 95%"
+            if (( $(echo "$COV < 100" | bc -l) )); then
+              echo "Coverage is $COV%, which is below the minimum required 100%"
               exit 1
             else
-              echo "Coverage is $COV%, which meets the minimum required 95%"
+              echo "Coverage is $COV%, which meets the minimum required 100%"
             fi
           '
         language: system
