@@ -58,12 +58,14 @@ posts to social platforms.
 - [x] Final code review and quality check
 
 ## 7. Cleanup and Bug Fixes
-- [ ] Fix the pre-commit hooks
+- [x] Fix the pre-commit hooks
+- [x] Fix bug in Mastodon post handling that caused 'str' cannot be interpreted as int error
 - [ ] Fix synced post format and link
     Claude and I just wrote Social Sync: https://https://github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
 - [ ] Change the name of the Test workflow to something more descriptive
-- [ ] Look at our Makefile and make it work more like webdown
+- [x] Look at our Makefile and make it work more like webdown
 - [ ] Setup publishing to pypi, copy what we can from webdown
+- [x] Add documentation on managing GitHub Actions cache
 
 ## 8. Future Enhancements
 - [ ] Add support for images and other media types
