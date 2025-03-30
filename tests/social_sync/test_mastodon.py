@@ -474,7 +474,7 @@ class TestMastodonClient:
         assert result.id == "duplicate"
         assert result.content == "This is a test post"
         client.client.status_post.assert_not_called()
-        
+
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "ensure_authenticated")

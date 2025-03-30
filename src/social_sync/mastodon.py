@@ -234,16 +234,16 @@ class MastodonClient:
         # Make sure URLs are properly formatted
         # This converts shortened URLs like "github.com/..." to full URLs
         content = re.sub(
-            r'(?<!\w)((?:github|twitter|mastodon|bsky)\.com/[^\s]+)',
-            r'https://\1',
-            content
+            r"(?<!\w)((?:github|twitter|mastodon|bsky)\.com/[^\s]+)",
+            r"https://\1",
+            content,
         )
 
         # Make sure domains like example.com are linked
         content = re.sub(
-            r'(?<!\w|\.)([a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}\b(?:/\S*)?)',
-            r'https://\1',
-            content
+            r"(?<!\w|\.)([a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}\b(?:/\S*)?)",
+            r"https://\1",
+            content,
         )
 
         if len(content) <= max_length:
