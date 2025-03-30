@@ -74,11 +74,27 @@ class MastodonClient:
         try:
             # Check for duplicate content
             is_duplicate, existing_post = self._is_duplicate_post(post.content)
-            if is_duplicate:
+            if is_duplicate and existing_post:
                 logger.info(
                     f"Skipping duplicate post on Mastodon: {post.content[:50]}..."
                 )
                 return self._convert_to_mastodon_post(existing_post)
+            elif is_duplicate:
+                logger.info(
+                    f"Duplicate detected but post info not available: {post.content[:50]}..."
+                )
+                # Create a minimal post object to indicate success without posting
+                minimal_post = MastodonPost(
+                    id="duplicate",
+                    content=post.content,
+                    created_at=datetime.now(),
+                    author_id="",
+                    author_handle="",
+                    author_display_name="",
+                    media_attachments=[],
+                    url="",
+                )
+                return minimal_post
 
             # Apply character limits
             content = self._apply_character_limits(post.content)

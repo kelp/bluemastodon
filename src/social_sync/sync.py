@@ -71,8 +71,10 @@ class SyncManager:
     def _save_state(self) -> None:
         """Save the current sync state to the state file."""
         try:
-            # Ensure directory exists
-            os.makedirs(os.path.dirname(self.state_file), exist_ok=True)
+            # Only create directories if path contains directories
+            dirname = os.path.dirname(self.state_file)
+            if dirname:
+                os.makedirs(dirname, exist_ok=True)
 
             # Convert SyncRecord objects to dictionaries with string timestamps
             record_dicts = []
