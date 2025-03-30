@@ -1,15 +1,20 @@
-.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release version-patch version-minor version-major help
+.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release version-patch version-minor version-major pre-commit help
+
+# Path-independent environment setup
+SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+RUN_SCRIPT := $(SCRIPT_DIR)/scripts/run.sh
 
 # Variables
 PACKAGE = social_sync
 PYTHON = python
 POETRY = poetry
-PYTEST = $(POETRY) run pytest
+POETRY_RUN := $(RUN_SCRIPT)
+PYTEST = $(POETRY_RUN) pytest
 PYTEST_COV = $(PYTEST) --cov=$(PACKAGE) --cov-report=term-missing
-MYPY = $(POETRY) run mypy
-FLAKE8 = $(POETRY) run flake8
-BLACK = $(POETRY) run black
-ISORT = $(POETRY) run isort
+MYPY = $(POETRY_RUN) mypy
+FLAKE8 = $(POETRY_RUN) flake8
+BLACK = $(POETRY_RUN) black
+ISORT = $(POETRY_RUN) isort
 VERSION = $(shell grep "^version" pyproject.toml | cut -d'"' -f2)
 
 help:  ## Show this help
@@ -17,9 +22,17 @@ help:  ## Show this help
 
 setup:  ## Set up development environment
 	$(POETRY) install
+	$(POETRY_RUN) pre-commit install
+	cp .pre-commit-hooks/pre-push .git/hooks/pre-push
+	chmod +x .git/hooks/pre-push
+	@echo "Pre-commit hooks and pre-push hook installed successfully"
 
 install:  ## Install the package in development mode
 	$(POETRY) install
+	$(POETRY_RUN) pre-commit install
+	cp .pre-commit-hooks/pre-push .git/hooks/pre-push
+	chmod +x .git/hooks/pre-push
+	@echo "Pre-commit hooks and pre-push hook installed successfully"
 
 clean:  ## Remove build artifacts and cache directories
 	rm -rf build/
@@ -41,6 +54,9 @@ format:  ## Format code with Black and isort
 
 type-check:  ## Run type checking with mypy
 	$(MYPY) src
+
+pre-commit:  ## Run pre-commit hooks on all files
+	$(POETRY_RUN) pre-commit run --all-files
 
 test:  ## Run tests
 	$(PYTEST)
