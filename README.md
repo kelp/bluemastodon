@@ -44,8 +44,48 @@ separate tool.
 
 #### Using pip
 
+Install directly from PyPI:
+
 ```bash
 pip install bluemastodon
+```
+
+After installation, you can run the tool from the command line:
+
+```bash
+# Basic usage
+bluemastodon --config /path/to/your/.env
+
+# Dry run (won't post to Mastodon, just shows what would be posted)
+bluemastodon --config /path/to/your/.env --dry-run
+
+# With debug logging enabled
+bluemastodon --config /path/to/your/.env --debug
+
+# Specify state file location (default is sync_state.json in current directory)
+bluemastodon --config /path/to/your/.env --state /path/to/state.json
+```
+
+You can also use it as a library in your Python code:
+
+```python
+from bluemastodon import Config, SyncManager
+
+# Create configuration
+config = Config(
+    bluesky_username="your_username.bsky.social",
+    bluesky_password="your_app_password",
+    mastodon_instance_url="https://your.mastodon.instance",
+    mastodon_access_token="your_access_token",
+    lookback_hours=6,
+)
+
+# Initialize sync manager
+sync_manager = SyncManager(config, state_file="sync_state.json")
+
+# Run the sync
+new_records = sync_manager.run_sync()
+print(f"Synced {len(new_records)} posts")
 ```
 
 #### Using Poetry
