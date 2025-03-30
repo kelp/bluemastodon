@@ -44,6 +44,12 @@ make version-tag
 
 ## Version History
 
+- **0.9.2**: Workflow improvements
+  - Improved GitHub Actions caching to eliminate cache write conflicts
+  - Added workflow concurrency control to prevent race conditions
+  - Enhanced cache restore capability with fallback keys
+  - Enhanced release process in Makefile to improve version management
+
 - **0.9.1**: Bug fix release
   - Improved state file management to prevent double posts
   - Added immediate state saving after successful Mastodon posts

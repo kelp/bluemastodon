@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.2] - 2025-03-30
+
+### Fixed
+- Improved GitHub Actions caching to eliminate cache write conflicts
+- Added workflow concurrency control to prevent race conditions
+- Enhanced cache restore capability with fallback keys
+
+### Changed
+- Enhanced release process in Makefile to improve version management
+
 ## [0.9.1] - 2025-03-30
 
 ### Fixed
