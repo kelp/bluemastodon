@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.5] - 2025-03-30
+
+### Fixed
+- Fixed GitHub release workflow to properly extract changelog content
+
 ## [0.9.4] - 2025-03-30
 
 This version is identical to 0.9.3 in functionality but increments the version number to address a PyPI publishing conflict.

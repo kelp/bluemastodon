@@ -24,7 +24,7 @@ from bluemastodon.models import (
 )
 from bluemastodon.sync import SyncManager
 
-__version__ = "0.9.4"
+__version__ = "0.9.5"
 
 # Export public classes
 __all__ = [
