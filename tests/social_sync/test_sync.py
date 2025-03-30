@@ -20,6 +20,7 @@ class TestSyncManager:
         with (
             patch("social_sync.sync.BlueskyClient") as mock_bsky,
             patch("social_sync.sync.MastodonClient") as mock_masto,
+            patch("social_sync.sync.os.path.exists", return_value=False),
         ):
 
             # Create manager with default state file
@@ -260,8 +261,8 @@ class TestSyncManager:
 
             # Verify mock calls
             mock_masto.post.assert_called_once_with(sample_bluesky_post)
-            # _save_state is called after run_sync, not after each post
-            mock_save_state.assert_not_called()
+            # _save_state is now called immediately after successful posting
+            mock_save_state.assert_called_once()
 
     @patch("social_sync.sync.SyncManager._save_state")
     def test_sync_post_failure(
@@ -459,9 +460,13 @@ class TestSyncManager:
             mock_bsky.ensure_authenticated.assert_called_once()
             mock_masto.ensure_authenticated.assert_called_once()
             mock_bsky.get_recent_posts.assert_called_once()
-            mock_save_state.assert_called_once()
+            # State is only saved if there are new records
+            mock_save_state.assert_not_called()
 
-    def test_sync_post_exception(self, sample_config, sample_bluesky_post):
+    @patch("social_sync.sync.SyncManager._save_state")
+    def test_sync_post_exception(
+        self, mock_save_state, sample_config, sample_bluesky_post
+    ):
         """Test _sync_post with an exception during posting."""
         with (
             patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
@@ -496,11 +501,117 @@ class TestSyncManager:
             assert "Unexpected error during cross-posting" in result.error_message
 
             # Verify the error was logged
+            # Ensure post was not marked as synced since error does not include "posted to mastodon"
+            assert sample_bluesky_post.id not in manager.synced_posts
+            # Verify save_state is called for the error
+            mock_save_state.assert_called_once()
             mock_logger.error.assert_called_once()
             assert (
                 f"Error syncing post {sample_bluesky_post.id}"
                 in mock_logger.error.call_args[0][0]
             )
 
+    @patch("social_sync.sync.SyncManager._save_state")
+    def test_sync_post_partial_success_exception(
+        self, mock_save_state, sample_config, sample_bluesky_post
+    ):
+        """Test _sync_post with an exception that suggests post was successful."""
+        with (
+            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
+            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+            patch("social_sync.sync.logger") as mock_logger,
+        ):
+
+            # Setup mocks
+            mock_bsky = MagicMock()
+            mock_masto = MagicMock()
+            mock_bsky_class.return_value = mock_bsky
+            mock_masto_class.return_value = mock_masto
+
+            # Make mastodon post raise an exception that includes "Posted to Mastodon"
+            error_msg = "Error after posted to mastodon: conversion failed"
+            mock_masto.post.side_effect = Exception(error_msg)
+
+            # Create manager
+            manager = SyncManager(sample_config)
+
+            # Call _sync_post
+            result = manager._sync_post(sample_bluesky_post)
+
+            # Check the result
+            assert isinstance(result, SyncRecord)
+            assert result.source_id == sample_bluesky_post.id
+            assert result.source_platform == "bluesky"
+            assert result.target_id == ""
+            assert result.target_platform == "mastodon"
+            assert result.success is False
+            assert error_msg in result.error_message
+
+            # Check state WAS updated for the post ID despite the error
+            assert sample_bluesky_post.id in manager.synced_posts
+            assert result in manager.sync_records
+
+            # Verify save_state is called twice - once for marking as synced
+            # and once for recording the error
+            assert mock_save_state.call_count == 2
+
+            # Verify warning was logged
+            mock_logger.warning.assert_called_with(
+                "Post may have succeeded despite error. Marking as synced to prevent duplication."
+            )
+
             # Verify the record was added to sync_records
             assert result in manager.sync_records
+
+    @patch("social_sync.sync.SyncManager._save_state")
+    def test_run_sync_with_new_posts(
+        self, mock_save_state, sample_config, sample_bluesky_post
+    ):
+        """Test run_sync with new posts to sync."""
+        with (
+            patch("social_sync.sync.BlueskyClient") as mock_bsky_class,
+            patch("social_sync.sync.MastodonClient") as mock_masto_class,
+        ):
+            # Setup mocks
+            mock_bsky = MagicMock()
+            mock_masto = MagicMock()
+            mock_bsky_class.return_value = mock_bsky
+            mock_masto_class.return_value = mock_masto
+
+            # Mock authentication
+            mock_bsky.ensure_authenticated.return_value = True
+            mock_masto.ensure_authenticated.return_value = True
+
+            # Return list with one post
+            mock_bsky.get_recent_posts.return_value = [sample_bluesky_post]
+
+            # Create manager and patch _sync_post to return a success record
+            manager = SyncManager(sample_config)
+
+            with patch.object(manager, "_sync_post") as mock_sync_post:
+                # Create a mock record
+                mock_record = SyncRecord(
+                    source_id=sample_bluesky_post.id,
+                    source_platform="bluesky",
+                    target_id="toot123",
+                    target_platform="mastodon",
+                    synced_at=datetime.now(),
+                    success=True,
+                )
+                mock_sync_post.return_value = mock_record
+
+                # Call run_sync
+                result = manager.run_sync()
+
+                # Check the result
+                assert len(result) == 1
+                assert result[0] == mock_record
+
+                # Verify mock calls
+                mock_bsky.ensure_authenticated.assert_called_once()
+                mock_masto.ensure_authenticated.assert_called_once()
+                mock_bsky.get_recent_posts.assert_called_once()
+                mock_sync_post.assert_called_once_with(sample_bluesky_post)
+
+                # Verify final state save
+                mock_save_state.assert_called_once()

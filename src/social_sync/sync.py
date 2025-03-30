@@ -131,8 +131,10 @@ class SyncManager:
             if record:
                 new_records.append(record)
 
-        # Update and save state
-        self._save_state()
+        # State is saved after each successful post,
+        # but we'll save once more to record any failed attempts
+        if new_records:
+            self._save_state()
 
         return new_records
 
@@ -151,7 +153,34 @@ class SyncManager:
             # Cross-post to Mastodon
             mastodon_post = self.mastodon.post(post)
 
-            if not mastodon_post:
+            # IMPORTANT: Mark the post as synced immediately if we got any response
+            # This prevents double posting even if later processing fails
+            if mastodon_post:
+                # Add to synced_posts immediately
+                self.synced_posts.add(post.id)
+                # Save state file immediately after successful posting
+                self._save_state()
+
+                # Create sync record - ensure target_id is always a string
+                target_id = str(mastodon_post.id) if mastodon_post.id else ""
+                record = SyncRecord(
+                    source_id=post.id,
+                    source_platform="bluesky",
+                    target_id=target_id,
+                    target_platform="mastodon",
+                    synced_at=datetime.now(),
+                    success=True,
+                )
+
+                self.sync_records.append(record)
+
+                logger.info(
+                    f"Successfully synced post {post.id} to Mastodon as "
+                    f"{mastodon_post.id}"
+                )
+
+                return record
+            else:
                 logger.error(f"Failed to cross-post {post.id}")
                 # Create error record
                 record = SyncRecord(
@@ -165,30 +194,19 @@ class SyncManager:
                 )
                 self.sync_records.append(record)
                 return record
-
-            # Create sync record - ensure target_id is always a string
-            target_id = str(mastodon_post.id) if mastodon_post.id else ""
-            record = SyncRecord(
-                source_id=post.id,
-                source_platform="bluesky",
-                target_id=target_id,
-                target_platform="mastodon",
-                synced_at=datetime.now(),
-                success=True,
-            )
-
-            # Update state
-            self.synced_posts.add(post.id)
-            self.sync_records.append(record)
-
-            logger.info(
-                f"Successfully synced post {post.id} to Mastodon as "
-                f"{mastodon_post.id}"
-            )
-
-            return record
         except Exception as e:
             logger.error(f"Error syncing post {post.id}: {e}")
+
+            # If the error includes "Posted to Mastodon", it means we likely succeeded
+            # but had a post-processing error. Mark as synced to prevent double posting.
+            log_msg = str(e).lower()
+            if "posted to mastodon" in log_msg:
+                logger.warning(
+                    "Post may have succeeded despite error. "
+                    "Marking as synced to prevent duplication."
+                )
+                self.synced_posts.add(post.id)
+                self._save_state()
 
             # Create error record
             record = SyncRecord(
@@ -202,4 +220,6 @@ class SyncManager:
             )
 
             self.sync_records.append(record)
+            # Save state to record the failure
+            self._save_state()
             return record
