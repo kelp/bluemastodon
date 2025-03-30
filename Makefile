@@ -1,4 +1,4 @@
-.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release version-patch version-minor version-major pre-commit help
+.PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release bump-version version-tag pre-commit help
 
 # Path-independent environment setup
 SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
@@ -81,35 +81,82 @@ publish-test:  ## Publish to Test PyPI
 	$(POETRY) publish --repository testpypi
 
 publish:  ## Publish to PyPI
-	$(POETRY) publish
+	@echo "NOTICE: For production PyPI publishing, use the GitHub Actions workflow by tagging a release."
+	@echo "See CONTRIBUTING.md for the release process."
+	@echo ""
+	@echo "This command is for emergency manual publishing only."
+	@echo "Are you sure you want to publish directly to PyPI? [y/N] "
+	@read -r response; \
+	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+		echo "Publishing package to PyPI..."; \
+		$(POETRY) publish; \
+	else \
+		echo "Publishing aborted."; \
+	fi
 
-version-patch:  ## Bump patch version (1.0.0 -> 1.0.1)
-	$(POETRY) version patch
-	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
-	@echo "Don't forget to commit the version change and create a tag"
-
-version-minor:  ## Bump minor version (1.0.0 -> 1.1.0)
-	$(POETRY) version minor
-	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
-	@echo "Don't forget to commit the version change and create a tag"
-
-version-major:  ## Bump major version (1.0.0 -> 2.0.0)
-	$(POETRY) version major
-	@echo "Bumped to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
-	@echo "Don't forget to commit the version change and create a tag"
-
-version-set:  ## Set specific version (make version-set VERSION=1.2.3)
-	$(POETRY) version $(VERSION)
-	@echo "Set to version $(shell grep "^version" pyproject.toml | cut -d'"' -f2)"
-	@echo "Don't forget to commit the version change and create a tag"
+bump-version:  ## Update version in all files (Usage: make bump-version VERSION=x.y.z)
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION parameter is required"; \
+		echo "Usage: make bump-version VERSION=x.y.z"; \
+		exit 1; \
+	fi
+	@echo "Updating version to $(VERSION) in all files..."
+	@sed -i.bak 's/^version = ".*"/version = "$(VERSION)"/' pyproject.toml && rm pyproject.toml.bak
+	@sed -i.bak 's/__version__ = ".*"/__version__ = "$(VERSION)"/' src/$(PACKAGE)/__init__.py && rm src/$(PACKAGE)/__init__.py.bak
+	@sed -i.bak 's/version-[0-9]*\.[0-9]*\.[0-9]*-blue/version-$(VERSION)-blue/' README.md && rm README.md.bak
+	@sed -i.bak 's/at version [0-9]*\.[0-9]*\.[0-9]* (beta)/at version $(VERSION) (beta)/' README.md && rm README.md.bak
+	@echo "Version updated to $(VERSION) in:"
+	@echo "  - pyproject.toml"
+	@echo "  - src/$(PACKAGE)/__init__.py"
+	@echo "  - README.md"
+	@echo ""
+	@echo "Don't forget to update CHANGELOG.md with an entry for version $(VERSION)"
+	@echo "Then run 'git diff' to verify changes before committing"
 
 version-tag:  ## Create a git tag for the current version
+	@echo "Verifying version consistency..."
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	INIT_VERSION=$$(grep '__version__ =' src/$(PACKAGE)/__init__.py | sed 's/__version__ = "//;s/"//'); \
+	if [ "$$VERSION" != "$$INIT_VERSION" ]; then \
+		echo "Error: Version mismatch! pyproject.toml ($$VERSION) vs __init__.py ($$INIT_VERSION)"; \
+		exit 1; \
+	fi; \
+	echo "Version $$VERSION is consistent across files."
+
+	@echo "Checking for CHANGELOG.md entry..."
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	if ! grep -q "## \[$$VERSION\]" CHANGELOG.md; then \
+		echo "Error: No entry for version $$VERSION found in CHANGELOG.md"; \
+		exit 1; \
+	fi; \
+	echo "CHANGELOG.md entry found."
+
 	git tag -a v$(VERSION) -m "Version $(VERSION)"
 	@echo "Created tag v$(VERSION). Use 'git push origin v$(VERSION)' to push to remote."
 
 release: clean lint type-check test-cov build  ## Prepare a release (run linters, tests, build)
+	@echo "Preparing release process..."
+
+	@echo "Verifying version consistency..."
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	INIT_VERSION=$$(grep '__version__ =' src/$(PACKAGE)/__init__.py | sed 's/__version__ = "//;s/"//'); \
+	if [ "$$VERSION" != "$$INIT_VERSION" ]; then \
+		echo "Error: Version mismatch! pyproject.toml ($$VERSION) vs __init__.py ($$INIT_VERSION)"; \
+		exit 1; \
+	fi; \
+	echo "Version $$VERSION is consistent across files."
+
+	@echo "Checking for CHANGELOG.md entry..."
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	if ! grep -q "## \[$$VERSION\]" CHANGELOG.md; then \
+		echo "Error: No entry for version $$VERSION found in CHANGELOG.md"; \
+		exit 1; \
+	fi; \
+	echo "CHANGELOG.md entry found."
+
 	@echo "Release $(VERSION) ready to publish."
-	@echo "To publish, run: make publish"
+	@echo "To create a tag for this release, run: make version-tag"
+	@echo "To push the tag and trigger the GitHub Actions release workflow, run: git push origin v$(VERSION)"
 
 # Default target
 .DEFAULT_GOAL := help
