@@ -1,26 +1,17 @@
-[project]
+[tool.poetry]
 name = "social-sync"
 version = "0.1.0"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
-authors = [{ name = "Travis Cole", email = "kelp@plek.org" }]
+authors = ["Travis Cole <kelp@plek.org>"]
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
-dependencies = [
-    "atproto >= 0.0.59",
-    "Mastodon.py>=1.8.1",
-    "pydantic>=2.6.1",
-    "python-dotenv>=1.0.0",
-    "loguru>=0.7.2",
-]
 
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.bandit]
-exclude_dirs = ["tests"]
-skips = ["B101"]
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+atproto = ">=0.0.59"
+mastodon-py = {version = ">=1.8.1", extras = ["blurhash"]}
+pydantic = ">=2.6.1"
+python-dotenv = ">=1.0.0"
+loguru = ">=0.7.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
@@ -32,3 +23,11 @@ mypy = "^1.15.0"
 pydocstyle = "^6.3.0"
 bandit = "^1.8.3"
 pre-commit = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"]
