@@ -150,6 +150,9 @@ GitHub's encrypted secrets feature to store sensitive credentials:
    - `MASTODON_INSTANCE_URL`: Your Mastodon instance URL
    - `MASTODON_ACCESS_TOKEN`: Your Mastodon API access token
 
+For detailed instructions on obtaining and setting up these secrets, see the 
+[GitHub Secrets Setup Guide](docs/setup-github-secrets.md).
+
 > **SECURITY WARNING**: Never commit your actual credentials to the repository! 
 > Always use GitHub Secrets for sensitive information.
 
