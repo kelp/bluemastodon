@@ -63,7 +63,8 @@ posts to social platforms.
 - [ ] Fix synced post format and link
     Claude and I just wrote Social Sync: https://https://github.com/kelp/social-... to auto-sync from BlueSky to Mastodon, via a Github Actions workflow. This also serves as my test post!
 - [ ] Change the name of the Test workflow to something more descriptive
-- [x] Look at our Makefile and make it work more like webdown
+- [x] Initial update of Makefile to work with run.sh like webdown
+- [ ] Compare and merge additional Makefile targets and features from webdown
 - [ ] Setup publishing to pypi, copy what we can from webdown
 - [x] Add documentation on managing GitHub Actions cache
 
