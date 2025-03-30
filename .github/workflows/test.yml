@@ -43,9 +43,9 @@ jobs:
     
     - name: Lint
       run: |
-        poetry run black . --check
-        poetry run isort . --check
-        poetry run flake8
+        poetry run black src tests --check
+        poetry run isort src tests --check
+        poetry run flake8 src tests
         poetry run mypy src
     
     - name: Test

@@ -41,7 +41,7 @@ class MastodonClient:
         try:
             self._account = self.client.account_verify_credentials()
             self._authenticated = True
-            username = self._account.username if self._account else 'unknown'
+            username = self._account.username if self._account else "unknown"
             logger.info(f"Authenticated with Mastodon as {username}")
             return True
         except Exception as e:
