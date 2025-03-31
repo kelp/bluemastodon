@@ -124,22 +124,29 @@ class MastodonClient:
                     )
                     return minimal_post
 
-            # Process content - add full URLs from link metadata
+            # Process content - replace truncated links with full URLs from metadata
             content = post.content
             if hasattr(post, "links") and post.links:
-                # Extract links from post and append full URLs
-                links = []
+                # For each link in metadata
                 for link_obj in post.links:
                     if hasattr(link_obj, "url") and link_obj.url:
-                        links.append(link_obj.url)
-                        logger.info(f"Added full URL to content: {link_obj.url}")
+                        full_url = link_obj.url
 
-                # Add all links to content on separate lines to avoid truncation
-                if links:
-                    # Variable for newline separator to avoid backslash in f-string
-                    newline_separator = "\n"
-                    joined_links = newline_separator.join(links)
-                    content = f"{content}\n\n{joined_links}"
+                        # Extract domain for comparison
+                        domain = re.sub(r"^https?://", "", full_url).split("/")[0]
+
+                        # Pattern to find links with this domain in the content
+                        # Handles both truncated (ending with ...) and full links
+                        domain_pattern = (
+                            rf"(?:https?://)?{re.escape(domain)}[^\s]*?(?:\.{{3}}|\b)"
+                        )
+
+                        # Replace the first occurrence only to avoid duplications
+                        if re.search(domain_pattern, content):
+                            content = re.sub(domain_pattern, full_url, content, count=1)
+                            logger.info(
+                                f"Replaced link in content with full URL: {full_url}"
+                            )
 
             # Apply character limits
             content = self._apply_character_limits(content)

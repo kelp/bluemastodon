@@ -1097,8 +1097,10 @@ class TestMastodonClient:
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
     @patch.object(MastodonClient, "ensure_authenticated")
-    def test_post_appends_full_urls(self, mock_auth, mock_convert, mock_is_duplicate):
-        """Test that full URLs from links are appended to content."""
+    def test_post_replaces_truncated_links(
+        self, mock_auth, mock_convert, mock_is_duplicate
+    ):
+        """Test that truncated links in content are replaced with full URLs."""
         # Setup
         mock_auth.return_value = True
         mock_is_duplicate.return_value = (False, None)
@@ -1106,7 +1108,7 @@ class TestMastodonClient:
         mock_toot = MagicMock()
         mock_mastodon_post = MastodonPost(
             id="12345",
-            content="Test content",
+            content="Test content with replaced link",
             created_at=datetime.now(),
             author_id="67890",
             author_handle="test_user@mastodon.test",
@@ -1124,12 +1126,12 @@ class TestMastodonClient:
         client.client = MagicMock()
         client.client.status_post.return_value = mock_toot
 
-        # Create test post with link with truncated URL in content
-        bluesky_post = BlueskyPost(
+        # Test Case 1: Truncated link in content
+        bluesky_post1 = BlueskyPost(
             id="test123",
             uri="at://test_user/app.bsky.feed.post/test123",
             cid="cid123",
-            content="Check out my new project at github.com/kelp/social-...",
+            content="Check out my project at github.com/kelp/bluemastodon...",
             created_at=datetime.now(),
             author_id="test_author",
             author_handle="test_author.bsky.social",
@@ -1137,24 +1139,49 @@ class TestMastodonClient:
             links=[
                 Link(
                     url="https://github.com/kelp/bluemastodon",
-                    title="BlueMastodon",
-                    description="Cross-post from Bluesky to Mastodon",
+                    title="BlueMastodon Project",
+                    description="Cross-posting tool",
                 )
             ],
         )
 
-        # Post
-        result = client.post(bluesky_post)
+        result1 = client.post(bluesky_post1)
+        assert result1 == mock_mastodon_post
 
-        # Assert
-        assert result == mock_mastodon_post
-        # Verify the proper content was sent to Mastodon with appended URL
+        # Verify the truncated link was replaced
         call_args = client.client.status_post.call_args
-        posted_content = call_args.kwargs["status"]
-        # Original content should be present
-        assert "github.com/kelp/social-..." in posted_content
-        # Full URL should be appended on a new line
-        assert "https://github.com/kelp/bluemastodon" in posted_content
+        # The status is passed as a keyword argument 'status'
+        assert "github.com/kelp/bluemastodon..." not in call_args.kwargs["status"]
+        assert "https://github.com/kelp/bluemastodon" in call_args.kwargs["status"]
+
+        # Reset mocks
+        client.client.status_post.reset_mock()
+
+        # Test Case 2: Full link in content
+        bluesky_post2 = BlueskyPost(
+            id="test456",
+            uri="at://test_user/app.bsky.feed.post/test456",
+            cid="cid456",
+            content="Check out my project at https://example.com/project",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            links=[
+                Link(
+                    url="https://example.com/project",
+                    title="Example Project",
+                    description="Example description",
+                )
+            ],
+        )
+
+        result2 = client.post(bluesky_post2)
+        assert result2 == mock_mastodon_post
+
+        # Verify the link was properly handled
+        call_args = client.client.status_post.call_args
+        assert "https://example.com/project" in call_args.kwargs["status"]
 
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
