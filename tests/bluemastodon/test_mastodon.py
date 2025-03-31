@@ -210,72 +210,6 @@ class TestMastodonClient:
         assert "https://github.com/kelp/webdown" in result
         assert "https://https://" not in result
 
-    def test_expand_truncated_urls(self):
-        """Test the _expand_truncated_urls method."""
-        config = MastodonConfig(
-            instance_url="https://mastodon.test", access_token="test_token"
-        )
-        client = MastodonClient(config)
-
-        # Create test links for fixing URLs
-        links = [
-            Link(
-                url="https://github.com/kelp/bluemastodon",
-                title="BlueMastodon",
-                description="A tool for cross-posting from Bluesky to Mastodon",
-            ),
-            Link(
-                url="https://github.com/kelp/webdown",
-                title="Webdown",
-                description="Another cool project",
-            ),
-        ]
-
-        # Test case 1: Content with truncated URLs using ellipsis
-        content = "Check out github.com/kelp/social-... for a cool project!"
-        result = client._expand_truncated_urls(content, links)
-
-        # Check the result
-        assert "github.com/kelp/bluemastodon" in result
-        assert "github.com/kelp/social-..." not in result
-
-        # Test case 2: Content with truncated URLs using https:// prefix
-        content = "Check out https://github.com/kelp/social-... for a cool project!"
-        result = client._expand_truncated_urls(content, links)
-
-        # Should replace the truncated URL with the full one
-        assert "https://github.com/kelp/bluemastodon" in result
-        assert "https://github.com/kelp/social-..." not in result
-
-        # Test case 3: Multiple truncated URLs
-        content = "Compare github.com/kelp/social-... and github.com/kelp/webdown-..."
-        result = client._expand_truncated_urls(content, links)
-
-        # Should replace both truncated URLs
-        assert "github.com/kelp/bluemastodon" in result
-        assert "github.com/kelp/webdown" in result
-        assert "..." not in result
-
-        # Test case 4: No truncated URLs
-        content = "This content has no URLs to replace"
-        result = client._expand_truncated_urls(content, links)
-
-        # Should return the original content unchanged
-        assert result == "This content has no URLs to replace"
-
-        # Test case 5: No links provided
-        content = "Check out github.com/kelp/social-... for a cool project!"
-        result = client._expand_truncated_urls(content, [])
-
-        # Should return the original content unchanged
-        assert result == content
-
-        # Test case 6: Unicode ellipsis character
-        content = "Check out github.com/kelp/social-…"
-        result = client._expand_truncated_urls(content, links)
-
-        # Should handle Unicode ellipsis
-        assert "github.com/kelp/bluemastodon" in result
 
     @patch("bluemastodon.mastodon.re")
     def test_is_duplicate_post_no_account(self, mock_re):
@@ -1143,6 +1077,68 @@ class TestMastodonClient:
         assert call_args.kwargs["visibility"] == "unlisted"
         mock_convert.assert_called_once_with(mock_toot)
 
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "_convert_to_mastodon_post")
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_appends_full_urls(self, mock_auth, mock_convert, mock_is_duplicate):
+        """Test that full URLs from links are appended to content."""
+        # Setup
+        mock_auth.return_value = True
+        mock_is_duplicate.return_value = (False, None)
+        
+        mock_toot = MagicMock()
+        mock_mastodon_post = MastodonPost(
+            id="12345",
+            content="Test content",
+            created_at=datetime.now(),
+            author_id="67890",
+            author_handle="test_user@mastodon.test",
+            author_display_name="Test User",
+            url="https://mastodon.test/@test_user/12345",
+            media_attachments=[],
+        )
+        mock_convert.return_value = mock_mastodon_post
+        
+        # Create client
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+        client.client.status_post.return_value = mock_toot
+        
+        # Create test post with link with truncated URL in content
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="Check out my new project at github.com/kelp/social-...",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            links=[
+                Link(
+                    url="https://github.com/kelp/bluemastodon",
+                    title="BlueMastodon",
+                    description="Cross-post from Bluesky to Mastodon",
+                )
+            ]
+        )
+        
+        # Post
+        result = client.post(bluesky_post)
+        
+        # Assert
+        assert result == mock_mastodon_post
+        # Verify the proper content was sent to Mastodon with appended URL
+        call_args = client.client.status_post.call_args
+        posted_content = call_args.kwargs["status"]
+        # Original content should be present
+        assert "github.com/kelp/social-..." in posted_content
+        # Full URL should be appended on a new line
+        assert "https://github.com/kelp/bluemastodon" in posted_content
+        
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
     @patch.object(MastodonClient, "ensure_authenticated")

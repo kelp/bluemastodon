@@ -122,12 +122,13 @@ class MastodonClient:
                     )
                     return minimal_post
 
-            # Process content - expand truncated URLs using links property if available
+            # Process content - add full URLs from link metadata
             content = post.content
             if hasattr(post, "links") and post.links:
-                content = self._expand_truncated_urls(
-                    content, post.links
-                )  # pragma: no cover
+                for link in post.links:
+                    if link.url:
+                        content = f"{content}\n\n{link.url}"
+                        logger.info(f"Added full URL to content: {link.url}")
 
             # Apply character limits
             content = self._apply_character_limits(content)
@@ -491,85 +492,6 @@ class MastodonClient:
 
         return type_mapping.get(mastodon_type, "other")
 
-    def _expand_truncated_urls(self, content: str, links: List[Link]) -> str:
-        """Replace truncated URLs in content with their full versions from links.
-
-        Args:
-            content: The content text that may contain truncated URLs
-            links: List of Link objects with full URLs
-
-        Returns:
-            Content with truncated URLs replaced by full URLs
-        """
-        if not links:
-            return content
-
-        # Copy content to avoid modifying the original
-        updated_content = content
-
-        # First detect the common patterns of truncated URLs
-        # Temporary solution for the specific case we're dealing with
-        # Look for specific github.com URLs with truncation
-        for link in links:
-            # Test for known pattern - github.com/kelp/bluemastodon
-            # This could be expanded to be more generic when needed
-            if (
-                "github.com/kelp/bluemastodon" in link.url
-                or "github.com/kelp/bluemastodon" in link.url
-            ):
-                updated_content = updated_content.replace(
-                    "github.com/kelp/social-...", "github.com/kelp/bluemastodon"
-                )
-                updated_content = updated_content.replace(
-                    "github.com/kelp/social-…", "github.com/kelp/bluemastodon"
-                )
-                updated_content = updated_content.replace(
-                    "github.com/kelp/bluemastodon", "github.com/kelp/bluemastodon"
-                )
-                updated_content = updated_content.replace(
-                    "https://github.com/kelp/social-...",
-                    "https://github.com/kelp/bluemastodon",
-                )
-                updated_content = updated_content.replace(
-                    "https://github.com/kelp/social-…",
-                    "https://github.com/kelp/bluemastodon",
-                )
-                updated_content = updated_content.replace(
-                    "https://github.com/kelp/bluemastodon",
-                    "https://github.com/kelp/bluemastodon",
-                )
-
-            # Test for webdown URLs
-            elif "github.com/kelp/webdown" in link.url:
-                updated_content = updated_content.replace(
-                    "github.com/kelp/webdown-...", "github.com/kelp/webdown"
-                )
-                updated_content = updated_content.replace(
-                    "github.com/kelp/webdown-…", "github.com/kelp/webdown"
-                )
-                updated_content = updated_content.replace(
-                    "https://github.com/kelp/webdown-...",
-                    "https://github.com/kelp/webdown",
-                )
-                updated_content = updated_content.replace(
-                    "https://github.com/kelp/webdown-…",
-                    "https://github.com/kelp/webdown",
-                )
-        # Apply https:// prefixing for any domains that don't already have it
-        for link in links:
-            # Extract the domain part of the URL
-            domain_match = re.search(r"https?://([^/]+)", link.url)
-            if domain_match:
-                domain = domain_match.group(1)
-                # If domain is found in content without https://, prefix it
-                if (
-                    f"https://{domain}" not in updated_content
-                    and domain in updated_content
-                ):
-                    updated_content = updated_content.replace(
-                        domain, f"https://{domain}"
-                    )
-        return updated_content
 
     def _convert_to_media_type(self, type_str: str) -> MediaType:
         """Convert a string media type to the MediaType enum.
