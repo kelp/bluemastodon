@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Thread synchronization from Bluesky (self-replies)
 - New configuration option `INCLUDE_THREADS` to control thread synchronization
 
+### Fixed
+- Fixed duplicate links issue by replacing truncated links in post content with their full URLs
+
 ## [0.9.7] - 2025-03-30
 
 ### Changed
