@@ -133,7 +133,9 @@ class MastodonClient:
 
                 # Add all links to content on separate lines to avoid truncation
                 if links:
-                    content = f"{content}\n\n{'\n'.join(links)}"
+                    # Use a variable for the newline separator to avoid backslash in f-string
+                    newline_separator = "\n"
+                    content = f"{content}\n\n{newline_separator.join(links)}"
 
             # Apply character limits
             content = self._apply_character_limits(content)
