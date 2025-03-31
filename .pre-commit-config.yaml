@@ -36,6 +36,13 @@ repos:
         types: [python]
         pass_filenames: true
 
+      - id: python313-compat-check
+        name: Python 3.13 Compatibility Check
+        entry: pyenv exec python3.13 -m py_compile
+        language: system
+        types: [python]
+        pass_filenames: true
+
   - repo: https://github.com/pycqa/isort
     rev: 6.0.1
     hooks:
