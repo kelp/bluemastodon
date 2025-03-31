@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Complete thread support with true parent-child relationship on Mastodon
+- Thread synchronization from Bluesky (self-replies)
+- New configuration option `INCLUDE_THREADS` to control thread synchronization
+
 ## [0.9.7] - 2025-03-30
 
 ### Changed

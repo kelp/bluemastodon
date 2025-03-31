@@ -57,13 +57,14 @@ class BlueskyClient:
         return True
 
     def get_recent_posts(
-        self, hours_back: int = 24, limit: int = 20
+        self, hours_back: int = 24, limit: int = 20, include_threads: bool = True
     ) -> list[BlueskyPost]:
         """Get recent posts from the authenticated user.
 
         Args:
             hours_back: How many hours to look back
             limit: Maximum number of posts to return
+            include_threads: Whether to include self-replies (threads)
 
         Returns:
             List of BlueskyPost objects
@@ -90,7 +91,9 @@ class BlueskyClient:
         posts = []
 
         for feed_view in feed_response.feed:
-            if self._should_include_post(feed_view, since_time):
+            if self._should_include_post(
+                feed_view, since_time, profile.did, include_threads
+            ):
                 posts.append(self._convert_to_bluesky_post(feed_view, profile))
 
         return posts
@@ -118,13 +121,54 @@ class BlueskyClient:
             logger.error(f"Error fetching posts: {e}")
             return None
 
-    def _should_include_post(self, feed_view: Any, since_time: datetime) -> bool:
-        """Determine if a post should be included based on filters."""
+    def _should_include_post(
+        self,
+        feed_view: Any,
+        since_time: datetime,
+        user_did: str,
+        include_threads: bool = True,
+    ) -> bool:
+        """Determine if a post should be included based on filters.
+
+        Args:
+            feed_view: The feed view containing the post
+            since_time: The cutoff time for posts
+            user_did: The DID of the authenticated user
+            include_threads: Whether to include self-replies (threads)
+
+        Returns:
+            True if the post should be included, False otherwise
+        """
         post = feed_view.post
 
-        # Skip reposts and replies
-        if feed_view.reason or (hasattr(post.record, "reply") and post.record.reply):
+        # Skip reposts
+        if feed_view.reason:
             return False
+
+        # Handle replies:
+        # - Skip replies to others
+        # - Include self-replies (threads) if enabled
+        if hasattr(post.record, "reply") and post.record.reply:
+            # If include_threads is False, skip all replies
+            if not include_threads:
+                return False
+
+            # If include_threads is True, check if it's a self-reply (thread)
+            if hasattr(post.record.reply, "parent") and hasattr(
+                post.record.reply.parent, "author"
+            ):
+                # If the parent author is not the same as the current user, skip it
+                parent_author_did = getattr(
+                    post.record.reply.parent.author, "did", None
+                )
+                if parent_author_did != user_did:
+                    return False
+            else:
+                # If we can't determine the parent author, skip it to be safe
+                return False
+
+            # Log that we're including a thread post
+            logger.info(f"Including thread post (self-reply): {post.uri}")
 
         # Skip older posts
         created_at = datetime.fromisoformat(
@@ -148,6 +192,41 @@ class BlueskyClient:
         media_attachments = self._extract_media_attachments(post)
         links = self._extract_links(post)
 
+        # Check if this is a reply
+        is_reply = hasattr(post.record, "reply") and post.record.reply is not None
+        reply_parent_id = None
+        reply_root_id = None
+
+        # Extract parent and root IDs if this is a reply
+        if is_reply:
+            # Get parent post
+            if hasattr(post.record.reply, "parent") and hasattr(
+                post.record.reply.parent, "uri"
+            ):
+                parent_uri = post.record.reply.parent.uri
+                reply_parent_id = parent_uri.split("/")[-1] if parent_uri else None
+                logger.info(
+                    f"Found that post {post.uri} is a reply to parent: {parent_uri}"
+                )
+
+                # Check if it's a self-reply (thread)
+                parent_author_did = None
+                if hasattr(post.record.reply.parent, "author") and hasattr(
+                    post.record.reply.parent.author, "did"
+                ):
+                    parent_author_did = post.record.reply.parent.author.did
+                    if parent_author_did == profile.did:
+                        logger.info("Detected a thread (self-reply) to user's own post")
+
+            # Get root post (if different from parent)
+            if hasattr(post.record.reply, "root") and hasattr(
+                post.record.reply.root, "uri"
+            ):
+                root_uri = post.record.reply.root.uri
+                reply_root_id = root_uri.split("/")[-1] if root_uri else None
+                if root_uri != parent_uri:
+                    logger.info(f"Thread has different root: {root_uri}")
+
         return BlueskyPost(
             id=post.uri.split("/")[-1],
             uri=post.uri,
@@ -161,8 +240,11 @@ class BlueskyClient:
             ),
             media_attachments=media_attachments,
             links=links,
-            is_reply=False,
+            is_reply=is_reply,
             is_repost=False,
+            in_reply_to_id=reply_parent_id,
+            reply_parent=reply_parent_id,  # For Bluesky, direct parent
+            reply_root=reply_root_id,  # For Bluesky, root of the thread if different
             visibility="public",
             like_count=post.like_count if hasattr(post, "like_count") else None,
             repost_count=post.repost_count if hasattr(post, "repost_count") else None,

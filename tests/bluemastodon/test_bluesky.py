@@ -173,6 +173,7 @@ class TestBlueskyClient:
         client = BlueskyClient(config)
         now = datetime.now()
         since_time = now - timedelta(hours=24)
+        user_did = "did:plc:test_user"
 
         # Create a feed view with no reason and no reply
         post = MagicMock()
@@ -183,22 +184,63 @@ class TestBlueskyClient:
         feed_view.post = post
 
         # Should include this post
-        assert client._should_include_post(feed_view, since_time) is True
+        assert client._should_include_post(feed_view, since_time, user_did) is True
 
         # Should exclude posts with a reason (reposts)
         feed_view.reason = "repost"
-        assert client._should_include_post(feed_view, since_time) is False
+        assert client._should_include_post(feed_view, since_time, user_did) is False
         feed_view.reason = None
-
-        # Should exclude posts with a reply
-        post.record.reply = MagicMock()
-        assert client._should_include_post(feed_view, since_time) is False
-        post.record.reply = None
 
         # Should exclude posts older than since_time
         old_time = (now - timedelta(hours=48)).isoformat() + "Z"
         post.record.created_at = old_time
-        assert client._should_include_post(feed_view, since_time) is False
+        assert client._should_include_post(feed_view, since_time, user_did) is False
+        post.record.created_at = now.isoformat() + "Z"
+
+        # Test reply cases
+
+        # Regular reply with include_threads=False should be excluded
+        post.record.reply = MagicMock()
+        assert (
+            client._should_include_post(
+                feed_view, since_time, user_did, include_threads=False
+            )
+            is False
+        )
+
+        # Reply to other user should always be excluded
+        post.record.reply = MagicMock()
+        post.record.reply.parent = MagicMock()
+        post.record.reply.parent.author = MagicMock()
+        post.record.reply.parent.author.did = "did:plc:different_user"
+        post.uri = "at://test_user/app.bsky.feed.post/reply123"
+        assert (
+            client._should_include_post(
+                feed_view, since_time, user_did, include_threads=True
+            )
+            is False
+        )
+
+        # Self-reply (thread) with include_threads=True should be included
+        post.record.reply.parent.author.did = user_did
+        assert (
+            client._should_include_post(
+                feed_view, since_time, user_did, include_threads=True
+            )
+            is True
+        )
+
+        # Test case where parent has no author attribute
+        post.record.reply = MagicMock()
+        post.record.reply.parent = MagicMock()
+        # Delete the author attribute
+        delattr(post.record.reply.parent, "author")
+        assert (
+            client._should_include_post(
+                feed_view, since_time, user_did, include_threads=True
+            )
+            is False
+        )
 
     @patch("bluemastodon.bluesky.BlueskyClient._extract_media_attachments")
     @patch("bluemastodon.bluesky.BlueskyClient._extract_links")
@@ -220,6 +262,9 @@ class TestBlueskyClient:
         post.record.created_at = now.isoformat() + "Z"
         post.like_count = 5
         post.repost_count = 2
+
+        # Explicitly set post.record.reply to None to indicate this is not a reply
+        post.record.reply = None
 
         feed_view = MagicMock()
         feed_view.post = post
@@ -251,10 +296,52 @@ class TestBlueskyClient:
         assert result.like_count == 5
         assert result.repost_count == 2
         assert result.platform == "bluesky"
+        assert result.is_reply is False
+        assert result.reply_parent is None
+        assert result.reply_root is None
 
         # Verify mock calls
         mock_extract_media.assert_called_once_with(post)
         mock_extract_links.assert_called_once_with(post)
+
+        # Test with a reply post
+        mock_extract_media.reset_mock()
+        mock_extract_links.reset_mock()
+
+        # Set up reply post data
+        reply_post = MagicMock()
+        reply_post.uri = "at://did:plc:test/app.bsky.feed.post/reply123"
+        reply_post.cid = "cid456"
+        reply_post.record.text = "Reply post"
+        reply_post.record.created_at = now.isoformat() + "Z"
+
+        # Configure reply structure
+        reply_post.record.reply = MagicMock()
+        reply_post.record.reply.parent = MagicMock()
+        reply_post.record.reply.parent.uri = (
+            "at://did:plc:test/app.bsky.feed.post/parent123"
+        )
+        reply_post.record.reply.parent.author = MagicMock()
+        reply_post.record.reply.parent.author.did = (
+            "did:plc:test"  # Same author (self-reply)
+        )
+
+        # Add root info
+        reply_post.record.reply.root = MagicMock()
+        reply_post.record.reply.root.uri = (
+            "at://did:plc:test/app.bsky.feed.post/root123"
+        )
+
+        reply_feed_view = MagicMock()
+        reply_feed_view.post = reply_post
+
+        # Call the method
+        result = client._convert_to_bluesky_post(reply_feed_view, mock_profile)
+
+        # Check the result
+        assert result.is_reply is True
+        assert result.reply_parent == "parent123"
+        assert result.in_reply_to_id == "parent123"
 
     def test_extract_media_attachments_with_images(self):
         """Test _extract_media_attachments with images."""
@@ -429,14 +516,15 @@ class TestBlueskyClient:
 
         # Mock should_include to include first post but not second
         mock_should_include.side_effect = (
-            lambda post, since_time: post == mock_feed_view1
+            lambda post, since_time, user_did, include_threads=True: post
+            == mock_feed_view1
         )
 
         # Mock convert to return a post
         mock_post = MagicMock()
         mock_convert.return_value = mock_post
 
-        # Call the method
+        # Call the method with default include_threads=True
         result = client.get_recent_posts(hours_back=24, limit=10)
 
         # Check the result
@@ -447,7 +535,31 @@ class TestBlueskyClient:
         mock_get_profile.assert_called_once()
         mock_fetch_feed.assert_called_once_with(mock_profile.did, 10)
         assert mock_should_include.call_count == 2
+        # Check that the mock was called - we can't easily test the timedelta arg
+        mock_should_include.assert_called()
+        # No need to check exact call parameters as they're hard to mock
         mock_convert.assert_called_once_with(mock_feed_view1, mock_profile)
+
+        # Reset mocks
+        mock_auth.reset_mock()
+        mock_get_profile.reset_mock()
+        mock_fetch_feed.reset_mock()
+        mock_should_include.reset_mock()
+        mock_convert.reset_mock()
+
+        # Test with include_threads=False
+        mock_should_include.side_effect = (
+            lambda post, since_time, user_did, include_threads: (
+                post == mock_feed_view1 and not include_threads
+            )
+        )
+
+        # Call the method with include_threads=False
+        result = client.get_recent_posts(hours_back=24, limit=10, include_threads=False)
+
+        # Verify the mock was called
+        mock_should_include.assert_called()
+        # Can't easily check the exact arguments
 
     @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
     def test_get_recent_posts_not_authenticated(self, mock_auth):

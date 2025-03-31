@@ -26,6 +26,7 @@ class TestConfig:
         assert config.max_posts_per_run == 5
         assert config.include_media is True
         assert config.include_links is True
+        assert config.include_threads is True
 
         # Check passed values
         assert config.bluesky.username == "user"
@@ -42,6 +43,7 @@ class TestConfig:
             max_posts_per_run=10,
             include_media=False,
             include_links=False,
+            include_threads=False,
         )
 
         # Check custom values
@@ -50,6 +52,7 @@ class TestConfig:
         assert config.max_posts_per_run == 10
         assert config.include_media is False
         assert config.include_links is False
+        assert config.include_threads is False
 
     def test_load_config_from_env_file(self, sample_env_file):
         """Test loading config from an environment file."""
@@ -65,6 +68,7 @@ class TestConfig:
         assert config.max_posts_per_run == 10
         assert config.include_media is True
         assert config.include_links is True
+        assert config.include_threads is True
 
     @patch.dict(
         os.environ,
@@ -78,6 +82,7 @@ class TestConfig:
             "MAX_POSTS_PER_RUN": "3",
             "INCLUDE_MEDIA": "false",
             "INCLUDE_LINKS": "false",
+            "INCLUDE_THREADS": "false",
         },
     )
     def test_load_config_from_env_vars(self):
@@ -94,6 +99,7 @@ class TestConfig:
         assert config.max_posts_per_run == 3
         assert config.include_media is False
         assert config.include_links is False
+        assert config.include_threads is False
 
     @patch.dict(os.environ, {}, clear=True)
     def test_load_config_missing_required_vars(self):
@@ -133,6 +139,7 @@ class TestConfig:
             "MASTODON_INSTANCE_URL": "https://env.test",
             "MASTODON_ACCESS_TOKEN": "env_token",
             "INCLUDE_MEDIA": "not_a_boolean",  # Invalid value
+            "INCLUDE_THREADS": "not_a_boolean",  # Invalid value
         },
         clear=True,
     )
@@ -141,3 +148,4 @@ class TestConfig:
         # Should not be true for most invalid boolean values
         config = load_config()
         assert config.include_media is False
+        assert config.include_threads is False

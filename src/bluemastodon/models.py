@@ -69,8 +69,8 @@ class BlueskyPost(SocialPost):
     # Bluesky-specific fields
     uri: str  # The AT URI
     cid: str  # The CID
-    reply_root: str | None = None
-    reply_parent: str | None = None
+    reply_root: str | None = None  # ID of the root post in the thread
+    reply_parent: str | None = None  # ID of the parent post (direct reply to)
     like_count: int | None = None
     repost_count: int | None = None
 

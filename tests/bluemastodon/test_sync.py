@@ -199,6 +199,52 @@ class TestSyncManager:
             assert data["sync_records"][0]["source_id"] == "post1"
             assert data["sync_records"][0]["target_id"] == "toot1"
 
+    def test_find_mastodon_id_for_bluesky_post(self, sample_config):
+        """Test find_mastodon_id_for_bluesky_post method."""
+        with (
+            patch("bluemastodon.sync.BlueskyClient"),
+            patch("bluemastodon.sync.MastodonClient"),
+        ):
+            # Create manager
+            manager = SyncManager(sample_config)
+
+            # Setup test sync records
+            record1 = SyncRecord(
+                source_id="bluesky1",
+                source_platform="bluesky",
+                target_id="mastodon1",
+                target_platform="mastodon",
+                synced_at=datetime.now(),
+                success=True,
+            )
+            record2 = SyncRecord(
+                source_id="bluesky2",
+                source_platform="bluesky",
+                target_id="mastodon2",
+                target_platform="mastodon",
+                synced_at=datetime.now(),
+                success=True,
+            )
+            record3 = SyncRecord(
+                source_id="other1",
+                source_platform="other",
+                target_id="mastodon3",
+                target_platform="mastodon",
+                synced_at=datetime.now(),
+                success=True,
+            )
+            manager.sync_records = [record1, record2, record3]
+
+            # Test finding existing records
+            assert manager.find_mastodon_id_for_bluesky_post("bluesky1") == "mastodon1"
+            assert manager.find_mastodon_id_for_bluesky_post("bluesky2") == "mastodon2"
+
+            # Test record from different platform
+            assert manager.find_mastodon_id_for_bluesky_post("other1") is None
+
+            # Test non-existent record
+            assert manager.find_mastodon_id_for_bluesky_post("nonexistent") is None
+
     def test_save_state_error(self, sample_config):
         """Test _save_state error handling."""
         with (
@@ -260,7 +306,10 @@ class TestSyncManager:
             assert result in manager.sync_records
 
             # Verify mock calls
-            mock_masto.post.assert_called_once_with(sample_bluesky_post)
+            mock_masto.post.assert_called_once()
+            args, kwargs = mock_masto.post.call_args
+            assert args[0] == sample_bluesky_post
+            assert "in_reply_to_id" in kwargs and kwargs["in_reply_to_id"] is None
             # _save_state is now called immediately after successful posting
             mock_save_state.assert_called_once()
 
@@ -303,7 +352,10 @@ class TestSyncManager:
             assert result in manager.sync_records
 
             # Verify mock calls
-            mock_masto.post.assert_called_once_with(sample_bluesky_post)
+            mock_masto.post.assert_called_once()
+            args, kwargs = mock_masto.post.call_args
+            assert args[0] == sample_bluesky_post
+            assert "in_reply_to_id" in kwargs
             mock_save_state.assert_not_called()
 
     @patch("bluemastodon.sync.SyncManager._sync_post")
@@ -343,6 +395,9 @@ class TestSyncManager:
             manager = SyncManager(sample_config)
             manager.synced_posts = {"already_synced"}
 
+            # Mock find_mastodon_id_for_bluesky_post to always return None
+            manager.find_mastodon_id_for_bluesky_post = MagicMock(return_value=None)
+
             # Call run_sync
             result = manager.run_sync()
 
@@ -355,6 +410,7 @@ class TestSyncManager:
             mock_bsky.get_recent_posts.assert_called_once_with(
                 hours_back=sample_config.lookback_hours,
                 limit=sample_config.max_posts_per_run,
+                include_threads=sample_config.include_threads,
             )
 
             # Should only sync new posts, not the already synced one
@@ -561,6 +617,128 @@ class TestSyncManager:
 
             # Verify the record was added to sync_records
             assert result in manager.sync_records
+
+    @patch("bluemastodon.sync.SyncManager._save_state")
+    def test_sync_post_thread_with_parent(
+        self, mock_save_state, sample_config, sample_bluesky_reply_post
+    ):
+        """Test _sync_post with a self-reply post where the parent ID IS found."""
+        with (
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.logger") as mock_logger,
+        ):
+            # Setup mocks
+            mock_bsky = MagicMock()
+            mock_masto = MagicMock()
+            mock_bsky_class.return_value = mock_bsky
+            mock_masto_class.return_value = mock_masto
+
+            # Mock mastodon post response
+            mock_mastodon_post = MagicMock()
+            mock_mastodon_post.id = "toot456"
+            mock_masto.post.return_value = mock_mastodon_post
+
+            # Create manager
+            manager = SyncManager(sample_config)
+
+            # Mock find_mastodon_id_for_bluesky_post to return a valid parent ID
+            manager.find_mastodon_id_for_bluesky_post = MagicMock(
+                return_value="parent_toot_123"
+            )
+
+            # Call _sync_post
+            result = manager._sync_post(sample_bluesky_reply_post)
+
+            # Check the result
+            assert isinstance(result, SyncRecord)
+            assert result.source_id == sample_bluesky_reply_post.id
+            assert result.source_platform == "bluesky"
+            assert result.target_id == "toot456"
+            assert result.target_platform == "mastodon"
+            assert result.success is True
+            assert result.error_message is None
+
+            # Check state was updated
+            assert sample_bluesky_reply_post.id in manager.synced_posts
+            assert result in manager.sync_records
+
+            # Verify mock calls
+            mock_masto.post.assert_called_once()
+            args, kwargs = mock_masto.post.call_args
+            assert args[0] == sample_bluesky_reply_post
+            assert (
+                kwargs["in_reply_to_id"] == "parent_toot_123"
+            )  # Should use the parent ID
+
+            # Verify info log message about finding parent
+            mock_logger.info.assert_any_call(
+                f"Found Mastodon parent ID: parent_toot_123 "
+                f"for Bluesky parent: {sample_bluesky_reply_post.reply_parent}"
+            )
+
+            # _save_state is called immediately after successful posting
+            mock_save_state.assert_called_once()
+
+    @patch("bluemastodon.sync.SyncManager._save_state")
+    def test_sync_post_thread_without_parent(
+        self, mock_save_state, sample_config, sample_bluesky_reply_post
+    ):
+        """Test _sync_post with a self-reply post where the parent ID can't be found."""
+        with (
+            patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
+            patch("bluemastodon.sync.MastodonClient") as mock_masto_class,
+            patch("bluemastodon.sync.logger") as mock_logger,
+        ):
+            # Setup mocks
+            mock_bsky = MagicMock()
+            mock_masto = MagicMock()
+            mock_bsky_class.return_value = mock_bsky
+            mock_masto_class.return_value = mock_masto
+
+            # Mock mastodon post response
+            mock_mastodon_post = MagicMock()
+            mock_mastodon_post.id = "toot456"
+            mock_masto.post.return_value = mock_mastodon_post
+
+            # Create manager
+            manager = SyncManager(sample_config)
+
+            # Ensure find_mastodon_id_for_bluesky_post returns None (parent not found)
+            manager.find_mastodon_id_for_bluesky_post = MagicMock(return_value=None)
+
+            # Call _sync_post
+            result = manager._sync_post(sample_bluesky_reply_post)
+
+            # Check the result
+            assert isinstance(result, SyncRecord)
+            assert result.source_id == sample_bluesky_reply_post.id
+            assert result.source_platform == "bluesky"
+            assert result.target_id == "toot456"
+            assert result.target_platform == "mastodon"
+            assert result.success is True
+            assert result.error_message is None
+
+            # Check state was updated
+            assert sample_bluesky_reply_post.id in manager.synced_posts
+            assert result in manager.sync_records
+
+            # Verify mock calls
+            mock_masto.post.assert_called_once()
+            args, kwargs = mock_masto.post.call_args
+            assert args[0] == sample_bluesky_reply_post
+            assert (
+                kwargs["in_reply_to_id"] is None
+            )  # Should be None when parent not found
+
+            # Verify warning was logged about not finding parent
+            mock_logger.warning.assert_called_with(
+                f"Could not find Mastodon parent ID for Bluesky parent: "
+                f"{sample_bluesky_reply_post.reply_parent}"
+            )
+
+            # _save_state is called immediately after successful posting
+            mock_save_state.assert_called_once()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_run_sync_with_new_posts(

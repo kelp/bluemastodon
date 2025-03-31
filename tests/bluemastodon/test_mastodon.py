@@ -709,12 +709,28 @@ class TestMastodonClient:
             links=[],
         )
 
-        # Post
+        # Test 1: Post without reply parent
         result = client.post(bluesky_post)
 
         # Assert
         assert result == mock_mastodon_post
         client.client.status_post.assert_called_once()
+        mock_convert.assert_called_once_with(mock_toot)
+
+        # Reset mocks
+        client.client.status_post.reset_mock()
+        mock_convert.reset_mock()
+
+        # Test 2: Post with reply parent
+        parent_id = "masto12345"
+        result = client.post(bluesky_post, in_reply_to_id=parent_id)
+
+        # Assert
+        assert result == mock_mastodon_post
+        client.client.status_post.assert_called_once()
+        # Verify in_reply_to_id was passed correctly
+        call_args = client.client.status_post.call_args
+        assert call_args.kwargs["in_reply_to_id"] == parent_id
         mock_convert.assert_called_once_with(mock_toot)
 
     @patch.object(MastodonClient, "ensure_authenticated")
@@ -729,11 +745,13 @@ class TestMastodonClient:
         )
         client = MastodonClient(config)
 
-        # Post
-        result = client.post(MagicMock())
+        # Post (both with and without in_reply_to_id)
+        result1 = client.post(MagicMock())
+        result2 = client.post(MagicMock(), in_reply_to_id="12345")
 
         # Assert
-        assert result is None
+        assert result1 is None
+        assert result2 is None
 
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")

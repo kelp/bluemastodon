@@ -44,6 +44,8 @@ class Config:
     include_media: bool = True
     # Whether to include post links
     include_links: bool = True
+    # Whether to include self-replies (threads)
+    include_threads: bool = True
 
 
 def load_config(env_file: str | None = None) -> Config:
@@ -89,6 +91,9 @@ def load_config(env_file: str | None = None) -> Config:
     include_links_str = os.getenv("INCLUDE_LINKS", "true").lower()
     include_links = include_links_str in ["true", "1", "yes", "y"]
 
+    include_threads_str = os.getenv("INCLUDE_THREADS", "true").lower()
+    include_threads = include_threads_str in ["true", "1", "yes", "y"]
+
     return Config(
         bluesky=BlueskyConfig(
             username=os.getenv("BLUESKY_USERNAME", ""),
@@ -103,4 +108,5 @@ def load_config(env_file: str | None = None) -> Config:
         max_posts_per_run=max_posts,
         include_media=include_media,
         include_links=include_links,
+        include_threads=include_threads,
     )

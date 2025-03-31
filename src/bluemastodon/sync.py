@@ -116,7 +116,9 @@ class SyncManager:
 
         # Get recent posts from Bluesky
         recent_posts = self.bluesky.get_recent_posts(
-            hours_back=self.config.lookback_hours, limit=self.config.max_posts_per_run
+            hours_back=self.config.lookback_hours,
+            limit=self.config.max_posts_per_run,
+            include_threads=self.config.include_threads,
         )
 
         logger.info(f"Found {len(recent_posts)} recent posts on Bluesky")
@@ -139,6 +141,25 @@ class SyncManager:
 
         return new_records
 
+    def find_mastodon_id_for_bluesky_post(self, bluesky_post_id: str) -> str | None:
+        """Find the corresponding Mastodon post ID for a Bluesky post ID.
+
+        Args:
+            bluesky_post_id: The Bluesky post ID to find
+
+        Returns:
+            The Mastodon post ID if found, None otherwise
+        """
+        # Look through sync records to find the matching post
+        for record in self.sync_records:
+            if (
+                record.source_id == bluesky_post_id
+                and record.source_platform == "bluesky"
+            ):
+                return record.target_id
+
+        return None
+
     def _sync_post(self, post: BlueskyPost) -> SyncRecord:
         """Sync a single post from Bluesky to Mastodon.
 
@@ -151,8 +172,26 @@ class SyncManager:
         try:
             logger.info(f"Syncing post {post.id} from Bluesky to Mastodon")
 
-            # Cross-post to Mastodon
-            mastodon_post = self.mastodon.post(post)
+            # Check if this is a reply to a post we've previously synced
+            mastodon_parent_id = None
+            if post.is_reply and post.reply_parent:
+                # Look up the Mastodon ID for the parent post
+                mastodon_parent_id = self.find_mastodon_id_for_bluesky_post(
+                    post.reply_parent
+                )
+                if mastodon_parent_id:
+                    logger.info(
+                        f"Found Mastodon parent ID: {mastodon_parent_id} "
+                        f"for Bluesky parent: {post.reply_parent}"
+                    )
+                else:
+                    logger.warning(
+                        f"Could not find Mastodon parent ID for Bluesky parent: "
+                        f"{post.reply_parent}"
+                    )
+
+            # Cross-post to Mastodon, passing thread information
+            mastodon_post = self.mastodon.post(post, in_reply_to_id=mastodon_parent_id)
 
             # IMPORTANT: Mark the post as synced immediately if we got any response
             # This prevents double posting even if later processing fails

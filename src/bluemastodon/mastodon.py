@@ -63,11 +63,14 @@ class MastodonClient:
             return self.verify_credentials()
         return True
 
-    def post(self, post: SocialPost) -> MastodonPost | None:
+    def post(
+        self, post: SocialPost, in_reply_to_id: str | None = None
+    ) -> MastodonPost | None:
         """Post content to Mastodon.
 
         Args:
             post: The post to create on Mastodon
+            in_reply_to_id: Optional ID of the post to reply to for threading
 
         Returns:
             MastodonPost object if successful, None if failed
@@ -180,8 +183,15 @@ class MastodonClient:
                     sensitive = post.sensitive  # pragma: no cover
 
                 # Create the post with safely handled parameters
+                # Add thread information if in_reply_to_id is provided
+                if in_reply_to_id:
+                    logger.info(
+                        f"Creating a reply to Mastodon post ID: {in_reply_to_id}"
+                    )
+
                 toot = self.client.status_post(
                     status=content,
+                    in_reply_to_id=in_reply_to_id,  # Pass in_reply_to_id for threading
                     media_ids=media_ids if media_ids else None,
                     sensitive=sensitive,
                     visibility=visibility,

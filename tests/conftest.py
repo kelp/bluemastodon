@@ -30,6 +30,7 @@ def sample_env_file():
     MAX_POSTS_PER_RUN=10
     INCLUDE_MEDIA=true
     INCLUDE_LINKS=true
+    INCLUDE_THREADS=true
     """
 
     with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
@@ -60,6 +61,7 @@ def sample_config():
         max_posts_per_run=10,
         include_media=True,
         include_links=True,
+        include_threads=True,
     )
 
 
@@ -91,6 +93,25 @@ def sample_bluesky_post():
                 description="An example website for testing",
             )
         ],
+    )
+
+
+@pytest.fixture
+def sample_bluesky_reply_post():
+    """Create a sample Bluesky reply post (thread) for testing."""
+    now = datetime.now()
+    return BlueskyPost(
+        id="reply123",
+        uri="at://test_user/app.bsky.feed.post/reply123",
+        cid="cid456",
+        content="This is a thread reply to my own post",
+        created_at=now,
+        author_id="did:plc:test_user",
+        author_handle="test_user.bsky.social",
+        author_display_name="Test User",
+        is_reply=True,
+        reply_parent="parent123",
+        reply_root="parent123",
     )
 
 

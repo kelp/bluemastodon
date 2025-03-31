@@ -24,6 +24,7 @@ separate tool.
 
 - 🔄 **Automatic Synchronization**: Fetches recent Bluesky posts and
   cross-posts to Mastodon
+- 🧵 **Thread Support**: Supports self-replies (threads) from Bluesky
 - 🖼️ **Media Support**: Transfers images and attachments between platforms
 - 🔗 **Link Handling**: Preserves external links in your posts
 - 🧠 **Smart Synchronization**: Keeps track of synced posts to avoid duplicates
@@ -132,6 +133,7 @@ SYNC_INTERVAL_MINUTES=60         # Frequency of synchronization
 MAX_POSTS_PER_RUN=5              # Maximum posts to sync in one run
 INCLUDE_MEDIA=true               # Include media attachments
 INCLUDE_LINKS=true               # Include post links
+INCLUDE_THREADS=true             # Include self-replies (threads)
 ```
 
 #### Obtaining API Credentials
@@ -224,6 +226,7 @@ sensitive):
    - `MAX_POSTS_PER_RUN`: Maximum posts to sync (default: 5)
    - `INCLUDE_MEDIA`: Whether to include media (default: true)
    - `INCLUDE_LINKS`: Whether to include links (default: true)
+   - `INCLUDE_THREADS`: Whether to include self-replies/threads (default: true)
 
 #### Running the Workflow
 
