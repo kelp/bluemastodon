@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6] - 2025-03-30
+
+### Fixed
+- Fixed truncated URLs in Mastodon posts by appending full URLs from link metadata
+- Removed complex URL pattern matching in favor of a simpler, more reliable approach
+
 ## [0.9.5] - 2025-03-30
 
 ### Fixed
