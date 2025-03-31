@@ -492,7 +492,6 @@ class MastodonClient:
 
         return type_mapping.get(mastodon_type, "other")
 
-
     def _convert_to_media_type(self, type_str: str) -> MediaType:
         """Convert a string media type to the MediaType enum.
 

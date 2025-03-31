@@ -210,7 +210,6 @@ class TestMastodonClient:
         assert "https://github.com/kelp/webdown" in result
         assert "https://https://" not in result
 
-
     @patch("bluemastodon.mastodon.re")
     def test_is_duplicate_post_no_account(self, mock_re):
         """Test _is_duplicate_post when no account is available."""
@@ -1085,7 +1084,7 @@ class TestMastodonClient:
         # Setup
         mock_auth.return_value = True
         mock_is_duplicate.return_value = (False, None)
-        
+
         mock_toot = MagicMock()
         mock_mastodon_post = MastodonPost(
             id="12345",
@@ -1098,7 +1097,7 @@ class TestMastodonClient:
             media_attachments=[],
         )
         mock_convert.return_value = mock_mastodon_post
-        
+
         # Create client
         config = MastodonConfig(
             instance_url="https://mastodon.test", access_token="test_token"
@@ -1106,7 +1105,7 @@ class TestMastodonClient:
         client = MastodonClient(config)
         client.client = MagicMock()
         client.client.status_post.return_value = mock_toot
-        
+
         # Create test post with link with truncated URL in content
         bluesky_post = BlueskyPost(
             id="test123",
@@ -1123,12 +1122,12 @@ class TestMastodonClient:
                     title="BlueMastodon",
                     description="Cross-post from Bluesky to Mastodon",
                 )
-            ]
+            ],
         )
-        
+
         # Post
         result = client.post(bluesky_post)
-        
+
         # Assert
         assert result == mock_mastodon_post
         # Verify the proper content was sent to Mastodon with appended URL
@@ -1138,7 +1137,7 @@ class TestMastodonClient:
         assert "github.com/kelp/social-..." in posted_content
         # Full URL should be appended on a new line
         assert "https://github.com/kelp/bluemastodon" in posted_content
-        
+
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
     @patch.object(MastodonClient, "ensure_authenticated")
