@@ -50,6 +50,18 @@ Install directly from PyPI:
 pip install bluemastodon
 ```
 
+#### Using Homebrew
+
+Install using Homebrew on macOS or Linux:
+
+```bash
+# Add the tap first (only needed once)
+brew tap kelp/tools
+
+# Install bluemastodon
+brew install kelp/tools/bluemastodon
+```
+
 After installation, you can run the tool from the command line:
 
 ```bash
