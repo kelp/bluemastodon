@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.7] - 2025-03-30
+
+### Changed
+- Improved pre-commit hooks with better Python compatibility checks
+- Updated type annotations to use Python 3.10+ syntax
+- Fixed all linting issues and code formatting
+
 ## [0.9.6] - 2025-03-30
 
 ### Fixed
