@@ -7,7 +7,6 @@ including post mapping, cross-posting workflow, and state tracking.
 import json
 import os
 from datetime import datetime
-from typing import List, Optional, Set
 
 from loguru import logger
 
@@ -16,11 +15,13 @@ from bluemastodon.config import Config
 from bluemastodon.mastodon import MastodonClient
 from bluemastodon.models import BlueskyPost, SyncRecord
 
+# No typing imports needed here due to Python 3.10+ syntax
+
 
 class SyncManager:
     """Manager for syncing posts between platforms."""
 
-    def __init__(self, config: Config, state_file: Optional[str] = None):
+    def __init__(self, config: Config, state_file: str | None = None):
         """Initialize the sync manager.
 
         Args:
@@ -32,8 +33,8 @@ class SyncManager:
         self.mastodon = MastodonClient(config.mastodon)
 
         self.state_file = state_file or "sync_state.json"
-        self.synced_posts: Set[str] = set()
-        self.sync_records: List[SyncRecord] = []
+        self.synced_posts: set[str] = set()
+        self.sync_records: list[SyncRecord] = []
 
         # Load previous state if it exists
         self._load_state()
@@ -42,7 +43,7 @@ class SyncManager:
         """Load the sync state from the state file."""
         try:
             if os.path.exists(self.state_file):
-                with open(self.state_file, "r") as f:
+                with open(self.state_file) as f:
                     data = json.load(f)
                     self.synced_posts = set(data.get("synced_posts", []))
 
@@ -98,7 +99,7 @@ class SyncManager:
         except Exception as e:
             logger.error(f"Failed to save sync state: {e}")
 
-    def run_sync(self) -> List[SyncRecord]:
+    def run_sync(self) -> list[SyncRecord]:
         """Run the synchronization process.
 
         Returns:

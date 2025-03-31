@@ -6,9 +6,10 @@ particularly for representing posts from different platforms.
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
 
 from pydantic import BaseModel, Field
+
+# No typing imports needed here due to Python 3.10+ syntax
 
 
 class MediaType(str, Enum):
@@ -24,21 +25,21 @@ class MediaAttachment(BaseModel):
     """Represents a media attachment in a post."""
 
     url: str
-    alt_text: Optional[str] = None
-    mime_type: Optional[str] = None
+    alt_text: str | None = None
+    mime_type: str | None = None
     media_type: MediaType
-    width: Optional[int] = None
-    height: Optional[int] = None
-    size_bytes: Optional[int] = None
+    width: int | None = None
+    height: int | None = None
+    size_bytes: int | None = None
 
 
 class Link(BaseModel):
     """Represents an external link in a post."""
 
     url: str
-    title: Optional[str] = None
-    description: Optional[str] = None
-    image_url: Optional[str] = None
+    title: str | None = None
+    description: str | None = None
+    image_url: str | None = None
 
 
 class SocialPost(BaseModel):
@@ -50,15 +51,15 @@ class SocialPost(BaseModel):
     platform: str
     author_id: str
     author_handle: str
-    author_display_name: Optional[str] = None
-    media_attachments: List[MediaAttachment] = Field(default_factory=list)
-    links: List[Link] = Field(default_factory=list)
+    author_display_name: str | None = None
+    media_attachments: list[MediaAttachment] = Field(default_factory=list)
+    links: list[Link] = Field(default_factory=list)
     is_reply: bool = False
     is_repost: bool = False
-    in_reply_to_id: Optional[str] = None
-    repost_of_id: Optional[str] = None
-    language: Optional[str] = None
-    visibility: Optional[str] = None
+    in_reply_to_id: str | None = None
+    repost_of_id: str | None = None
+    language: str | None = None
+    visibility: str | None = None
 
 
 class BlueskyPost(SocialPost):
@@ -68,10 +69,10 @@ class BlueskyPost(SocialPost):
     # Bluesky-specific fields
     uri: str  # The AT URI
     cid: str  # The CID
-    reply_root: Optional[str] = None
-    reply_parent: Optional[str] = None
-    like_count: Optional[int] = None
-    repost_count: Optional[int] = None
+    reply_root: str | None = None
+    reply_parent: str | None = None
+    like_count: int | None = None
+    repost_count: int | None = None
 
 
 class MastodonPost(SocialPost):
@@ -80,11 +81,11 @@ class MastodonPost(SocialPost):
     platform: str = "mastodon"
     # Mastodon-specific fields
     url: str
-    application: Optional[str] = None
+    application: str | None = None
     sensitive: bool = False
-    spoiler_text: Optional[str] = None
-    favourites_count: Optional[int] = None
-    reblogs_count: Optional[int] = None
+    spoiler_text: str | None = None
+    favourites_count: int | None = None
+    reblogs_count: int | None = None
 
 
 class SyncRecord(BaseModel):
@@ -96,4 +97,4 @@ class SyncRecord(BaseModel):
     target_platform: str
     synced_at: datetime = Field(default_factory=datetime.now)
     success: bool = True
-    error_message: Optional[str] = None
+    error_message: str | None = None

@@ -5,7 +5,7 @@ fetching posts, and parsing post content.
 """
 
 from datetime import datetime, timedelta
-from typing import Any, List
+from typing import Any
 
 from atproto import Client as AtProtoClient
 from atproto.exceptions import AtProtocolError
@@ -58,7 +58,7 @@ class BlueskyClient:
 
     def get_recent_posts(
         self, hours_back: int = 24, limit: int = 20
-    ) -> List[BlueskyPost]:
+    ) -> list[BlueskyPost]:
         """Get recent posts from the authenticated user.
 
         Args:
@@ -168,9 +168,9 @@ class BlueskyClient:
             repost_count=post.repost_count if hasattr(post, "repost_count") else None,
         )
 
-    def _extract_media_attachments(self, post: Any) -> List[MediaAttachment]:
+    def _extract_media_attachments(self, post: Any) -> list[MediaAttachment]:
         """Extract media attachments from a post."""
-        attachments: List[MediaAttachment] = []
+        attachments: list[MediaAttachment] = []
 
         if not (hasattr(post.record, "embed") and post.record.embed):
             return attachments
@@ -193,9 +193,9 @@ class BlueskyClient:
 
         return attachments
 
-    def _extract_links(self, post: Any) -> List[Link]:
+    def _extract_links(self, post: Any) -> list[Link]:
         """Extract links from a post."""
-        links: List[Link] = []
+        links: list[Link] = []
 
         if not (hasattr(post.record, "embed") and post.record.embed):
             return links

@@ -6,9 +6,10 @@ providing access to API credentials and settings.
 
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 from dotenv import load_dotenv
+
+# No typing imports needed here due to Python 3.10+ syntax
 
 
 @dataclass
@@ -45,7 +46,7 @@ class Config:
     include_links: bool = True
 
 
-def load_config(env_file: Optional[str] = None) -> Config:
+def load_config(env_file: str | None = None) -> Config:
     """Load configuration from environment variables.
 
     Args:

@@ -6,7 +6,7 @@ posting content, and checking for duplicates.
 
 import re
 from datetime import datetime
-from typing import Any, List, Optional, Tuple
+from typing import Any
 
 from loguru import logger
 from mastodon import Mastodon
@@ -63,7 +63,7 @@ class MastodonClient:
             return self.verify_credentials()
         return True
 
-    def post(self, post: SocialPost) -> Optional[MastodonPost]:
+    def post(self, post: SocialPost) -> MastodonPost | None:
         """Post content to Mastodon.
 
         Args:
@@ -133,15 +133,16 @@ class MastodonClient:
 
                 # Add all links to content on separate lines to avoid truncation
                 if links:
-                    # Use a variable for the newline separator to avoid backslash in f-string
+                    # Variable for newline separator to avoid backslash in f-string
                     newline_separator = "\n"
-                    content = f"{content}\n\n{newline_separator.join(links)}"
+                    joined_links = newline_separator.join(links)
+                    content = f"{content}\n\n{joined_links}"
 
             # Apply character limits
             content = self._apply_character_limits(content)
 
             # Upload media if present
-            media_ids: List[str] = []
+            media_ids: list[str] = []
             if post.media_attachments and len(post.media_attachments) > 0:
                 for attachment in post.media_attachments:
                     # Skip if no URL is provided
@@ -223,7 +224,7 @@ class MastodonClient:
             logger.error(f"Unhandled error in Mastodon post method: {e}")
             return None
 
-    def _is_duplicate_post(self, content: str) -> Tuple[bool, Optional[Any]]:
+    def _is_duplicate_post(self, content: str) -> tuple[bool, Any | None]:
         """Check if a similar post already exists on Mastodon.
 
         Args:

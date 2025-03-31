@@ -6,7 +6,6 @@ This package provides tools for syncing posts from Bluesky to Mastodon.
 import argparse
 import os
 import sys
-from typing import List, Optional
 
 from loguru import logger
 
@@ -23,6 +22,9 @@ from bluemastodon.models import (
     SyncRecord,
 )
 from bluemastodon.sync import SyncManager
+
+# No typing imports needed here due to Python 3.10+ syntax
+
 
 __version__ = "0.9.6"
 
@@ -44,7 +46,7 @@ __all__ = [
 ]
 
 
-def main(args: Optional[List[str]] = None) -> int:
+def main(args: list[str] | None = None) -> int:
     """Run the bluemastodon tool from the command line.
 
     Args:
