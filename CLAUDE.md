@@ -1,20 +1,22 @@
 # BlueMastodon Project Guidelines
 
-## Pre-Commit Checklist
+## Code Quality Automation
 
-- Before creating a version tag or release, always run:
-  ```bash
-  # Format the code
-  poetry run black .
-  poetry run isort .
-  
-  # Check for linting and type issues
-  poetry run flake8 .
-  poetry run mypy src
-  
-  # Run the tests with coverage
-  poetry run pytest --cov=src --cov-report=term-missing
-  ```
+The repository uses pre-commit hooks to automatically ensure code quality before each commit.
+The pre-commit hooks handle:
+
+- Code formatting (black, isort)
+- Linting (flake8)
+- Type checking (mypy)
+- Security scanning (bandit)
+- Test coverage (pytest with 100% coverage requirement)
+
+All quality checks run automatically before each commit, preventing commits that would fail CI.
+
+To manually run all checks:
+```bash
+pre-commit run --all-files
+```
 
 ## Project Overview
 A Python application to automatically cross-post manual Bluesky posts to

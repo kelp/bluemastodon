@@ -23,16 +23,12 @@ help:  ## Show this help
 setup:  ## Set up development environment
 	$(POETRY) install
 	$(POETRY_RUN) pre-commit install
-	cp .pre-commit-hooks/pre-push .git/hooks/pre-push
-	chmod +x .git/hooks/pre-push
-	@echo "Pre-commit hooks and pre-push hook installed successfully"
+	@echo "Pre-commit hooks installed successfully"
 
 install:  ## Install the package in development mode
 	$(POETRY) install
 	$(POETRY_RUN) pre-commit install
-	cp .pre-commit-hooks/pre-push .git/hooks/pre-push
-	chmod +x .git/hooks/pre-push
-	@echo "Pre-commit hooks and pre-push hook installed successfully"
+	@echo "Pre-commit hooks installed successfully"
 
 clean:  ## Remove build artifacts and cache directories
 	rm -rf build/

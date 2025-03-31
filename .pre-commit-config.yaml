@@ -48,30 +48,12 @@ repos:
         additional_dependencies: ["bandit[toml]"]
         exclude: ^(tests/|setup.py)
 
-  # Run pytest (with minimum coverage requirement)
+  # Run comprehensive tests with coverage requirements
   - repo: local
     hooks:
-      - id: pytest
-        name: pytest
-        entry: poetry run pytest --cov=src --cov-report=term-missing --cov-fail-under=100
-        language: system
-        pass_filenames: false
-        always_run: true
-        verbose: true
-
-      - id: check-coverage-min
-        name: Check minimum coverage
-        entry: |
-          bash -c '
-            poetry run pytest --cov=src --cov-report=xml --quiet
-            COV=$(python -c "import xml.etree.ElementTree as ET; tree = ET.parse(\"coverage.xml\"); root = tree.getroot(); print(float(root.attrib[\"line-rate\"]) * 100)")
-            if (( $(echo "$COV < 100" | bc -l) )); then
-              echo "Coverage is $COV%, which is below the minimum required 100%"
-              exit 1
-            else
-              echo "Coverage is $COV%, which meets the minimum required 100%"
-            fi
-          '
+      - id: pytest-full
+        name: Run comprehensive tests
+        entry: poetry run pytest --cov=bluemastodon --cov-report=term-missing --cov-fail-under=100
         language: system
         pass_filenames: false
         always_run: true
