@@ -13,7 +13,6 @@ from mastodon import Mastodon
 
 from bluemastodon.config import MastodonConfig
 from bluemastodon.models import (
-    Link,
     MastodonPost,
     MediaAttachment,
     MediaType,
@@ -125,10 +124,16 @@ class MastodonClient:
             # Process content - add full URLs from link metadata
             content = post.content
             if hasattr(post, "links") and post.links:
-                for link in post.links:
-                    if link.url:
-                        content = f"{content}\n\n{link.url}"
-                        logger.info(f"Added full URL to content: {link.url}")
+                # Extract links from post and append full URLs
+                links = []
+                for link_obj in post.links:
+                    if hasattr(link_obj, "url") and link_obj.url:
+                        links.append(link_obj.url)
+                        logger.info(f"Added full URL to content: {link_obj.url}")
+
+                # Add all links to content on separate lines to avoid truncation
+                if links:
+                    content = f"{content}\n\n{'\n'.join(links)}"
 
             # Apply character limits
             content = self._apply_character_limits(content)
