@@ -1,5 +1,21 @@
 # BlueMastodon Project Guidelines
 
+## Pre-Commit Checklist
+
+- Before creating a version tag or release, always run:
+  ```bash
+  # Format the code
+  poetry run black .
+  poetry run isort .
+  
+  # Check for linting and type issues
+  poetry run flake8 .
+  poetry run mypy src
+  
+  # Run the tests with coverage
+  poetry run pytest --cov=src --cov-report=term-missing
+  ```
+
 ## Project Overview
 A Python application to automatically cross-post manual Bluesky posts to
 Mastodon using GitHub Actions.
