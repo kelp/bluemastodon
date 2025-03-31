@@ -12,12 +12,26 @@ repos:
       - id: debug-statements
       - id: detect-private-key
 
-  # Add a Python 3.10 syntax check to ensure compatibility
+  # Add Python compatibility checks for all supported versions
   - repo: local
     hooks:
       - id: python310-compat-check
         name: Python 3.10 Compatibility Check
         entry: pyenv exec python3.10 -m py_compile
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: python311-compat-check
+        name: Python 3.11 Compatibility Check
+        entry: pyenv exec python3.11 -m py_compile
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: python312-compat-check
+        name: Python 3.12 Compatibility Check
+        entry: pyenv exec python3.12 -m py_compile
         language: system
         types: [python]
         pass_filenames: true
