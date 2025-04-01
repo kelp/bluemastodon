@@ -6,7 +6,9 @@ including post mapping, cross-posting workflow, and state tracking.
 
 import json
 import os
-from datetime import datetime
+import tempfile
+import uuid  # Import uuid for unique temporary file names
+from datetime import datetime, timedelta
 
 from loguru import logger
 
@@ -35,6 +37,7 @@ class SyncManager:
         self.state_file = state_file or "sync_state.json"
         self.synced_posts: set[str] = set()
         self.sync_records: list[SyncRecord] = []
+        self.mastodon_parent_map: dict[str, str] = {}  # For fast parent lookups
 
         # Load previous state if it exists
         self._load_state()
@@ -62,22 +65,54 @@ class SyncManager:
 
                     self.sync_records = records
 
-                logger.info(f"Loaded sync state: {len(self.synced_posts)} synced posts")
+                # Build the lookup map after loading records
+                self._rebuild_parent_map()
+                logger.info(
+                    f"Loaded sync state: {len(self.synced_posts)} posts, "
+                    f"{len(self.sync_records)} records, "
+                    f"{len(self.mastodon_parent_map)} parent map entries"
+                )
         except Exception as e:
             logger.error(f"Failed to load sync state: {e}")
             # Initialize empty state
             self.synced_posts = set()
             self.sync_records = []
+            self.mastodon_parent_map = {}
+
+    def _rebuild_parent_map(self) -> None:
+        """Rebuild the mastodon_parent_map from sync_records."""
+        self.mastodon_parent_map = {
+            record.source_id: record.target_id
+            for record in self.sync_records
+            if record.success
+            and record.target_id
+            and record.source_platform == "bluesky"
+        }
 
     def _save_state(self) -> None:
-        """Save the current sync state to the state file."""
+        """Save the current sync state atomically to the state file, pruning old records."""
         try:
-            # Only create directories if path contains directories
-            dirname = os.path.dirname(self.state_file)
-            if dirname:
-                os.makedirs(dirname, exist_ok=True)
+            # --- Pruning Logic ---
+            # Define retention period (e.g., 7 days, adjust as needed)
+            retention_period = timedelta(days=7)
+            cutoff_time = datetime.now() - retention_period
 
-            # Convert SyncRecord objects to dictionaries with string timestamps
+            original_record_count = len(self.sync_records)
+            # Filter records based on timestamp (ensure synced_at is datetime)
+            self.sync_records = [
+                record
+                for record in self.sync_records
+                if isinstance(record.synced_at, datetime)
+                and record.synced_at >= cutoff_time
+            ]
+            pruned_count = original_record_count - len(self.sync_records)
+            if pruned_count > 0:
+                logger.info(f"Pruned {pruned_count} old sync records.")
+
+            # Rebuild the parent map after pruning
+            self._rebuild_parent_map()
+
+            # --- Prepare data for JSON serialization ---
             record_dicts = []
             for record in self.sync_records:
                 record_dict = record.model_dump()
@@ -85,17 +120,50 @@ class SyncManager:
                     record_dict["synced_at"] = record_dict["synced_at"].isoformat()
                 record_dicts.append(record_dict)
 
-            # Save state to file
-            with open(self.state_file, "w") as f:
-                json.dump(
-                    {
-                        "synced_posts": list(self.synced_posts),
-                        "sync_records": record_dicts,
-                    },
-                    f,
-                )
+            state_data = {
+                "synced_posts": list(self.synced_posts),
+                "sync_records": record_dicts,
+            }
 
-            logger.info(f"Saved sync state: {len(self.synced_posts)} synced posts")
+            # Get directory and ensure it exists
+            dirname = os.path.dirname(self.state_file)
+            if dirname:
+                os.makedirs(dirname, exist_ok=True)
+
+            # --- Atomic Write ---
+            # Create a unique temporary file in the same directory
+            temp_file_path = f"{self.state_file}.{uuid.uuid4()}.tmp"
+            try:
+                # Directory existence is already checked and created above
+
+                with open(temp_file_path, "w") as f:
+                    json.dump(state_data, f, indent=2)  # Add indent for readability
+
+                # Atomically replace the old state file with the new one
+                os.replace(temp_file_path, self.state_file)
+
+                logger.info(
+                    f"Saved sync state atomically: {len(self.synced_posts)} posts, "
+                )
+            except Exception as write_err:
+                logger.error(f"Failed during atomic write to state file: {write_err}")
+                # Clean up the temporary file if it exists
+                if os.path.exists(temp_file_path):
+                    try:
+                        os.remove(temp_file_path)
+                    except OSError as remove_err:
+                        logger.error(
+                            f"Failed to remove temporary state file {temp_file_path}: {remove_err}"
+                        )
+                # Re-raise the original error to signal failure
+                raise write_err
+            # --- End Atomic Write ---
+
+            logger.info(
+                f"Saved sync state successfully: {len(self.synced_posts)} posts, "  # Updated log message slightly
+                f"{len(self.sync_records)} records"
+            )
+
         except Exception as e:
             logger.error(f"Failed to save sync state: {e}")
 
@@ -127,6 +195,13 @@ class SyncManager:
         new_posts = [post for post in recent_posts if post.id not in self.synced_posts]
         logger.info(f"Found {len(new_posts)} posts not yet synced")
 
+        # Sort posts chronologically (oldest first) to improve reply threading
+        new_posts.sort(key=lambda p: p.created_at)
+        if new_posts:
+            logger.info(
+                f"Sorted {len(new_posts)} posts chronologically before syncing."
+            )
+
         # Sync each post
         new_records = []
         for post in new_posts:
@@ -150,15 +225,8 @@ class SyncManager:
         Returns:
             The Mastodon post ID if found, None otherwise
         """
-        # Look through sync records to find the matching post
-        for record in self.sync_records:
-            if (
-                record.source_id == bluesky_post_id
-                and record.source_platform == "bluesky"
-            ):
-                return record.target_id
-
-        return None
+        # Use the pre-built dictionary for efficient lookup
+        return self.mastodon_parent_map.get(bluesky_post_id)
 
     def _sync_post(self, post: BlueskyPost) -> SyncRecord:
         """Sync a single post from Bluesky to Mastodon.
@@ -191,38 +259,65 @@ class SyncManager:
                     )
 
             # Cross-post to Mastodon, passing thread information
-            mastodon_post = self.mastodon.post(post, in_reply_to_id=mastodon_parent_id)
+            # MastodonClient.post now returns: status, post_object, error_message
+            status, mastodon_post_obj, error_msg = self.mastodon.post(
+                post, in_reply_to_id=mastodon_parent_id
+            )
 
-            # IMPORTANT: Mark the post as synced immediately if we got any response
-            # This prevents double posting even if later processing fails
-            if mastodon_post:
-                # Add to synced_posts immediately
+            # --- Handle Posting Result ---
+            if status == "success" or status == "duplicate":
+                # Mark as synced in our state for both success and duplicate
                 self.synced_posts.add(post.id)
-                # Save state file immediately after successful posting
+                # Save state immediately to prevent re-posting on crash
                 self._save_state()
 
-                # Create sync record - ensure target_id is always a string
-                target_id = str(mastodon_post.id) if mastodon_post.id else ""
-                record = SyncRecord(
-                    source_id=post.id,
-                    source_platform="bluesky",
-                    target_id=target_id,
-                    target_platform="mastodon",
-                    synced_at=datetime.now(),
-                    success=True,
-                )
+                # Ensure we have a post object (even minimal fallback/duplicate)
+                if mastodon_post_obj:
+                    target_id = (
+                        str(mastodon_post_obj.id) if mastodon_post_obj.id else ""
+                    )
+                    log_msg = (
+                        f"Successfully synced post {post.id} to Mastodon as {target_id}"
+                        if status == "success"
+                        else f"Post {post.id} already exists on Mastodon as {target_id} (duplicate)"
+                    )
+                    logger.info(log_msg)
+
+                    record = SyncRecord(
+                        source_id=post.id,
+                        source_platform="bluesky",
+                        target_id=target_id,
+                        target_platform="mastodon",
+                        synced_at=datetime.now(),
+                        success=True,  # Treat duplicate as success for record keeping
+                        error_message=(
+                            "Duplicate post detected" if status == "duplicate" else None
+                        ),
+                    )
+                else:
+                    # Should ideally not happen if status is success/duplicate, but handle defensively
+                    logger.warning(
+                        f"Post {post.id} reported as {status} but no post object."
+                    )
+                    record = SyncRecord(
+                        source_id=post.id,
+                        source_platform="bluesky",
+                        target_id="",
+                        target_platform="mastodon",
+                        synced_at=datetime.now(),
+                        success=True,  # Still mark success to avoid retry
+                        error_message=f"Post {status}, but Mastodon object missing",
+                    )
 
                 self.sync_records.append(record)
-
-                logger.info(
-                    f"Successfully synced post {post.id} to Mastodon as "
-                    f"{mastodon_post.id}"
-                )
+                # Update the parent map only if we have a valid target_id
+                if target_id and target_id != "duplicate" and target_id != "unknown":
+                    self._rebuild_parent_map()  # Rebuild map after adding record
 
                 return record
-            else:
-                logger.error(f"Failed to cross-post {post.id}")
-                # Create error record
+
+            elif status == "failed":
+                logger.error(f"Failed to cross-post {post.id}: {error_msg}")
                 record = SyncRecord(
                     source_id=post.id,
                     source_platform="bluesky",
@@ -230,25 +325,38 @@ class SyncManager:
                     target_platform="mastodon",
                     synced_at=datetime.now(),
                     success=False,
-                    error_message="Failed to cross-post",
+                    error_message=error_msg or "Failed to cross-post (unknown reason)",
                 )
                 self.sync_records.append(record)
-                return record
-        except Exception as e:
-            logger.error(f"Error syncing post {post.id}: {e}")
-
-            # If the error includes "Posted to Mastodon", it means we likely succeeded
-            # but had a post-processing error. Mark as synced to prevent double posting.
-            log_msg = str(e).lower()
-            if "posted to mastodon" in log_msg:
-                logger.warning(
-                    "Post may have succeeded despite error. "
-                    "Marking as synced to prevent duplication."
-                )
-                self.synced_posts.add(post.id)
+                # Save state to record the failure
                 self._save_state()
+                return record
 
-            # Create error record
+            else:  # pragma: no cover
+                # Should not happen with Literal type hint, but handle defensively
+                logger.error(
+                    f"Unknown status '{status}' received from MastodonClient.post for {post.id}"
+                )
+                record = SyncRecord(
+                    source_id=post.id,
+                    source_platform="bluesky",
+                    target_id="",
+                    target_platform="mastodon",
+                    synced_at=datetime.now(),
+                    success=False,
+                    error_message=f"Unknown status: {status}",
+                )
+                self.sync_records.append(record)
+                self._save_state()
+                return record
+
+        except Exception as e:
+            # This block now catches unexpected errors *outside* the self.mastodon.post call
+            # (e.g., during parent ID lookup or record creation itself).
+            # Errors *within* self.mastodon.post are handled by its return value.
+            logger.error(
+                f"Unexpected error during sync process for post {post.id}: {e}"
+            )
             record = SyncRecord(
                 source_id=post.id,
                 source_platform="bluesky",
@@ -256,9 +364,8 @@ class SyncManager:
                 target_platform="mastodon",
                 synced_at=datetime.now(),
                 success=False,
-                error_message=str(e),
+                error_message=f"Sync process error: {e}",
             )
-
             self.sync_records.append(record)
             # Save state to record the failure
             self._save_state()

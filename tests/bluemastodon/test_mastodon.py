@@ -1,5 +1,6 @@
 """Tests for the mastodon module."""
 
+import re  # Import re
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
@@ -381,6 +382,74 @@ class TestMastodonClient:
         assert is_duplicate is False
         assert post is None
 
+    def test_is_duplicate_post_inner_exception(self):
+        """Test _is_duplicate_post handling exceptions during post check."""
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client._account = MagicMock()
+        client._account.id = "12345"
+
+        # Setup mock posts
+        mock_post_error_trigger = MagicMock()
+        mock_post_error_trigger.content = "<p>This post will cause regex error</p>"
+        mock_post_valid = MagicMock()
+        mock_post_valid.content = (
+            "<p>Valid post</p>"  # This is the one we expect to match
+        )
+
+        client.client = MagicMock()
+        client.client.account_statuses.return_value = [
+            mock_post_error_trigger,
+            mock_post_valid,
+        ]
+
+        # Patch re.sub to raise an error only when processing the first post's content
+        original_re_sub = re.sub
+
+        def mock_re_sub(pattern, repl, string, count=0):
+            if "regex error" in string:
+                raise ValueError("Regex error")
+            return original_re_sub(pattern, repl, string, count=count)
+
+        with patch("bluemastodon.mastodon.re.sub", side_effect=mock_re_sub):
+            with patch("bluemastodon.mastodon.logger") as mock_logger:
+                is_duplicate, post = client._is_duplicate_post("Valid post")
+
+                # Should skip the error post and find the valid one
+                assert is_duplicate is True
+                assert post == mock_post_valid
+                # Verify the correct warning was logged for the error during post check
+                mock_logger.warning.assert_any_call(
+                    "Error checking specific post for similarity: Regex error"
+                )
+
+    def test_is_duplicate_post_outer_exception(self):
+        """Test _is_duplicate_post handling exceptions during initial fetch or setup."""
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client._account = MagicMock()
+        client._account.id = "12345"  # Need a valid ID to get past the first check
+
+        # Mock account_statuses to raise an exception
+        client.client = MagicMock()
+        client.client.account_statuses.side_effect = RuntimeError("Fetch error")
+
+        with patch("bluemastodon.mastodon.logger") as mock_logger:
+            is_duplicate, post = client._is_duplicate_post("Some content")
+            # Should fail open
+            assert is_duplicate is False
+            assert post is None
+            # Verify warning was logged (from inner try/except around account_statuses)
+            mock_logger.warning.assert_called_once()
+            assert (
+                "Error fetching recent posts: Fetch error"
+                in mock_logger.warning.call_args[0][0]
+            )
+
     def test_determine_media_type(self):
         """Test _determine_media_type conversion."""
         config = MastodonConfig(
@@ -439,6 +508,12 @@ class TestMastodonClient:
         # Test case: Attribute access raises an exception
         assert client._get_safe_attr(obj, "error_property", "fallback") == "fallback"
 
+        # Test case: hasattr raises exception
+        with patch("builtins.hasattr", side_effect=RuntimeError("hasattr error")):
+            assert (
+                client._get_safe_attr(obj, "existing_attr", "fallback2") == "fallback2"
+            )
+
     def test_safe_int_to_str(self):
         """Test the _safe_int_to_str method."""
         config = MastodonConfig(
@@ -460,7 +535,16 @@ class TestMastodonClient:
             def __str__(self):
                 raise ValueError("Conversion error")
 
-        assert client._safe_int_to_str(BadObject()) == ""
+        # Patch the logger for this specific assertion
+        with patch("bluemastodon.mastodon.logger") as mock_logger:
+            result = client._safe_int_to_str(BadObject())
+            assert result == ""
+            # Assert the warning was logged correctly
+            mock_logger.warning.assert_called_once()
+            assert (
+                "Error converting value to string: Conversion error"
+                in mock_logger.warning.call_args[0][0]
+            )
 
     def test_safe_get_nested(self):
         """Test the _safe_get_nested method."""
@@ -710,10 +794,12 @@ class TestMastodonClient:
         )
 
         # Test 1: Post without reply parent
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result == mock_mastodon_post
+        assert status == "success"
+        assert post_obj == mock_mastodon_post
+        assert error_msg is None
         client.client.status_post.assert_called_once()
         mock_convert.assert_called_once_with(mock_toot)
 
@@ -723,10 +809,14 @@ class TestMastodonClient:
 
         # Test 2: Post with reply parent
         parent_id = "masto12345"
-        result = client.post(bluesky_post, in_reply_to_id=parent_id)
+        status, post_obj, error_msg = client.post(
+            bluesky_post, in_reply_to_id=parent_id
+        )
 
         # Assert
-        assert result == mock_mastodon_post
+        assert status == "success"
+        assert post_obj == mock_mastodon_post
+        assert error_msg is None
         client.client.status_post.assert_called_once()
         # Verify in_reply_to_id was passed correctly
         call_args = client.client.status_post.call_args
@@ -746,12 +836,18 @@ class TestMastodonClient:
         client = MastodonClient(config)
 
         # Post (both with and without in_reply_to_id)
-        result1 = client.post(MagicMock())
-        result2 = client.post(MagicMock(), in_reply_to_id="12345")
+        status1, post_obj1, error_msg1 = client.post(MagicMock())
+        status2, post_obj2, error_msg2 = client.post(
+            MagicMock(), in_reply_to_id="12345"
+        )
 
         # Assert
-        assert result1 is None
-        assert result2 is None
+        assert status1 == "failed"
+        assert post_obj1 is None
+        assert "Not authenticated" in error_msg1
+        assert status2 == "failed"
+        assert post_obj2 is None
+        assert "Not authenticated" in error_msg2
 
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
@@ -799,10 +895,12 @@ class TestMastodonClient:
         )
 
         # Post
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result == mock_mastodon_post
+        assert status == "duplicate"
+        assert post_obj == mock_mastodon_post
+        assert error_msg is None
         client.client.status_post.assert_not_called()
         mock_convert.assert_called_once_with(mock_existing_post)
 
@@ -836,12 +934,14 @@ class TestMastodonClient:
         )
 
         # Post
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result is not None
-        assert result.id == "duplicate"
-        assert result.content == "This is a test post"
+        assert status == "duplicate"
+        assert post_obj is not None
+        assert post_obj.id == "duplicate"
+        assert post_obj.content == "This is a test post"
+        assert error_msg is None
         client.client.status_post.assert_not_called()
 
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
@@ -881,13 +981,15 @@ class TestMastodonClient:
         )
 
         # Post
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result is not None
-        assert result.id == "12345"
-        assert result.content == "This is a test post"
-        assert result.url == "https://mastodon.test/@user/12345"
+        assert status == "duplicate"
+        assert post_obj is not None
+        assert post_obj.id == "12345"
+        assert post_obj.content == "This is a test post"
+        assert post_obj.url == "https://mastodon.test/@user/12345"
+        assert error_msg is None
         client.client.status_post.assert_not_called()
 
     @patch.object(MastodonClient, "_is_duplicate_post")
@@ -921,10 +1023,12 @@ class TestMastodonClient:
         )
 
         # Post
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result is None
+        assert status == "failed"
+        assert post_obj is None
+        assert "API error" in error_msg
         client.client.status_post.assert_called_once()
 
     @patch.object(MastodonClient, "_safe_int_to_str")
@@ -979,12 +1083,14 @@ class TestMastodonClient:
             side_effect=Exception("Conversion error"),
         ):
             # Post
-            result = client.post(bluesky_post)
+            status, post_obj, error_msg = client.post(bluesky_post)
 
-        # Assert we get a fallback post
-        assert result is not None
-        assert result.id == "12345"
-        assert result.content == "This is a test post"  # Original content preserved
+        # Assert we get a fallback post but status is success
+        assert status == "success"
+        assert post_obj is not None
+        assert post_obj.id == "12345"
+        assert post_obj.content == "This is a test post"  # Original content preserved
+        assert error_msg is None  # Error is logged, not returned here
         client.client.status_post.assert_called_once()
 
     @patch.object(MastodonClient, "_is_duplicate_post")
@@ -1016,10 +1122,105 @@ class TestMastodonClient:
         )
 
         # Post - should be handled by the outer try/except
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
-        # Assert we get None (error case)
-        assert result is None
+        # Assert we get 'failed' status
+        assert status == "failed"
+        assert post_obj is None
+        assert "Unexpected critical error" in error_msg
+
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_api_error(self, mock_auth, mock_is_duplicate):
+        """Test post with specific API error exception."""
+        # Setup
+        mock_auth.return_value = True
+        mock_is_duplicate.return_value = (False, None)
+
+        # Create client
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+        # Test MastodonAPIError specifically
+        client.client.status_post.side_effect = Exception("API error message")
+
+        # Create test post
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="This is a test post",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            media_attachments=[],
+            links=[],
+        )
+
+        # Post
+        with patch("bluemastodon.mastodon.logger") as mock_logger:
+            with patch("bluemastodon.mastodon.MastodonAPIError", Exception):
+                status, post_obj, error_msg = client.post(bluesky_post)
+
+                # Assert
+                assert status == "failed"
+                assert post_obj is None
+                assert "API error message" in error_msg
+                client.client.status_post.assert_called_once()
+                # Verify error was logged
+                mock_logger.error.assert_called_once()
+                assert "Mastodon API error posting" in mock_logger.error.call_args[0][0]
+
+    @patch.object(MastodonClient, "_is_duplicate_post")
+    @patch.object(MastodonClient, "ensure_authenticated")
+    def test_post_network_error(self, mock_auth, mock_is_duplicate):
+        """Test post with specific Network error exception."""
+        # Setup
+        mock_auth.return_value = True
+        mock_is_duplicate.return_value = (False, None)
+
+        # Create client
+        config = MastodonConfig(
+            instance_url="https://mastodon.test", access_token="test_token"
+        )
+        client = MastodonClient(config)
+        client.client = MagicMock()
+        # Test MastodonNetworkError specifically
+        client.client.status_post.side_effect = Exception("Network error message")
+
+        # Create test post
+        bluesky_post = BlueskyPost(
+            id="test123",
+            uri="at://test_user/app.bsky.feed.post/test123",
+            cid="cid123",
+            content="This is a test post",
+            created_at=datetime.now(),
+            author_id="test_author",
+            author_handle="test_author.bsky.social",
+            author_display_name="Test Author",
+            media_attachments=[],
+            links=[],
+        )
+
+        # Post
+        with patch("bluemastodon.mastodon.logger") as mock_logger:
+            with patch("bluemastodon.mastodon.MastodonNetworkError", Exception):
+                status, post_obj, error_msg = client.post(bluesky_post)
+
+                # Assert
+                assert status == "failed"
+                assert post_obj is None
+                assert "Network error message" in error_msg
+                client.client.status_post.assert_called_once()
+                # Verify error was logged
+                mock_logger.error.assert_called_once()
+                assert (
+                    "Mastodon network error posting"
+                    in mock_logger.error.call_args[0][0]
+                )
 
     @patch.object(MastodonClient, "_is_duplicate_post")
     @patch.object(MastodonClient, "_convert_to_mastodon_post")
@@ -1085,10 +1286,12 @@ class TestMastodonClient:
         )
 
         # Post
-        result = client.post(bluesky_post)
+        status, post_obj, error_msg = client.post(bluesky_post)
 
         # Assert
-        assert result == mock_mastodon_post
+        assert status == "success"
+        assert post_obj == mock_mastodon_post
+        assert error_msg is None
         # Only check the visibility parameter since that's reliably passed through
         call_args = client.client.status_post.call_args
         assert call_args.kwargs["visibility"] == "unlisted"
@@ -1145,8 +1348,10 @@ class TestMastodonClient:
             ],
         )
 
-        result1 = client.post(bluesky_post1)
-        assert result1 == mock_mastodon_post
+        status1, post_obj1, error_msg1 = client.post(bluesky_post1)
+        assert status1 == "success"
+        assert post_obj1 == mock_mastodon_post
+        assert error_msg1 is None
 
         # Verify the truncated link was replaced
         call_args = client.client.status_post.call_args
@@ -1176,8 +1381,10 @@ class TestMastodonClient:
             ],
         )
 
-        result2 = client.post(bluesky_post2)
-        assert result2 == mock_mastodon_post
+        status2, post_obj2, error_msg2 = client.post(bluesky_post2)
+        assert status2 == "success"
+        assert post_obj2 == mock_mastodon_post
+        assert error_msg2 is None
 
         # Verify the link was properly handled
         call_args = client.client.status_post.call_args
@@ -1256,6 +1463,9 @@ class TestMastodonClient:
                 )
 
         # The post should succeed even though media attachment failed
-        assert result == mock_mastodon_post
+        status, post_obj, error_msg = result  # Unpack the result tuple
+        assert status == "success"
+        assert post_obj == mock_mastodon_post
+        assert error_msg is None
         client.client.status_post.assert_called_once()
         mock_convert.assert_called_once_with(mock_toot)
