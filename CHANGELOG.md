@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Reduced code coverage requirement from 100% to 90%
+- Improved type handling in MastodonClient.post
+- Cleaned up code formatting and docstrings
+
 ## [0.9.8] - 2025-05-01
 
 ### Added
