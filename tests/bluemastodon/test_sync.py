@@ -306,7 +306,7 @@ class TestSyncManager:
             mock_remove.assert_called_once_with(temp_file_path)
             # Check that the error during removal was logged
             mock_logger.error.assert_any_call(
-                f"Failed to remove temporary state file {temp_file_path}: Remove failed"
+                f"Failed to remove temp file {temp_file_path}: Remove failed"
             )
             # Verify the final "Failed to save sync state" error was logged
             mock_logger.error.assert_any_call(
@@ -580,7 +580,7 @@ class TestSyncManager:
             # Verify the error was logged by the outer exception handler
             mock_logger.error.assert_called_once()
             assert (
-                "Unexpected error during sync process"
+                f"Unexpected sync error for post {sample_bluesky_post.id}: {error_msg}"
                 in mock_logger.error.call_args[0][0]
             )
 
@@ -630,7 +630,7 @@ class TestSyncManager:
             # Verify the error was logged by the outer exception handler
             mock_logger.error.assert_called_once()
             assert (
-                "Unexpected error during sync process"
+                f"Unexpected sync error for post {sample_bluesky_post.id}: {error_msg}"
                 in mock_logger.error.call_args[0][0]
             )
             # Verify mastodon.post was NOT called

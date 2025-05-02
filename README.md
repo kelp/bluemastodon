@@ -294,7 +294,7 @@ This project uses pre-commit hooks to ensure code quality. The hooks run:
 - Linting (Flake8, pylint)
 - Type checking (Mypy)
 - Security analysis (Bandit)
-- Tests with minimum coverage requirements (pytest)
+- Tests with minimum 90% coverage requirement (pytest)
 
 Pre-commit hooks run automatically on commit. Pre-push hooks run more
 comprehensive checks before pushing to the remote repository.

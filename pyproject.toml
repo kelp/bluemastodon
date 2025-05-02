@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bluemastodon"
-version = "0.9.7"
+version = "0.9.8"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = ["Travis Cole <kelp@plek.org>"]
 license = "MIT"
@@ -32,12 +32,11 @@ bluemastodon = "bluemastodon:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-atproto = ">=0.0.59"
+atproto = "==0.0.59"
 mastodon-py = {version = ">=1.8.1", extras = ["blurhash"]}
-pydantic = ">=2.6.1"
+pydantic = "==2.8.0" # Fix compatibility with atproto
 python-dotenv = ">=1.0.0"
 loguru = ">=0.7.2"
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pytest-cov = "^6.0.0"

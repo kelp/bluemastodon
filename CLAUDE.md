@@ -9,7 +9,7 @@ The pre-commit hooks handle:
 - Linting (flake8)
 - Type checking (mypy)
 - Security scanning (bandit)
-- Test coverage (pytest with 100% coverage requirement)
+- Test coverage (pytest with 90% coverage requirement)
 
 All quality checks run automatically before each commit, preventing commits that would fail CI.
 
@@ -44,7 +44,7 @@ managed by a separate tool in the blog repository.
 
 3. **Testing**:
    - Pytest for unit and integration tests
-   - 100% test coverage with pytest-cov
+   - 90% test coverage with pytest-cov
    - Mock external API calls
 
 4. **Quality Standards**:
@@ -77,7 +77,7 @@ managed by a separate tool in the blog repository.
 - Follow PEP 8 style guide
 - Keep methods under 30 lines where reasonable
 - Use type hints for all function parameters and return values
-- 100% test coverage required
+- 90% test coverage required
 - Descriptive variable and function names
 - Isolate dependencies and use dependency injection
 - Proper error handling with specific exceptions

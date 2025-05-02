@@ -6,7 +6,8 @@ including post mapping, cross-posting workflow, and state tracking.
 
 import json
 import os
-import tempfile
+
+# tempfile no longer needed
 import uuid  # Import uuid for unique temporary file names
 from datetime import datetime, timedelta
 
@@ -70,7 +71,7 @@ class SyncManager:
                 logger.info(
                     f"Loaded sync state: {len(self.synced_posts)} posts, "
                     f"{len(self.sync_records)} records, "
-                    f"{len(self.mastodon_parent_map)} parent map entries"
+                    f"{len(self.mastodon_parent_map)} parent entries"
                 )
         except Exception as e:
             logger.error(f"Failed to load sync state: {e}")
@@ -90,7 +91,7 @@ class SyncManager:
         }
 
     def _save_state(self) -> None:
-        """Save the current sync state atomically to the state file, pruning old records."""
+        """Save the current sync state atomically, pruning old records."""
         try:
             # --- Pruning Logic ---
             # Define retention period (e.g., 7 days, adjust as needed)
@@ -153,14 +154,14 @@ class SyncManager:
                         os.remove(temp_file_path)
                     except OSError as remove_err:
                         logger.error(
-                            f"Failed to remove temporary state file {temp_file_path}: {remove_err}"
+                            f"Failed to remove temp file {temp_file_path}: {remove_err}"
                         )
                 # Re-raise the original error to signal failure
                 raise write_err
             # --- End Atomic Write ---
 
             logger.info(
-                f"Saved sync state successfully: {len(self.synced_posts)} posts, "  # Updated log message slightly
+                f"Saved sync state successfully: {len(self.synced_posts)} posts, "
                 f"{len(self.sync_records)} records"
             )
 
@@ -259,10 +260,16 @@ class SyncManager:
                     )
 
             # Cross-post to Mastodon, passing thread information
-            # MastodonClient.post now returns: status, post_object, error_message
-            status, mastodon_post_obj, error_msg = self.mastodon.post(
-                post, in_reply_to_id=mastodon_parent_id
-            )
+            # MastodonClient.post returns tuple: (status, post_object, error_message)
+            result = self.mastodon.post(post, in_reply_to_id=mastodon_parent_id)
+            # Type-safe unpacking with proper error handling
+            if isinstance(result, tuple) and len(result) == 3:
+                status, mastodon_post_obj, error_msg = result
+            else:
+                # For backward compatibility, treat non-tuple return as success
+                mastodon_post_obj = result
+                status = "success" if mastodon_post_obj else "failed"
+                error_msg = None if mastodon_post_obj else "Unknown error"
 
             # --- Handle Posting Result ---
             if status == "success" or status == "duplicate":
@@ -277,9 +284,9 @@ class SyncManager:
                         str(mastodon_post_obj.id) if mastodon_post_obj.id else ""
                     )
                     log_msg = (
-                        f"Successfully synced post {post.id} to Mastodon as {target_id}"
+                        f"Successfully synced post {post.id} as {target_id}"
                         if status == "success"
-                        else f"Post {post.id} already exists on Mastodon as {target_id} (duplicate)"
+                        else f"Post {post.id} exists as {target_id} (duplicate)"
                     )
                     logger.info(log_msg)
 
@@ -295,7 +302,7 @@ class SyncManager:
                         ),
                     )
                 else:
-                    # Should ideally not happen if status is success/duplicate, but handle defensively
+                    # Handle missing post object defensively
                     logger.warning(
                         f"Post {post.id} reported as {status} but no post object."
                     )
@@ -306,11 +313,11 @@ class SyncManager:
                         target_platform="mastodon",
                         synced_at=datetime.now(),
                         success=True,  # Still mark success to avoid retry
-                        error_message=f"Post {status}, but Mastodon object missing",
+                        error_message=f"Post {status}, missing Mastodon object",
                     )
 
                 self.sync_records.append(record)
-                # Update the parent map only if we have a valid target_id
+                # Update parent map only if target_id is valid
                 if target_id and target_id != "duplicate" and target_id != "unknown":
                     self._rebuild_parent_map()  # Rebuild map after adding record
 
@@ -325,7 +332,7 @@ class SyncManager:
                     target_platform="mastodon",
                     synced_at=datetime.now(),
                     success=False,
-                    error_message=error_msg or "Failed to cross-post (unknown reason)",
+                    error_message=str(error_msg) if error_msg else "Unknown error",
                 )
                 self.sync_records.append(record)
                 # Save state to record the failure
@@ -335,7 +342,7 @@ class SyncManager:
             else:  # pragma: no cover
                 # Should not happen with Literal type hint, but handle defensively
                 logger.error(
-                    f"Unknown status '{status}' received from MastodonClient.post for {post.id}"
+                    f"Unknown status '{status}' from MastodonClient.post: {post.id}"
                 )
                 record = SyncRecord(
                     source_id=post.id,
@@ -351,12 +358,9 @@ class SyncManager:
                 return record
 
         except Exception as e:
-            # This block now catches unexpected errors *outside* the self.mastodon.post call
-            # (e.g., during parent ID lookup or record creation itself).
-            # Errors *within* self.mastodon.post are handled by its return value.
-            logger.error(
-                f"Unexpected error during sync process for post {post.id}: {e}"
-            )
+            # Catches unexpected errors outside the self.mastodon.post call
+            # Errors within self.mastodon.post are handled by its return value
+            logger.error(f"Unexpected sync error for post {post.id}: {e}")
             record = SyncRecord(
                 source_id=post.id,
                 source_platform="bluesky",

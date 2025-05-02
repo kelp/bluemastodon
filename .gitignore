@@ -34,3 +34,5 @@ coverage.xml
 .directory
 Thumbsdb
 sync_state.json
+
+**/.claude/settings.local.json
