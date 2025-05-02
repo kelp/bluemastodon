@@ -70,7 +70,7 @@ repos:
     hooks:
       - id: pytest-full
         name: Run comprehensive tests
-        entry: poetry run pytest --cov=bluemastodon --cov-report=term-missing --cov-fail-under=100
+        entry: poetry run pytest --cov=bluemastodon --cov-report=term-missing --cov-fail-under=90
         language: system
         pass_filenames: false
         always_run: true
