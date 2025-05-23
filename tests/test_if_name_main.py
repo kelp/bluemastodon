@@ -1,52 +1,27 @@
 """Test the if __name__ == "__main__" block in bluemastodon modules."""
 
-import sys
-import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
-class TestMainModule(unittest.TestCase):
+class TestMainModule:
     """Test the __main__.py module."""
 
-    def test_main_module(self):
+    def test_main_module(self) -> None:
         """Test the __main__.py module's entry point."""
-        # Save original imports and modules
-        original_sys_modules = sys.modules.copy()
+        # Mock the main function to prevent actual execution
+        mock_main = MagicMock(return_value=0)
 
-        # Mock main function to prevent actual execution
-        with patch("bluemastodon.main") as mock_main:
-            mock_main.return_value = 0
+        with patch("bluemastodon.main", mock_main):
+            with patch("sys.exit") as mock_exit:
+                # Import the __main__ module
+                # This should trigger the if __name__ == "__main__" block
+                # since __main__.py has that check
+                exec(
+                    open("src/bluemastodon/__main__.py").read(),
+                    {"__name__": "__main__"},
+                )
 
-            # Execute the module in a way that __name__ == "__main__" evaluates to True
-            try:
-                # This import executes the code in __main__.py with
-                # __name__ set to "__main__"
-                with patch.dict(
-                    sys.modules, {"__main__": __import__("bluemastodon.__main__")}
-                ):
-                    import bluemastodon.__main__
-
-                    # Manually invoke the main block from __main__ with
-                    # name set to __main__
-                    # to trigger the execution of sys.exit(main())
-                    bluemastodon.__main__.__name__ = "__main__"
-                    exec(
-                        """
-if __name__ == "__main__":
-    sys.exit(main())
-                        """,
-                        vars(bluemastodon.__main__),
-                    )
-            except SystemExit as e:
-                # Ensure the exit code is the one returned by our mock
-                self.assertEqual(e.code, 0)
-
-            # Verify that main was called
-            mock_main.assert_called_once()
-
-        # Restore original modules
-        sys.modules = original_sys_modules
-
-
-if __name__ == "__main__":
-    unittest.main()
+                # Verify main was called
+                mock_main.assert_called_once()
+                # Verify sys.exit was called
+                mock_exit.assert_called_once_with(0)

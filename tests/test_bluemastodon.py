@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import tempfile
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 from bluemastodon import main
@@ -19,8 +20,12 @@ class TestMain:
     @patch("bluemastodon.SyncManager")
     @patch("bluemastodon.logger")
     def test_main_success(
-        self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
-    ):
+        self,
+        mock_logger: Any,
+        mock_manager_class: Any,
+        mock_load_config: Any,
+        mock_parse_args: Any,
+    ) -> None:
         """Test main function with successful sync."""
         # Setup mocks
         args = MagicMock()
@@ -53,8 +58,12 @@ class TestMain:
     @patch("bluemastodon.SyncManager")
     @patch("bluemastodon.logger")
     def test_main_with_failures(
-        self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
-    ):
+        self,
+        mock_logger: Any,
+        mock_manager_class: Any,
+        mock_load_config: Any,
+        mock_parse_args: Any,
+    ) -> None:
         """Test main function with some sync failures."""
         # Setup mocks
         args = MagicMock()
@@ -91,8 +100,12 @@ class TestMain:
     @patch("bluemastodon.SyncManager")
     @patch("bluemastodon.logger")
     def test_main_dry_run(
-        self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
-    ):
+        self,
+        mock_logger: Any,
+        mock_manager_class: Any,
+        mock_load_config: Any,
+        mock_parse_args: Any,
+    ) -> None:
         """Test main function in dry-run mode."""
         # Setup mocks
         args = MagicMock()
@@ -133,8 +146,12 @@ class TestMain:
     @patch("bluemastodon.SyncManager")
     @patch("bluemastodon.logger")
     def test_main_dry_run_auth_failure(
-        self, mock_logger, mock_manager_class, mock_load_config, mock_parse_args
-    ):
+        self,
+        mock_logger: Any,
+        mock_manager_class: Any,
+        mock_load_config: Any,
+        mock_parse_args: Any,
+    ) -> None:
         """Test main function in dry-run mode with authentication failure."""
         # Setup mocks
         args = MagicMock()
@@ -168,7 +185,7 @@ class TestMain:
         mock_bluesky.get_recent_posts.assert_not_called()
         mock_manager.run_sync.assert_not_called()
 
-    def test_module_main(self):
+    def test_module_main(self) -> None:
         """Test __main__ block."""
         # To test the if __name__ == "__main__" block, we'll create a module copy
         module_content = """
@@ -199,7 +216,9 @@ if __name__ == "__main__":
     @patch("bluemastodon.argparse.ArgumentParser.parse_args")
     @patch("bluemastodon.load_config")
     @patch("bluemastodon.logger")
-    def test_main_exception(self, mock_logger, mock_load_config, mock_parse_args):
+    def test_main_exception(
+        self, mock_logger: Any, mock_load_config: Any, mock_parse_args: Any
+    ) -> None:
         """Test main function with exception."""
         # Setup mocks
         args = MagicMock()

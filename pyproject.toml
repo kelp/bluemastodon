@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bluemastodon"
-version = "0.9.8"
+version = "0.9.9"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = ["Travis Cole <kelp@plek.org>"]
 license = "MIT"
@@ -32,11 +32,11 @@ bluemastodon = "bluemastodon:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.14"
-atproto = "==0.0.59"
-mastodon-py = {version = ">=1.8.1", extras = ["blurhash"]}
-pydantic = "==2.8.0" # Fix compatibility with atproto
-python-dotenv = ">=1.0.0"
-loguru = ">=0.7.2"
+atproto = ">=0.0.61,<0.1.0"
+mastodon-py = {version = ">=2.0.1,<3.0.0", extras = ["blurhash"]}
+pydantic = ">=2.11.5,<3.0.0"
+python-dotenv = ">=1.1.0,<2.0.0"
+loguru = ">=0.7.3,<1.0.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pytest-cov = "^6.0.0"
@@ -47,6 +47,7 @@ mypy = "^1.15.0"
 pydocstyle = "^6.3.0"
 bandit = "^1.8.3"
 pre-commit = "^4.2.0"
+types-setuptools = "^80.8.0.20250521"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -82,3 +83,17 @@ module = [
     "mastodon.*"
 ]
 ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/__pycache__/*", "*/venv/*", "*/.venv/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]

@@ -1,6 +1,7 @@
 """Tests for the bluesky module."""
 
 from datetime import datetime, timedelta
+from typing import Any
 from unittest.mock import MagicMock, PropertyMock, patch
 
 import pytest
@@ -14,7 +15,7 @@ from bluemastodon.models import BlueskyPost, Link, MediaAttachment, MediaType
 class TestBlueskyClient:
     """Test the BlueskyClient class."""
 
-    def test_init(self):
+    def test_init(self) -> None:
         """Test initialization of BlueskyClient."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -24,7 +25,7 @@ class TestBlueskyClient:
         assert client.client is not None
 
     @patch("bluemastodon.bluesky.AtProtoClient")
-    def test_authenticate_success(self, mock_client_class):
+    def test_authenticate_success(self, mock_client_class: Any) -> None:
         """Test successful authentication."""
         # Setup mock
         mock_client = MagicMock()
@@ -41,7 +42,7 @@ class TestBlueskyClient:
         mock_client.login.assert_called_once_with("test_user", "test_password")
 
     @patch("bluemastodon.bluesky.AtProtoClient")
-    def test_authenticate_failure(self, mock_client_class):
+    def test_authenticate_failure(self, mock_client_class: Any) -> None:
         """Test authentication failure."""
         # Setup mock
         mock_client = MagicMock()
@@ -58,11 +59,11 @@ class TestBlueskyClient:
         assert client._authenticated is False
         mock_client.login.assert_called_once_with("test_user", "test_password")
 
-    def test_ensure_authenticated_already_authed(self):
+    def test_ensure_authenticated_already_authed(self) -> None:
         """Test ensure_authenticated when already authenticated."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
-        client._authenticated = True
+        setattr(client, "_authenticated", True)
 
         with patch.object(client, "authenticate") as mock_auth:
             result = client.ensure_authenticated()
@@ -70,11 +71,11 @@ class TestBlueskyClient:
             assert result is True
             mock_auth.assert_not_called()
 
-    def test_ensure_authenticated_not_authed(self):
+    def test_ensure_authenticated_not_authed(self) -> None:
         """Test ensure_authenticated when not authenticated."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
-        client._authenticated = False
+        setattr(client, "_authenticated", False)
 
         with patch.object(client, "authenticate") as mock_auth:
             mock_auth.return_value = True
@@ -83,15 +84,16 @@ class TestBlueskyClient:
             assert result is True
             mock_auth.assert_called_once()
 
-    def test_get_user_profile_success(self):
+    def test_get_user_profile_success(self) -> None:
         """Test _get_user_profile success."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
 
         # Create mock client and response
         mock_response = MagicMock()
-        client.client = MagicMock()
-        client.client.app.bsky.actor.get_profile.return_value = mock_response
+        mock_client = MagicMock()
+        mock_client.app.bsky.actor.get_profile.return_value = mock_response
+        setattr(client, "client", mock_client)
 
         # Call the method
         result = client._get_user_profile()
@@ -102,16 +104,17 @@ class TestBlueskyClient:
             {"actor": "test_user"}
         )
 
-    def test_get_user_profile_error(self):
+    def test_get_user_profile_error(self) -> None:
         """Test _get_user_profile with API error."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
 
         # Create mock client with error
-        client.client = MagicMock()
-        client.client.app.bsky.actor.get_profile.side_effect = AtProtocolError(
+        mock_client = MagicMock()
+        mock_client.app.bsky.actor.get_profile.side_effect = AtProtocolError(
             "API error"
         )
+        setattr(client, "client", mock_client)
 
         # Call the method
         result = client._get_user_profile()
@@ -122,15 +125,16 @@ class TestBlueskyClient:
             {"actor": "test_user"}
         )
 
-    def test_fetch_author_feed_success(self):
+    def test_fetch_author_feed_success(self) -> None:
         """Test _fetch_author_feed success."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
 
         # Create mock client and response
         mock_response = MagicMock()
-        client.client = MagicMock()
-        client.client.app.bsky.feed.get_author_feed.return_value = mock_response
+        mock_client = MagicMock()
+        mock_client.app.bsky.feed.get_author_feed.return_value = mock_response
+        setattr(client, "client", mock_client)
 
         # Call the method
         result = client._fetch_author_feed("did:test", 10)
@@ -144,16 +148,17 @@ class TestBlueskyClient:
             }
         )
 
-    def test_fetch_author_feed_error(self):
+    def test_fetch_author_feed_error(self) -> None:
         """Test _fetch_author_feed with API error."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
 
         # Create mock client with error
-        client.client = MagicMock()
-        client.client.app.bsky.feed.get_author_feed.side_effect = AtProtocolError(
+        mock_client = MagicMock()
+        mock_client.app.bsky.feed.get_author_feed.side_effect = AtProtocolError(
             "API error"
         )
+        setattr(client, "client", mock_client)
 
         # Call the method
         result = client._fetch_author_feed("did:test", 10)
@@ -167,7 +172,7 @@ class TestBlueskyClient:
             }
         )
 
-    def test_should_include_post(self):
+    def test_should_include_post(self) -> None:
         """Test _should_include_post for various scenarios."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -244,7 +249,9 @@ class TestBlueskyClient:
 
     @patch("bluemastodon.bluesky.BlueskyClient._extract_media_attachments")
     @patch("bluemastodon.bluesky.BlueskyClient._extract_links")
-    def test_convert_to_bluesky_post(self, mock_extract_links, mock_extract_media):
+    def test_convert_to_bluesky_post(
+        self, mock_extract_links: Any, mock_extract_media: Any
+    ) -> None:
         """Test _convert_to_bluesky_post method."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -343,7 +350,7 @@ class TestBlueskyClient:
         assert result.reply_parent == "parent123"
         assert result.in_reply_to_id == "parent123"
 
-    def test_extract_media_attachments_with_images(self):
+    def test_extract_media_attachments_with_images(self) -> None:
         """Test _extract_media_attachments with images."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -401,7 +408,7 @@ class TestBlueskyClient:
             mock_get_url.assert_any_call(post, "link1")
             mock_get_url.assert_any_call(post, "link2")
 
-    def test_extract_media_attachments_no_embed(self):
+    def test_extract_media_attachments_no_embed(self) -> None:
         """Test _extract_media_attachments with no embed."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -416,7 +423,7 @@ class TestBlueskyClient:
         # Check result is empty list
         assert result == []
 
-    def test_extract_links_with_external(self):
+    def test_extract_links_with_external(self) -> None:
         """Test _extract_links with external link."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -452,7 +459,7 @@ class TestBlueskyClient:
             # Verify get_blob_url call
             mock_get_url.assert_called_once_with(post, "thumb_link")
 
-    def test_extract_links_no_embed(self):
+    def test_extract_links_no_embed(self) -> None:
         """Test _extract_links with no embed."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -467,7 +474,7 @@ class TestBlueskyClient:
         # Check result is empty list
         assert result == []
 
-    def test_get_blob_url(self):
+    def test_get_blob_url(self) -> None:
         """Test _get_blob_url method."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -491,12 +498,12 @@ class TestBlueskyClient:
     @patch("bluemastodon.bluesky.BlueskyClient._convert_to_bluesky_post")
     def test_get_recent_posts_success(
         self,
-        mock_convert,
-        mock_should_include,
-        mock_fetch_feed,
-        mock_get_profile,
-        mock_auth,
-    ):
+        mock_convert: Any,
+        mock_should_include: Any,
+        mock_fetch_feed: Any,
+        mock_get_profile: Any,
+        mock_auth: Any,
+    ) -> None:
         """Test get_recent_posts success case."""
         # Setup configuration and client
         config = BlueskyConfig(username="test_user", password="test_password")
@@ -562,7 +569,7 @@ class TestBlueskyClient:
         # Can't easily check the exact arguments
 
     @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
-    def test_get_recent_posts_not_authenticated(self, mock_auth):
+    def test_get_recent_posts_not_authenticated(self, mock_auth: Any) -> None:
         """Test get_recent_posts when not authenticated."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -579,7 +586,9 @@ class TestBlueskyClient:
 
     @patch("bluemastodon.bluesky.BlueskyClient.ensure_authenticated")
     @patch("bluemastodon.bluesky.BlueskyClient._get_user_profile")
-    def test_get_recent_posts_profile_error(self, mock_get_profile, mock_auth):
+    def test_get_recent_posts_profile_error(
+        self, mock_get_profile: Any, mock_auth: Any
+    ) -> None:
         """Test get_recent_posts when profile fetch fails."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)
@@ -602,8 +611,8 @@ class TestBlueskyClient:
     @patch("bluemastodon.bluesky.BlueskyClient._get_user_profile")
     @patch("bluemastodon.bluesky.BlueskyClient._fetch_author_feed")
     def test_get_recent_posts_feed_error(
-        self, mock_fetch_feed, mock_get_profile, mock_auth
-    ):
+        self, mock_fetch_feed: Any, mock_get_profile: Any, mock_auth: Any
+    ) -> None:
         """Test get_recent_posts when feed fetch fails."""
         config = BlueskyConfig(username="test_user", password="test_password")
         client = BlueskyClient(config)

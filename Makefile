@@ -10,7 +10,7 @@ PYTHON = python
 POETRY = poetry
 POETRY_RUN := $(RUN_SCRIPT)
 PYTEST = $(POETRY_RUN) pytest
-PYTEST_COV = $(PYTEST) --cov=$(PACKAGE) --cov-report=term-missing
+PYTEST_COV = $(PYTEST) --cov=src/$(PACKAGE) --cov-report=term-missing
 MYPY = $(POETRY_RUN) mypy
 FLAKE8 = $(POETRY_RUN) flake8
 BLACK = $(POETRY_RUN) black
@@ -41,8 +41,9 @@ clean:  ## Remove build artifacts and cache directories
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
-lint:  ## Run linters (flake8)
+lint:  ## Run linters (flake8 and mypy)
 	$(FLAKE8) src tests
+	$(MYPY) src
 
 format:  ## Format code with Black and isort
 	$(BLACK) src tests

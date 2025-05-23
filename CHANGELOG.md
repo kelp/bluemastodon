@@ -7,7 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.9] - 2025-01-24
+
 ### Changed
+- Updated all dependencies to latest versions with flexible versioning strategy
+- Switched from hard-pinned versions to minimum versions with upper bounds for major versions
+- Added py.typed marker to make the package type-aware
+- Fixed all mypy type annotation issues in test files
+- Improved type safety throughout the codebase
+
+### Added
+- Added types-setuptools dev dependency for better type checking
+- Added coverage configuration to pyproject.toml to fix import warnings
+- Added py.typed marker file for PEP 561 compliance
+
+### Fixed
+- Fixed coverage warning "Module bluemastodon was previously imported, but not measured"
+- Fixed all mypy type annotation issues in test files
+- Refactored test_main.py and test_if_name_main.py to avoid import conflicts
+
+### Technical
+- Updated dependency versions:
+  - atproto: `>=0.0.61,<0.1.0` (was `==0.0.59`)
+  - mastodon-py: `>=2.0.1,<3.0.0` (was `>=1.8.1`)
+  - pydantic: `>=2.11.5,<3.0.0` (was `==2.8.0`)
+  - python-dotenv: `>=1.1.0,<2.0.0` (was `>=1.0.0`)
+  - loguru: `>=0.7.3,<1.0.0` (was `>=0.7.2`)
+- Configured mypy to be less strict for test files while maintaining strict checks for source code
+- Updated coverage configuration to use src/bluemastodon path consistently
+- Fixed Makefile PYTEST_COV command to use correct source path
 - Reduced code coverage requirement from 100% to 90%
 - Improved type handling in MastodonClient.post
 - Cleaned up code formatting and docstrings

@@ -104,3 +104,9 @@ managed by a separate tool in the blog repository.
   client.login('username', 'password')
   client.send_post(text='Hello World!')
   ```
+
+## Makefile Commands
+- Run tests: `make test`
+- Run linters: `make lint`
+- Tag a release: `make release`
+- Bump versions: `make bump-version`

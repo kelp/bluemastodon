@@ -6,6 +6,7 @@ import tempfile
 
 # uuid is used in tests via mocks
 from datetime import datetime, timedelta
+from typing import Any
 from unittest.mock import MagicMock, call, mock_open, patch
 
 import pytest
@@ -17,7 +18,7 @@ from bluemastodon.sync import SyncManager
 
 
 @pytest.fixture
-def mock_mastodon_success_post():
+def mock_mastodon_success_post() -> Any:
     """Fixture for a successful Mastodon post object."""
     return MastodonPost(
         id="toot123",
@@ -33,7 +34,7 @@ def mock_mastodon_success_post():
 class TestSyncManager:
     """Test the SyncManager class."""
 
-    def test_init(self, sample_config):
+    def test_init(self, sample_config: Any) -> None:
         """Test initialization of SyncManager."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky,
@@ -56,7 +57,7 @@ class TestSyncManager:
             manager = SyncManager(sample_config, custom_state_file)
             assert manager.state_file == custom_state_file
 
-    def test_load_state_no_file(self, sample_config):
+    def test_load_state_no_file(self, sample_config: Any) -> None:
         """Test _load_state when file doesn't exist."""
         with (
             patch("bluemastodon.sync.os.path.exists", return_value=False),
@@ -70,7 +71,9 @@ class TestSyncManager:
             assert manager.synced_posts == set()
             assert manager.sync_records == []
 
-    def test_load_state_with_file(self, sample_config, sample_sync_state_file):
+    def test_load_state_with_file(
+        self, sample_config: Any, sample_sync_state_file: str
+    ) -> None:
         """Test _load_state with existing state file."""
         with (
             patch("bluemastodon.sync.BlueskyClient"),
@@ -99,7 +102,7 @@ class TestSyncManager:
                 "existing2": "target2",
             }
 
-    def test_load_state_with_invalid_file(self, sample_config):
+    def test_load_state_with_invalid_file(self, sample_config: Any) -> None:
         """Test _load_state with invalid state file."""
         # Create an invalid JSON file
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
@@ -128,7 +131,7 @@ class TestSyncManager:
             if os.path.exists(invalid_state_file):
                 os.unlink(invalid_state_file)
 
-    def test_load_state_with_invalid_record(self, sample_config):
+    def test_load_state_with_invalid_record(self, sample_config: Any) -> None:
         """Test _load_state with invalid record in state file."""
         # Create a file with an invalid record
         invalid_record_file = None
@@ -173,7 +176,7 @@ class TestSyncManager:
             if invalid_record_file and os.path.exists(invalid_record_file):
                 os.unlink(invalid_record_file)
 
-    def test_save_state(self, sample_config):
+    def test_save_state(self, sample_config: Any) -> None:
         """Test _save_state method with atomic write and pruning."""
         # Setup mock for open and json.dump
         mock_file = MagicMock()
@@ -250,7 +253,7 @@ class TestSyncManager:
             # Verify atomic replace was called
             mock_replace.assert_called_once_with(temp_file_path, state_file_path)
 
-    def test_save_state_error(self, sample_config):
+    def test_save_state_error(self, sample_config: Any) -> None:
         """Test _save_state error handling during atomic write."""
         state_file_path = "/tmp/state.json"
         mock_uuid = "test-uuid-error"
@@ -315,7 +318,7 @@ class TestSyncManager:
             # Ensure exactly three error logs occurred
             assert mock_logger.error.call_count == 3
 
-    def test_find_mastodon_id_for_bluesky_post(self, sample_config):
+    def test_find_mastodon_id_for_bluesky_post(self, sample_config: Any) -> None:
         """Test find_mastodon_id_for_bluesky_post method."""
         with (
             patch("bluemastodon.sync.BlueskyClient"),
@@ -380,11 +383,11 @@ class TestSyncManager:
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_success(
         self,
-        mock_save_state,
-        sample_config,
-        sample_bluesky_post,
-        mock_mastodon_success_post,
-    ):
+        mock_save_state: Any,
+        sample_config: Any,
+        sample_bluesky_post: Any,
+        mock_mastodon_success_post: Any,
+    ) -> None:
         """Test _sync_post success case."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -405,7 +408,7 @@ class TestSyncManager:
             # Create manager
             manager = SyncManager(sample_config)
             # Patch rebuild map to check it's called
-            manager._rebuild_parent_map = MagicMock()
+            setattr(manager, "_rebuild_parent_map", MagicMock())
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_post)
@@ -431,16 +434,16 @@ class TestSyncManager:
             # _save_state is now called immediately after successful posting
             mock_save_state.assert_called_once()
             # _rebuild_parent_map should be called after adding the record
-            manager._rebuild_parent_map.assert_called_once()
+            getattr(manager, "_rebuild_parent_map").assert_called_once()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_duplicate(
         self,
-        mock_save_state,
-        sample_config,
-        sample_bluesky_post,
-        mock_mastodon_success_post,
-    ):
+        mock_save_state: Any,
+        sample_config: Any,
+        sample_bluesky_post: Any,
+        mock_mastodon_success_post: Any,
+    ) -> None:
         """Test _sync_post when a duplicate is detected."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -463,7 +466,7 @@ class TestSyncManager:
 
             # Create manager
             manager = SyncManager(sample_config)
-            manager._rebuild_parent_map = MagicMock()  # Patch rebuild map
+            setattr(manager, "_rebuild_parent_map", MagicMock())  # Patch rebuild map
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_post)
@@ -484,12 +487,12 @@ class TestSyncManager:
             # _save_state is called immediately for duplicates too
             mock_save_state.assert_called_once()
             # _rebuild_parent_map should be called
-            manager._rebuild_parent_map.assert_called_once()
+            getattr(manager, "_rebuild_parent_map").assert_called_once()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_failure(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test _sync_post when posting fails."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -510,7 +513,7 @@ class TestSyncManager:
 
             # Create manager
             manager = SyncManager(sample_config)
-            manager._rebuild_parent_map = MagicMock()  # Patch rebuild map
+            setattr(manager, "_rebuild_parent_map", MagicMock())  # Patch rebuild map
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_post)
@@ -536,12 +539,12 @@ class TestSyncManager:
             # _save_state IS called on failure now
             mock_save_state.assert_called_once()
             # _rebuild_parent_map should NOT be called on failure
-            manager._rebuild_parent_map.assert_not_called()
+            getattr(manager, "_rebuild_parent_map").assert_not_called()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_exception_outside_mastodon_call(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test _sync_post with an exception outside the mastodon.post call."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -566,7 +569,11 @@ class TestSyncManager:
             # Mock something *after* the mastodon.post call to raise an exception
             # e.g., _rebuild_parent_map
             error_msg = "Error during parent map rebuild"
-            manager._rebuild_parent_map = MagicMock(side_effect=Exception(error_msg))
+            setattr(
+                manager,
+                "_rebuild_parent_map",
+                MagicMock(side_effect=Exception(error_msg)),
+            )
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_post)
@@ -575,6 +582,7 @@ class TestSyncManager:
             assert isinstance(result, SyncRecord)
             assert result.source_id == sample_bluesky_post.id
             assert result.success is False
+            assert result.error_message is not None
             assert f"Sync process error: {error_msg}" in result.error_message
 
             # Verify the error was logged by the outer exception handler
@@ -589,8 +597,8 @@ class TestSyncManager:
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_exception_before_mastodon_call(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test _sync_post with an exception before the mastodon.post call."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -610,8 +618,10 @@ class TestSyncManager:
 
             # Mock find_mastodon_id_for_bluesky_post to raise an exception
             error_msg = "Error during parent lookup"
-            manager.find_mastodon_id_for_bluesky_post = MagicMock(
-                side_effect=Exception(error_msg)
+            setattr(
+                manager,
+                "find_mastodon_id_for_bluesky_post",
+                MagicMock(side_effect=Exception(error_msg)),
             )
 
             # Make the post a reply to trigger the lookup
@@ -625,6 +635,7 @@ class TestSyncManager:
             assert isinstance(result, SyncRecord)
             assert result.source_id == sample_bluesky_post.id
             assert result.success is False
+            assert result.error_message is not None
             assert f"Sync process error: {error_msg}" in result.error_message
 
             # Verify the error was logged by the outer exception handler
@@ -640,8 +651,8 @@ class TestSyncManager:
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_unknown_status(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test _sync_post handling an unexpected status from mastodon.post."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -673,6 +684,7 @@ class TestSyncManager:
             assert isinstance(result, SyncRecord)
             assert result.source_id == sample_bluesky_post.id
             assert result.success is False
+            assert result.error_message is not None
             assert "Unknown status: weird_status" in result.error_message
 
             # Verify the error was logged
@@ -684,11 +696,11 @@ class TestSyncManager:
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_thread_with_parent(
         self,
-        mock_save_state,
-        sample_config,
-        sample_bluesky_reply_post,
-        mock_mastodon_success_post,
-    ):
+        mock_save_state: Any,
+        sample_config: Any,
+        sample_bluesky_reply_post: Any,
+        mock_mastodon_success_post: Any,
+    ) -> None:
         """Test _sync_post with a self-reply post where the parent ID IS found."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -708,12 +720,14 @@ class TestSyncManager:
 
             # Create manager
             manager = SyncManager(sample_config)
-            manager._rebuild_parent_map = MagicMock()  # Patch rebuild map
+            setattr(manager, "_rebuild_parent_map", MagicMock())  # Patch rebuild map
 
             # Mock find_mastodon_id_for_bluesky_post to return a valid parent ID
             parent_mastodon_id = "parent_toot_123"
-            manager.find_mastodon_id_for_bluesky_post = MagicMock(
-                return_value=parent_mastodon_id
+            setattr(
+                manager,
+                "find_mastodon_id_for_bluesky_post",
+                MagicMock(return_value=parent_mastodon_id),
             )
 
             # Call _sync_post
@@ -749,12 +763,12 @@ class TestSyncManager:
             # _save_state is called immediately after successful posting
             mock_save_state.assert_called_once()
             # _rebuild_parent_map should be called
-            manager._rebuild_parent_map.assert_called_once()
+            getattr(manager, "_rebuild_parent_map").assert_called_once()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_success_without_post_object(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test _sync_post when status is success but no post object returned."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -774,7 +788,7 @@ class TestSyncManager:
 
             # Create manager
             manager = SyncManager(sample_config)
-            manager._rebuild_parent_map = MagicMock()  # Patch rebuild map
+            setattr(manager, "_rebuild_parent_map", MagicMock())  # Patch rebuild map
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_post)
@@ -789,6 +803,7 @@ class TestSyncManager:
             assert result.target_platform == "mastodon"
             assert result.success is False  # Marked as failed due to error handling
             # The warning message gets wrapped in a sync process error
+            assert result.error_message is not None
             assert "Sync process error" in result.error_message
 
             # Verify warning was logged about missing post object
@@ -799,16 +814,16 @@ class TestSyncManager:
             # _save_state is called twice
             assert mock_save_state.call_count == 2
             # _rebuild_parent_map should NOT be called on failure
-            manager._rebuild_parent_map.assert_not_called()
+            getattr(manager, "_rebuild_parent_map").assert_not_called()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_sync_post_thread_without_parent(
         self,
-        mock_save_state,
-        sample_config,
-        sample_bluesky_reply_post,
-        mock_mastodon_success_post,
-    ):
+        mock_save_state: Any,
+        sample_config: Any,
+        sample_bluesky_reply_post: Any,
+        mock_mastodon_success_post: Any,
+    ) -> None:
         """Test _sync_post with a self-reply post where the parent ID can't be found."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -828,10 +843,14 @@ class TestSyncManager:
 
             # Create manager
             manager = SyncManager(sample_config)
-            manager._rebuild_parent_map = MagicMock()  # Patch rebuild map
+            setattr(manager, "_rebuild_parent_map", MagicMock())  # Patch rebuild map
 
             # Ensure find_mastodon_id_for_bluesky_post returns None (parent not found)
-            manager.find_mastodon_id_for_bluesky_post = MagicMock(return_value=None)
+            setattr(
+                manager,
+                "find_mastodon_id_for_bluesky_post",
+                MagicMock(return_value=None),
+            )
 
             # Call _sync_post
             result = manager._sync_post(sample_bluesky_reply_post)
@@ -866,11 +885,13 @@ class TestSyncManager:
             # _save_state is called immediately after successful posting
             mock_save_state.assert_called_once()
             # _rebuild_parent_map should be called
-            manager._rebuild_parent_map.assert_called_once()
+            getattr(manager, "_rebuild_parent_map").assert_called_once()
 
     @patch("bluemastodon.sync.SyncManager._sync_post")
     @patch("bluemastodon.sync.SyncManager._save_state")
-    def test_run_sync_success(self, mock_save_state, mock_sync_post, sample_config):
+    def test_run_sync_success(
+        self, mock_save_state: Any, mock_sync_post: Any, sample_config: Any
+    ) -> None:
         """Test run_sync success case."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -914,7 +935,11 @@ class TestSyncManager:
             manager.synced_posts = {"already_synced"}
 
             # Mock find_mastodon_id_for_bluesky_post to always return None
-            manager.find_mastodon_id_for_bluesky_post = MagicMock(return_value=None)
+            setattr(
+                manager,
+                "find_mastodon_id_for_bluesky_post",
+                MagicMock(return_value=None),
+            )
 
             # Call run_sync
             result = manager.run_sync()
@@ -939,7 +964,7 @@ class TestSyncManager:
             # Should save state at the end if new records were processed
             mock_save_state.assert_called_once()
 
-    def test_run_sync_bluesky_auth_failure(self, sample_config):
+    def test_run_sync_bluesky_auth_failure(self, sample_config: Any) -> None:
         """Test run_sync when Bluesky authentication fails."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -971,7 +996,7 @@ class TestSyncManager:
             mock_masto.ensure_authenticated.assert_not_called()
             mock_bsky.get_recent_posts.assert_not_called()
 
-    def test_run_sync_mastodon_auth_failure(self, sample_config):
+    def test_run_sync_mastodon_auth_failure(self, sample_config: Any) -> None:
         """Test run_sync when Mastodon authentication fails."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -1005,7 +1030,9 @@ class TestSyncManager:
             mock_bsky.get_recent_posts.assert_not_called()
 
     @patch("bluemastodon.sync.SyncManager._save_state")
-    def test_run_sync_no_new_posts(self, mock_save_state, sample_config):
+    def test_run_sync_no_new_posts(
+        self, mock_save_state: Any, sample_config: Any
+    ) -> None:
         """Test run_sync when there are no new posts to sync."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
@@ -1045,8 +1072,8 @@ class TestSyncManager:
 
     @patch("bluemastodon.sync.SyncManager._save_state")
     def test_run_sync_with_new_posts(
-        self, mock_save_state, sample_config, sample_bluesky_post
-    ):
+        self, mock_save_state: Any, sample_config: Any, sample_bluesky_post: Any
+    ) -> None:
         """Test run_sync with new posts to sync."""
         with (
             patch("bluemastodon.sync.BlueskyClient") as mock_bsky_class,
