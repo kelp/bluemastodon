@@ -1,6 +1,6 @@
 [project]
 name = "bluemastodon"
-version = "0.9.9"
+version = "0.9.10"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
 authors = [{name = "Travis Cole", email = "kelp@plek.org"}]
 license = {text = "MIT"}

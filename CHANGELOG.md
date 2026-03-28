@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.10] - 2026-03-28
+
+### Changed
+- Migrated from Poetry to uv for package management
+- Updated all dependencies to latest versions
+- Lowered test coverage threshold from 100% to 95%
+
+### Fixed
+- Fixed security vulnerability in black dependency
+
 ## [0.9.9] - 2025-01-24
 
 ### Changed

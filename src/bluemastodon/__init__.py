@@ -26,7 +26,7 @@ from bluemastodon.sync import SyncManager
 # No typing imports needed here due to Python 3.10+ syntax
 
 
-__version__ = "0.9.9"
+__version__ = "0.9.10"
 
 # Export public classes
 __all__ = [
