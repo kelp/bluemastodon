@@ -1,13 +1,11 @@
-[tool.poetry]
+[project]
 name = "bluemastodon"
 version = "0.9.9"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
-authors = ["Travis Cole <kelp@plek.org>"]
-license = "MIT"
+authors = [{name = "Travis Cole", email = "kelp@plek.org"}]
+license = {text = "MIT"}
 readme = "README.md"
-repository = "https://github.com/kelp/bluemastodon"
-homepage = "https://github.com/kelp/bluemastodon"
-documentation = "https://github.com/kelp/bluemastodon/tree/main/docs"
+requires-python = ">=3.10,<3.14"
 keywords = ["bluesky", "mastodon", "social-media", "cross-posting", "automation"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -22,36 +20,44 @@ classifiers = [
     "Topic :: Communications",
     "Topic :: Internet",
 ]
+dependencies = [
+    "atproto>=0.0.61,<0.1.0",
+    "mastodon-py[blurhash]>=2.0.1,<3.0.0",
+    "pydantic>=2.11.5,<3.0.0",
+    "python-dotenv>=1.1.0,<2.0.0",
+    "loguru>=0.7.3,<1.0.0",
+]
 
-[tool.poetry.urls]
+[project.urls]
+Homepage = "https://github.com/kelp/bluemastodon"
+Repository = "https://github.com/kelp/bluemastodon"
+Documentation = "https://github.com/kelp/bluemastodon/tree/main/docs"
 "Bug Tracker" = "https://github.com/kelp/bluemastodon/issues"
-"Changelog" = "https://github.com/kelp/bluemastodon/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/kelp/bluemastodon/blob/main/CHANGELOG.md"
 
-[tool.poetry.scripts]
+[project.scripts]
 bluemastodon = "bluemastodon:main"
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-atproto = ">=0.0.61,<0.1.0"
-mastodon-py = {version = ">=2.0.1,<3.0.0", extras = ["blurhash"]}
-pydantic = ">=2.11.5,<3.0.0"
-python-dotenv = ">=1.1.0,<2.0.0"
-loguru = ">=0.7.3,<1.0.0"
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-black = "^26.3.1"
-isort = "^6.0.1"
-flake8 = "^7.2.0"
-mypy = "^1.15.0"
-pydocstyle = "^6.3.0"
-bandit = "^1.8.3"
-pre-commit = "^4.2.0"
-types-setuptools = "^80.8.0.20250521"
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5,<9.0.0",
+    "pytest-cov>=6.0.0,<7.0.0",
+    "black>=26.3.1,<27.0.0",
+    "isort>=6.0.1,<7.0.0",
+    "flake8>=7.2.0,<8.0.0",
+    "mypy>=1.15.0,<2.0.0",
+    "pydocstyle>=6.3.0,<7.0.0",
+    "bandit>=1.8.3,<2.0.0",
+    "pre-commit>=4.2.0,<5.0.0",
+    "types-setuptools>=80.8.0.20250521",
+]
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bluemastodon"]
 
 [tool.bandit]
 exclude_dirs = ["tests"]

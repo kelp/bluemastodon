@@ -33,17 +33,12 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.13'
-        cache: 'pip'
 
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 1.8.2
-        virtualenvs-create: true
-        virtualenvs-in-project: true
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
 
     - name: Install dependencies
-      run: poetry install
+      run: uv sync
 
     - name: Restore sync state cache
       uses: actions/cache/restore@v4
@@ -90,7 +85,7 @@ jobs:
           DRY_RUN_FLAG="--dry-run"
         fi
 
-        poetry run python -m bluemastodon --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
+        uv run python -m bluemastodon --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
 
     - name: Save sync state cache
       uses: actions/cache/save@v4

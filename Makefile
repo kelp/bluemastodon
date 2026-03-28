@@ -1,33 +1,29 @@
 .PHONY: setup install clean lint format type-check test test-cov test-ci docs build publish-test publish release bump-version version-tag pre-commit help
 
-# Path-independent environment setup
-SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-RUN_SCRIPT := $(SCRIPT_DIR)/scripts/run.sh
-
 # Variables
 PACKAGE = bluemastodon
 PYTHON = python
-POETRY = poetry
-POETRY_RUN := $(RUN_SCRIPT)
-PYTEST = $(POETRY_RUN) pytest
+UV = uv
+UV_RUN = $(UV) run
+PYTEST = $(UV_RUN) pytest
 PYTEST_COV = $(PYTEST) --cov=src/$(PACKAGE) --cov-report=term-missing
-MYPY = $(POETRY_RUN) mypy
-FLAKE8 = $(POETRY_RUN) flake8
-BLACK = $(POETRY_RUN) black
-ISORT = $(POETRY_RUN) isort
+MYPY = $(UV_RUN) mypy
+FLAKE8 = $(UV_RUN) flake8
+BLACK = $(UV_RUN) black
+ISORT = $(UV_RUN) isort
 VERSION = $(shell grep "^version" pyproject.toml | cut -d'"' -f2)
 
 help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 setup:  ## Set up development environment
-	$(POETRY) install
-	$(POETRY_RUN) pre-commit install
+	$(UV) sync
+	$(UV_RUN) pre-commit install
 	@echo "Pre-commit hooks installed successfully"
 
 install:  ## Install the package in development mode
-	$(POETRY) install
-	$(POETRY_RUN) pre-commit install
+	$(UV) sync
+	$(UV_RUN) pre-commit install
 	@echo "Pre-commit hooks installed successfully"
 
 clean:  ## Remove build artifacts and cache directories
@@ -53,7 +49,7 @@ type-check:  ## Run type checking with mypy
 	$(MYPY) src
 
 pre-commit:  ## Run pre-commit hooks on all files
-	$(POETRY_RUN) pre-commit run --all-files
+	$(UV_RUN) pre-commit run --all-files
 
 test:  ## Run tests
 	$(PYTEST)
@@ -66,17 +62,16 @@ test-ci:  ## Run tests for CI environment
 	$(PYTEST_COV) --cov-report=xml
 
 docs:  ## Generate API documentation
-	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(POETRY_RUN) python -m pydoc -w bluemastodon
-	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(POETRY_RUN) python -m pydoc -w bluemastodon.config bluemastodon.models bluemastodon.bluesky bluemastodon.mastodon bluemastodon.sync
+	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(UV_RUN) python -m pydoc -w bluemastodon
+	cd $(shell pwd) && PYTHONPATH=$(shell pwd)/src $(UV_RUN) python -m pydoc -w bluemastodon.config bluemastodon.models bluemastodon.bluesky bluemastodon.mastodon bluemastodon.sync
 	mkdir -p docs
 	mv *.html docs/
 
 build:  ## Build package
-	$(POETRY) build
+	$(UV) build
 
 publish-test:  ## Publish to Test PyPI
-	$(POETRY) config repositories.testpypi https://test.pypi.org/legacy/
-	$(POETRY) publish --repository testpypi
+	$(UV) publish --index-url https://test.pypi.org/legacy/
 
 publish:  ## Publish to PyPI
 	@echo "NOTICE: For production PyPI publishing, use the GitHub Actions workflow by tagging a release."
@@ -87,7 +82,7 @@ publish:  ## Publish to PyPI
 	@read -r response; \
 	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
 		echo "Publishing package to PyPI..."; \
-		$(POETRY) publish; \
+		$(UV) publish; \
 	else \
 		echo "Publishing aborted."; \
 	fi
