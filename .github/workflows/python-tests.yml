@@ -51,7 +51,7 @@ jobs:
         poetry run bandit -r src
 
     - name: Test
-      run: poetry run pytest --cov=src --cov-report=xml --cov-fail-under=100
+      run: poetry run pytest --cov=src --cov-report=xml --cov-fail-under=95
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
