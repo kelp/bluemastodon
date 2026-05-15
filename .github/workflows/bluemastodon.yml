@@ -27,21 +27,21 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
       with:
         python-version: '3.13'
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v6
+      uses: astral-sh/setup-uv@v8.1.0  # v8.1.0
 
     - name: Install dependencies
       run: uv sync
 
     - name: Restore sync state cache
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
       id: restore-cache
       with:
         path: sync_state.json
@@ -88,7 +88,7 @@ jobs:
         uv run python -m bluemastodon --state $STATE_FILE $DEBUG_FLAG $DRY_RUN_FLAG
 
     - name: Save sync state cache
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
       with:
         path: sync_state.json
         key: sync-state-${{ github.run_id }}
