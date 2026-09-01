@@ -1,8 +1,8 @@
 [project]
 name = "bluemastodon"
-version = "0.9.10"
+version = "0.9.11"
 description = "A tool to synchronize posts from Bluesky to Mastodon"
-authors = [{name = "Travis Cole", email = "kelp@plek.org"}]
+authors = [{name = "Travis Cole", email = "pypi@plek.org"}]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10,<3.14"

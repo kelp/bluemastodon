@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.11] - 2026-09-01
+
+### Changed
+- Updated public PyPI author-email to Travis Cole <pypi@plek.org>
+
 ## [0.9.10] - 2026-03-28
 
 ### Changed
