@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated public PyPI author-email to Travis Cole <pypi@plek.org>
 
+### Fixed
+- Bumped pypa/gh-action-pypi-publish to v1.14.2 so trusted publishing accepts hatchling metadata 2.5
+
 ## [0.9.10] - 2026-03-28
 
 ### Changed
