@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated runtime and development dependencies. Direct bumps include atproto 0.0.71, mastodon-py 2.2.2, pydantic 2.13.4, python-dotenv 1.2.3, pytest 9.1.1, pytest-cov 7.1.0, black 26.5.1, and mypy 1.20.2. Transitive security-relevant bumps include cryptography 50.0.1, urllib3 2.7.0, and idna 3.19. Versions first published after 2026-08-28 were excluded, including transitives.
+
 ## [0.9.11] - 2026-09-01
 
 ### Changed
