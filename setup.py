@@ -8,7 +8,7 @@ if __name__ == "__main__":
         version="0.9.1",
         description="Automatically cross-post from Bluesky to Mastodon",
         author="Travis Cole",
-        author_email="kelp@plek.org",
+        author_email="pypi@plek.org",
         url="https://github.com/kelp/bluemastodon",
         packages=find_packages(where="src"),
         package_dir={"": "src"},
